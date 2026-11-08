@@ -9,7 +9,7 @@ const CONFIG = {
   email: "foundersnotes09@gmail.com",
   instagram: "@the.founders_notes",                 // e.g. "@foundersnotes"
   whatsapp: "+919928490213",          // with country code, e.g. "+91 98765 43210"
-  calendly: "[CALENDLY LINK]",            // e.g. "https://calendly.com/yourname/20min"
+  calendly: "https://calendly.com/foundersnotes09/founders-notes-chat",            // e.g. "https://calendly.com/yourname/20min"
   formEndpoint: "",                       // optional: your own form service URL (Formspree, Web3Forms...). Leave empty to use the built-in FormSubmit setup.
   formAccessKey: "00a58ee1-0917-481f-bb61-5ae3f5bc1f8e",                     // optional: free Web3Forms access key (web3forms.com). If set, forms use it instead of FormSubmit. No activation step needed.
   siteUrl: "https://pranavkhandelwal1.github.io/founders-notes",                            // your live address once you have a domain, e.g. "https://foundersnotes.com" (used for share links, canonical link and preview images)
