@@ -12,7 +12,7 @@ const CONFIG = {
   calendly: "https://calendly.com/foundersnotes09/founders-notes-chat",            // e.g. "https://calendly.com/yourname/20min"
   formEndpoint: "",                       // optional: your own form service URL (Formspree, Web3Forms...). Leave empty to use the built-in FormSubmit setup.
   formAccessKey: "00a58ee1-0917-481f-bb61-5ae3f5bc1f8e",                     // optional: free Web3Forms access key (web3forms.com). If set, forms use it instead of FormSubmit. No activation step needed.
-  siteUrl: "https://pranavkhandelwal1.github.io/founders-notes",                            // your live address once you have a domain, e.g. "https://foundersnotes.com" (used for share links, canonical link and preview images)
+  siteUrl: "https://thefoundersnotes.com",                            // your live address once you have a domain, e.g. "https://foundersnotes.com" (used for share links, canonical link and preview images)
   newsletterEndpoint: "",                 // optional: Mailchimp / Buttondown / Formspree form URL for newsletter sign-ups. Leave empty to receive each sign-up by email.
   analytics: { domain: "", src: "" },     // optional privacy-friendly analytics. Plausible: domain "yourdomain.com" (src can stay empty). Update privacy.html if you switch it on.
   tagline: "Free success stories about independent founders, from anywhere in the world."
