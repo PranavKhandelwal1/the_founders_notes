@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pranavkhandelwal1.github.io/founders-notes/sitemap.xml
+Sitemap: https://thefoundersnotes.com/sitemap.xml
