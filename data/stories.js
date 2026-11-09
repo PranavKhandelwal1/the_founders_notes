@@ -375,9 +375,37 @@ const STORIES = [
   ],
   pullQuote: "Every time life made me start again, I found a way to return to what I love.",
   pullAfter: 6
+},
+{
+  id: "12",
+  image: "images/kami-yoga.jpg",
+  imageAlt: "Kami, founder of Move with Kami",
+  tags: ["Yoga", "Personal Growth", "Wellness"],
+  sample: false,
+  headline: "From Back Pain to a New Purpose: Kami’s Journey into Yoga",
+  summary: "What began as a way to strengthen her body and support her recovery from back problems became a passion and a new direction. Today, Kami is building her teaching practice while continuing to explore the many dimensions of yoga.",
+  business: "Move with Kami",
+  owner: "Kami",
+  location: "Chicago area, Illinois, USA",
+  founded: "2025",
+  offers: "Private one-to-one Hatha, Vinyasa and Yin Yoga classes, online and in person; pursuing further training in Original Hot Yoga and Prenatal Yoga",
+  instagram: "@movewithkami",
+  readTime: "3 min read",
+  initials: "K",
+  body: [
+    "Kami's journey into yoga began in 2020, when she was dealing with back problems. Already working with a physical therapist, she wanted to find another way to strengthen her body. At first, yoga was simply part of that physical journey. But over time, something changed. What began as a practical step towards feeling stronger gradually became a genuine passion, eventually inspiring her to become a yoga teacher.",
+    "Her first years in yoga were filled with learning and exploration. She completed her 200-hour Hatha and Vinyasa teacher training, followed by certifications in Yin and Prenatal Yoga. Alongside her studies, she began teaching private one-to-one classes, both online and in person, adapting each session to the individual student.",
+    "Her learning journey is far from over. Kami is currently focusing on a 330-hour Original Hot Yoga Teacher Training, deepening her understanding of a style that has become one of her biggest interests.",
+    "Kami is still building her teaching community. Through private sessions, she has had the opportunity to work with students individually, shaping practices around their needs and abilities. Her aim is to create a comfortable and supportive environment where people can explore yoga without feeling pressured to perform or meet certain expectations.",
+    "While she appreciates different approaches to yoga, 26&2 Hot Yoga holds a special place in her interests. She is drawn to its discipline, structure and the concept of a skeletal realignment system. She also loves the quiet, reflective quality of Yin and the freedom and creativity of Vinyasa. Rather than believing there is only one right way to practise, she values what each style can offer.",
+    "One of the things Kami feels most proud of is how far she has come. When she first stepped onto the mat, she never imagined that dealing with back problems would eventually lead her towards teaching. Looking back at that beginning makes her appreciate the progress she has made — and feel excited about everything she has yet to learn.",
+    "Building a teaching practice while working a full-time job comes with its own challenges. Between work, training, personal practice and creating content, finding enough hours in the day is not always easy. Kami is learning to be patient with herself and recognise that becoming a teacher is a process that takes time.",
+    "Her message to anyone considering yoga is simple: you do not need to be flexible, know advanced poses or have years of experience. You just need to show up and give yourself a chance. She also encourages beginners to explore different styles until they find an approach that feels right for them.",
+    "For Kami, yoga is an ongoing journey of discovery. She is proud of the path that brought her here, but she is just as interested in what comes next — continuing to study, grow and share the practice with others."
+  ],
+  pullQuote: "You don't need to be flexible to do yoga. You just need to show up and give yourself a chance.",
+  pullAfter: 7
 }
-
-
 
 ];
 
