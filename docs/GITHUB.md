@@ -65,13 +65,9 @@ Every push you make after this updates the live site within a minute or two.
 3. At your domain registrar, open the DNS settings and add the records GitHub lists in its guide “Managing a custom domain for your GitHub Pages site” (search for that title). In short: four `A` records for the main domain pointing to GitHub’s addresses, and a `CNAME` record for `www` pointing to `YOUR-USERNAME.github.io`. Check the current addresses in GitHub’s guide rather than copying them from anywhere else.
 4. When GitHub shows the domain as verified, tick **Enforce HTTPS**. DNS changes can take from a few minutes to a day.
 
-### Replace the placeholder domain (important)
+### Your site address
 
-Four files contain the text `YOUR-DOMAIN.com`: `index.html`, `privacy.html`, `sitemap.xml` and `robots.txt`. They need your real address so that links shared on Instagram and WhatsApp show your preview picture, and so Google finds your pages.
-
-In VS Code: **Edit → Replace in Files** (Ctrl+Shift+H, or Cmd+Shift+H on a Mac), search for `YOUR-DOMAIN.com`, replace it with your domain (for example `foundersnotes.com`, or `www.foundersnotes.com` if that is the address you use), and replace all. Then commit and push.
-
-If you publish on the `github.io` address first, use `YOUR-USERNAME.github.io/founders-notes` instead of a domain, but note that the custom 404 page only works properly on a domain or on a repository named exactly `YOUR-USERNAME.github.io`.
+Set `siteUrl` in `data/config.js` to your real address (already `https://thefoundersnotes.com`). The build uses it for canonical links, the sitemap and robots.txt. See `SEO-AND-BUILD.md` for the one-time Pages setting (Source = GitHub Actions).
 
 ---
 

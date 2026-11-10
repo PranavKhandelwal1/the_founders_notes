@@ -4,13 +4,13 @@
    Loaded BEFORE app.js; app.js calls initFeatures() and enhanceStory(). Content lives in /data. */
 
 const PAGE_LOADED = Date.now();
-const slugOf = t => String(t).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const slugOf = t => slugify(t);
 const countryOf = s => String(s.location || '').split(',').pop().trim();
 const discOf = s => (Array.isArray(s.tags) && s.tags[0]) || '';
-const baseUrl = () => isSet(CONFIG.siteUrl) ? CONFIG.siteUrl.replace(/\/+$/, '') + '/' : location.href.split('#')[0];
-const storyUrl = s => baseUrl() + '#story-' + s.id;
-const absUrl = rel => { try { return new URL(rel, baseUrl()).href; } catch (_) { return rel; } };
-const canShowAbs = () => isSet(CONFIG.siteUrl) || location.protocol !== 'file:';
+/* Full web addresses (for sharing, link previews and search engines) */
+const siteBase = () => isSet(CONFIG.siteUrl) ? CONFIG.siteUrl.replace(/\/+$/, '') : location.origin;
+const absUrl = p => /^https?:/.test(p) ? p : siteBase() + (String(p).startsWith('/') ? p : '/' + p);
+const storyUrl = s => siteBase() + storyPath(s);
 
 /* ---------- Site-wide numbers for the hero ---------- */
 function siteStats() {
@@ -20,34 +20,20 @@ function siteStats() {
   };
 }
 
-/* ---------- Filters: discipline chips and a country menu ---------- */
+/* ---------- Browse by topic and country: each choice is a real page ---------- */
 function renderFilters() {
   const box = $('#filters');
   if (!box) return;
-  const discs = [...new Set(STORIES.map(discOf).filter(Boolean))];
-  const countries = [...new Set(STORIES.map(countryOf).filter(Boolean))].sort();
-  if (fTag && !discs.includes(fTag)) discs.push(fTag);
-  if (discs.length < 2 && countries.length < 2) { box.hidden = true; return; }
+  const topics = topicNames().slice(0, 8), places = placeNames();
+  if (!topics.length && !places.length) { box.hidden = true; return; }
   box.hidden = false;
-  box.innerHTML = `<div class="chips" role="group" aria-label="Filter by discipline">${['', ...discs].map(d =>
-    `<button type="button" class="chip${fTag === d ? ' on' : ''}" data-tag="${esc(d)}" aria-pressed="${fTag === d}">${d ? esc(d) : 'All'}</button>`).join('')}</div>
-<label class="sr-only" for="fCountry">Country</label>
-<select id="fCountry" class="select"><option value="">All countries</option>${countries.map(c => `<option${c === fCountry ? ' selected' : ''}>${esc(c)}</option>`).join('')}</select>`;
-}
-function applyFilterHash(h) {
-  const val = decodeURIComponent(h.replace(/^(tag|country)-/, ''));
-  fTag = h.startsWith('tag-') ? val : '';
-  fCountry = h.startsWith('country-') ? val : '';
-  query = ''; const q = $('#q'); if (q) q.value = '';
-  renderFilters(); renderStories(true);
-  $('#homeView').hidden = false; $('#storyView').hidden = true;
-  showPage('stories'); renderStories(true);
-  resetMeta();
-  window.scrollTo(0, 0);
+  box.innerHTML = `<nav class="chips" aria-label="Browse stories by topic"><a class="chip${!fTag && !fCountry ? ' on' : ''}" href="/stories/">All</a>${topics.map(t =>
+    `<a class="chip${fTag === t ? ' on' : ''}" href="${tagPath(t)}"${fTag === t ? ' aria-current="page"' : ''}>${esc(t)}</a>`).join('')}</nav>` +
+    (places.length ? `<label class="sr-only" for="fCountry">Country</label><select id="fCountry" class="select"><option value="/stories/">All countries</option>${places.map(c =>
+      `<option value="${countryPath(c)}"${c === fCountry ? ' selected' : ''}>${esc(c)}</option>`).join('')}</select>` : '');
 }
 
-/* ---------- Link-preview and search tags ---------- */
-const DEFAULT_DESC = (document.querySelector('meta[name="description"]') || {}).content || '';
+/* ---------- Search tags, link previews and structured data (one set per page) ---------- */
 function setTag(attr, key, value) {
   let el = document.head.querySelector(`meta[${attr}="${key}"]`);
   if (!value) { if (el) el.remove(); return; }
@@ -60,42 +46,82 @@ function setCanonical(url) {
   if (!el) { el = document.createElement('link'); el.rel = 'canonical'; document.head.appendChild(el); }
   el.href = url;
 }
-function setMeta(sh) {
-  const s = sh._orig || sh;
-  const url = isSet(CONFIG.siteUrl) ? storyUrl(s) : '';
-  const img = s.image && canShowAbs() ? absUrl(s.image) : '';
-  setTag('name', 'description', sh.summary);
-  setTag('property', 'og:type', 'article');
-  setTag('property', 'og:title', sh.headline);
-  setTag('property', 'og:description', sh.summary);
-  setTag('property', 'og:url', url);
-  setTag('property', 'og:image', isSet(CONFIG.siteUrl) ? img : '');
-  setCanonical(url);
-  let ld = document.getElementById('ld-story');
-  if (!ld) { ld = document.createElement('script'); ld.type = 'application/ld+json'; ld.id = 'ld-story'; document.head.appendChild(ld); }
-  const data = {
-    '@context': 'https://schema.org', '@type': 'Article',
-    headline: sh.headline, description: sh.summary,
-    author: { '@type': 'Person', name: s.author || CONFIG.owner },
-    publisher: { '@type': 'Organization', name: CONFIG.brand },
-    about: { '@type': 'Person', name: s.owner },
-    inLanguage: sh._lang || 'en'
-  };
-  if (img) data.image = img;
-  if (s.published) data.datePublished = s.published;
-  ld.textContent = JSON.stringify(data);
+function ldSet(id, data) {
+  let el = document.getElementById(id);
+  if (!data) { if (el) el.remove(); return; }
+  if (!el) { el = document.createElement('script'); el.type = 'application/ld+json'; el.id = id; document.head.appendChild(el); }
+  el.textContent = JSON.stringify(data);
 }
-function resetMeta() {
+const clip = (t, n) => { t = String(t).replace(/\s+/g, ' ').trim(); return t.length <= n ? t : t.slice(0, n - 1).replace(/\s+\S*$/, '') + '…'; };
+function applyMeta(m) {
+  document.title = m.title;
+  setTag('name', 'description', m.description);
+  setTag('property', 'og:type', m.type || 'website');
+  setTag('property', 'og:site_name', CONFIG.brand);
+  setTag('property', 'og:title', m.title);
+  setTag('property', 'og:description', m.description);
+  setTag('property', 'og:url', siteBase() + m.path);
+  setTag('property', 'og:image', absUrl(m.image || 'assets/og-image.jpg'));
+  setTag('name', 'twitter:card', 'summary_large_image');
+  setCanonical(siteBase() + m.path);
+}
+const crumbLd = items => ({ '@type': 'BreadcrumbList', itemListElement: items.map((it, i) => ({ '@type': 'ListItem', position: i + 1, name: it[0], item: siteBase() + it[1] })) });
+const orgLd = () => ({
+  '@type': 'Organization', '@id': siteBase() + '/#organization', name: CONFIG.brand, url: siteBase() + '/',
+  logo: absUrl('assets/brand/monogram.png'), description: CONFIG.tagline,
+  founder: { '@type': 'Person', name: CONFIG.owner },
+  ...(isSet(CONFIG.instagram) ? { sameAs: [instaUrl()] } : {})
+});
+const itemListLd = list => ({ '@type': 'ItemList', itemListElement: list.map((s, i) => ({ '@type': 'ListItem', position: i + 1, url: storyUrl(s), name: s.headline })) });
+const PAGE_NAMES = { stories: 'Stories', about: 'About', 'get-featured': 'Get featured', services: 'Services', contact: 'Contact' };
+
+/* Home, list and information pages */
+function setPageMeta(r) {
   stopListen();
-  setTag('name', 'description', DEFAULT_DESC);
-  setTag('property', 'og:type', 'website');
-  setTag('property', 'og:title', BASE_TITLE);
-  setTag('property', 'og:description', DEFAULT_DESC);
-  const home = isSet(CONFIG.siteUrl) ? baseUrl() : '';
-  setTag('property', 'og:url', home);
-  setTag('property', 'og:image', home ? absUrl('assets/og-image.jpg') : '');
-  setCanonical(home);
-  const ld = document.getElementById('ld-story'); if (ld) ld.remove();
+  const brand = CONFIG.brand, seo = (typeof SEO !== 'undefined' && SEO[r.page]) || {};
+  const subset = STORIES.filter(s => (!r.tag || tagsOf(s).includes(r.tag)) && (!r.country || countryOf(s) === r.country));
+  let title = seo.title || BASE_TITLE, description = seo.description || '', crumbs = [['Home', '/']];
+  if (r.tag) {
+    const places = [...new Set(subset.map(countryOf).filter(Boolean))];
+    title = `${r.tag} founders: ${subset.length} stories | ${brand}`;
+    description = clip(`Read ${subset.length} stories about ${r.tag.toLowerCase()} founders and teachers${places.length ? ' from ' + places.slice(0, 3).join(', ') : ''}: how they started, what was hard and what a normal week looks like.`, 160);
+    crumbs.push(['Stories', '/stories/'], [r.tag + ' founders', r.path]);
+  } else if (r.country) {
+    const topics = [...new Set(subset.flatMap(tagsOf))].slice(0, 3);
+    title = `Independent founders in ${r.country}: ${subset.length} stories | ${brand}`;
+    description = clip(`Read ${subset.length} stories from independent founders in ${r.country}${topics.length ? ', including ' + topics.join(', ').toLowerCase() : ''}: how they started and what a normal week looks like.`, 160);
+    crumbs.push(['Stories', '/stories/'], ['Founders in ' + r.country, r.path]);
+  } else if (r.page !== 'home') crumbs.push([PAGE_NAMES[r.page], r.path]);
+  applyMeta({ title, description, path: r.path });
+  const graph = [];
+  if (r.page === 'home') graph.push(orgLd(), { '@type': 'WebSite', '@id': siteBase() + '/#website', name: brand, url: siteBase() + '/', publisher: { '@id': siteBase() + '/#organization' } });
+  else graph.push(crumbLd(crumbs));
+  if (r.page === 'stories') graph.push({ '@type': 'CollectionPage', name: title, description, url: siteBase() + r.path, mainEntity: itemListLd(subset) });
+  if (r.page === 'about') graph.push({ '@type': 'AboutPage', name: title, description, url: siteBase() + r.path });
+  if (r.page === 'contact') graph.push({ '@type': 'ContactPage', name: title, description, url: siteBase() + r.path });
+  if (r.page === 'services') graph.push({ '@type': 'Service', name: 'Website design for yoga and wellness studios', provider: { '@id': siteBase() + '/#organization' }, areaServed: 'Worldwide', description });
+  if (r.page === 'get-featured') graph.push({ '@type': 'FAQPage', mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) });
+  ldSet('ld-page', { '@context': 'https://schema.org', '@graph': graph });
+}
+
+/* One story */
+function setStoryMeta(sh) {
+  const s = sh._orig || sh;
+  const overlap = s.business.toLowerCase().includes(s.owner.toLowerCase().split(' ')[0]);   // "Queeny Cobelli Yoga" already holds the name
+  const options = [overlap ? `${s.business}: founder story` : `${s.owner}, founder of ${s.business}`, `${s.owner}: founder story`].map(t => `${t} | ${CONFIG.brand}`);
+  const title = options.find(t => t.length <= 62) || options[options.length - 1];
+  const description = clip(sh.summary, 160), path = storyPath(s), img = s.image ? absUrl(asset(s.image)) : '';
+  applyMeta({ title, description, path, type: 'article', image: s.image ? asset(s.image) : '' });
+  const article = {
+    '@type': 'Article', headline: clip(sh.headline, 110), description: sh.summary, url: siteBase() + path,
+    mainEntityOfPage: siteBase() + path, inLanguage: sh._lang || 'en',
+    author: { '@type': 'Person', name: s.author || CONFIG.owner },
+    publisher: { '@id': siteBase() + '/#organization' },
+    about: { '@type': 'Person', name: s.owner, ...(s.instagram ? { sameAs: [igHref(s.instagram)] } : {}) }
+  };
+  if (img) article.image = img;
+  if (s.published) { article.datePublished = s.published; article.dateModified = s.published; }
+  ldSet('ld-page', { '@context': 'https://schema.org', '@graph': [orgLd(), article, crumbLd([['Home', '/'], ['Stories', '/stories/'], [s.owner, path]])] });
 }
 
 /* ---------- Listen to a story (the browser's own text-to-speech) ---------- */
@@ -157,7 +183,7 @@ function focusOf(pos) {
 async function makeCard(sh, w, h, safeTop, safeBottom, style) {
   const s = sh._orig || sh;
   try { await document.fonts.load('italic 400 60px Newsreader'); await document.fonts.load('500 24px "IBM Plex Mono"'); } catch (_) { }
-  const img = style === 'photo' && s.image ? await loadImg(s.image) : null;
+  const img = style === 'photo' && s.image ? await loadImg(asset(s.image)) : null;
   const draw = pic => {
     const c = document.createElement('canvas'); c.width = w; c.height = h;
     const x = c.getContext('2d'), pad = 96, mono = '500 26px "IBM Plex Mono", monospace';
@@ -222,15 +248,15 @@ const yearsIn = s => {
 const videoHtml = v => {
   const yt = String(v).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]{6,})/);
   if (yt) return `<div class="embed"><iframe src="https://www.youtube-nocookie.com/embed/${esc(yt[1])}" title="Video" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`;
-  return `<video class="embed-video" controls preload="none" src="${esc(v)}"></video>`;
+  return `<video class="embed-video" controls preload="none" src="${esc(asset(v))}"></video>`;
 };
 function badgeCode(s) {
-  const badge = canShowAbs() ? absUrl('assets/badge/featured-badge.svg') : 'assets/badge/featured-badge.svg';
+  const badge = absUrl('assets/badge/featured-badge.svg');
   return `<a href="${storyUrl(s)}" target="_blank" rel="noopener"><img src="${badge}" alt="Featured in ${CONFIG.brand}" width="180" height="60"></a>`;
 }
 function enhanceStory(sh) {
   const s = sh._orig || sh, root = $('#storyView');
-  curStory = sh; stopListen(); setMeta(sh);
+  curStory = sh; stopListen();
   const grid = $('.story-grid', root), article = $('.article', root), head = $('.story-head', root), side = $('.side', root);
   if (!grid || !article) return;
   if (sh._lang) article.lang = sh._lang;
@@ -255,7 +281,7 @@ function enhanceStory(sh) {
     <span class="sr-only" id="toolNote" role="status" aria-live="polite"></span></div>`);
 
   /* founder's own audio / video */
-  const mediaBits = (s.video ? videoHtml(s.video) : '') + (s.audio ? `<audio class="embed-audio" controls preload="none" src="${esc(s.audio)}"></audio>` : '');
+  const mediaBits = (s.video ? videoHtml(s.video) : '') + (s.audio ? `<audio class="embed-audio" controls preload="none" src="${esc(asset(s.audio))}"></audio>` : '');
   if (mediaBits) article.insertAdjacentHTML('afterbegin', `<div class="founder-media">${mediaBits}</div>`);
 
   /* visit / follow / book */
@@ -263,7 +289,7 @@ function enhanceStory(sh) {
   if (s.instagram) btns.push(`<a class="btn btn-cta" href="${esc(igHref(s.instagram))}" target="_blank" rel="noopener">Follow on Instagram</a>`);
   if (s.website) btns.push(`<a class="btn btn-line" href="${esc(s.website)}" target="_blank" rel="noopener">Visit website</a>`);
   if (s.booking) btns.push(`<a class="btn btn-line" href="${esc(s.booking)}" target="_blank" rel="noopener">Book with ${esc(s.owner.split(' ')[0])}</a>`);
-  btns.push(`<a class="btn btn-line" href="#stories">Read more stories</a>`);
+  btns.push(`<a class="btn btn-line" href="/stories/">Read more stories</a>`);
   article.insertAdjacentHTML('beforeend', `<aside class="visit" aria-label="Visit ${esc(s.business)}"><span class="mono kicker-s">Support independent founders</span><h2>Visit ${esc(s.business)}</h2><p>${esc(s.location || '')}${s.offers ? ' &middot; ' + esc(offers.slice(0, 3).join(', ')) : ''}</p><div class="visit-btns">${btns.join('')}</div></aside>`);
 
   /* founder kit */
@@ -277,9 +303,9 @@ function enhanceStory(sh) {
         <button type="button" class="btn btn-line btn-sm" data-act="badge">Copy badge code</button>
         <button type="button" class="btn btn-line btn-sm" data-act="caption">Copy caption</button>
       </div>
-      <p class="kit-badge"><img src="assets/badge/featured-badge.svg" alt="Featured in ${esc(CONFIG.brand)} badge" width="150" height="50"></p></div>`);
+      <p class="kit-badge"><img src="/assets/badge/featured-badge.svg" alt="Featured in ${esc(CONFIG.brand)} badge" width="150" height="50"></p></div>`);
     const cta = $('.cta-box', side);
-    if (cta) cta.insertAdjacentHTML('beforeend', `<p class="audit-line"><a href="#get-in-touch" data-prefill="I was featured in ${esc(CONFIG.brand)} and would like the free mini website audit. My website or Instagram link: ">Featured here? Ask for your free mini website audit.</a></p>`);
+    if (cta) cta.insertAdjacentHTML('beforeend', `<p class="audit-line"><a href="/contact/" data-prefill="I was featured in ${esc(CONFIG.brand)} and would like the free mini website audit. My website or Instagram link: ">Featured here? Ask for your free mini website audit.</a></p>`);
   }
 }
 
@@ -297,14 +323,12 @@ const flash = (btn, text) => {
   btn._t = setTimeout(() => { btn.textContent = old; }, 1800);
 };
 document.addEventListener('click', async e => {
-  const filt = e.target.closest('.chip[data-tag]');
-  if (filt) { fTag = filt.dataset.tag; renderFilters(); renderStories(true); return; }
   const pre = e.target.closest('[data-prefill]');
   if (pre) {
     e.preventDefault();
-    const fill = () => { const m = $('#mMsg'); if (m) { m.value = pre.dataset.prefill; m.focus(); } };
-    if (location.hash === '#get-in-touch') { $('#get-in-touch').scrollIntoView({ behavior: 'smooth' }); fill(); }
-    else { location.hash = 'get-in-touch'; setTimeout(fill, 60); }
+    const m = $('#mMsg');
+    if (m) { m.value = pre.dataset.prefill; m.focus(); const g = $('#get-in-touch'); if (g) g.scrollIntoView({ behavior: 'smooth' }); }
+    else location.href = '/contact/?prefill=' + encodeURIComponent(pre.dataset.prefill);
     return;
   }
   const b = e.target.closest('[data-act]');
@@ -378,7 +402,7 @@ function renderExtras() {
   const pk = $('#packages');
   if (pk) pk.innerHTML = PACKAGES.map(p => `<article class="pack"><h3>${esc(p.title)}</h3><p class="price mono">${esc(p.price || 'Ask for a quote')}</p><p>${esc(p.text)}</p><ul>${p.items.map(i => `<li>${esc(i)}</li>`).join('')}</ul><a class="btn btn-line" href="${esc(mailto('Package enquiry: ' + p.title))}">Ask about this</a></article>`).join('');
   const au = $('#audit');
-  if (au) au.innerHTML = `<div class="audit"><div><h3>${esc(AUDIT.title)}</h3><p>${esc(AUDIT.text)}</p></div><a class="btn btn-cta" href="#get-in-touch" data-prefill="I'd like the free mini website audit. My website or Instagram link: ">Ask for my audit</a></div>`;
+  if (au) au.innerHTML = `<div class="audit"><div><h3>${esc(AUDIT.title)}</h3><p>${esc(AUDIT.text)}</p></div><a class="btn btn-cta" href="/contact/" data-prefill="I'd like the free mini website audit. My website or Instagram link: ">Ask for my audit</a></div>`;
 
   const nom = $('#nominateForm');
   if (nom) wireForm(nom, () => {
@@ -410,6 +434,5 @@ function initFeatures() {
   renderExtras();
   initAnalytics();
   const sel = $('#filters');
-  if (sel) sel.addEventListener('change', e => { if (e.target.id === 'fCountry') { fCountry = e.target.value; renderStories(true); } });
-  resetMeta();
+  if (sel) sel.addEventListener('change', e => { if (e.target.id === 'fCountry') location.href = e.target.value; });
 }
