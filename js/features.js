@@ -24,13 +24,16 @@ function siteStats() {
 function renderFilters() {
   const box = $('#filters');
   if (!box) return;
-  const topics = topicNames().slice(0, 8), places = placeNames();
+  const topics = topicNames().slice(0, 8), pages = placeNames();
+  // every country is listed; a country with 2+ stories opens its own page, a country with one story opens that story
+  const places = [...tally(countryOf)].sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0])).map(([k]) => k);
+  const target = c => pages.includes(c) ? countryPath(c) : storyPath(STORIES.find(s => countryOf(s) === c));
   if (!topics.length && !places.length) { box.hidden = true; return; }
   box.hidden = false;
   box.innerHTML = `<nav class="chips" aria-label="Browse stories by topic"><a class="chip${!fTag && !fCountry ? ' on' : ''}" href="/stories/">All</a>${topics.map(t =>
     `<a class="chip${fTag === t ? ' on' : ''}" href="${tagPath(t)}"${fTag === t ? ' aria-current="page"' : ''}>${esc(t)}</a>`).join('')}</nav>` +
     (places.length ? `<label class="sr-only" for="fCountry">Country</label><select id="fCountry" class="select"><option value="/stories/">All countries</option>${places.map(c =>
-      `<option value="${countryPath(c)}"${c === fCountry ? ' selected' : ''}>${esc(c)}</option>`).join('')}</select>` : '');
+      `<option value="${target(c)}"${c === fCountry ? ' selected' : ''}>${esc(c)}</option>`).join('')}</select>` : '');
 }
 
 /* ---------- Search tags, link previews and structured data (one set per page) ---------- */

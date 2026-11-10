@@ -129,7 +129,7 @@ const outFile = routePath => path.join(OUT, routePath === '/' ? 'index.html' : r
 
   /* ---------- 5. Copy the files the site needs ---------- */
   for (const d of ['css', 'js', 'data', 'images', 'assets']) fs.cpSync(path.join(ROOT, d), path.join(OUT, d), { recursive: true });
-  for (const f of ['privacy.html', '404.html', '.nojekyll', 'CNAME']) if (fs.existsSync(path.join(ROOT, f))) fs.copyFileSync(path.join(ROOT, f), path.join(OUT, f));
+  for (const f of ['privacy.html', '404.html', '.nojekyll', 'CNAME', 'favicon.ico']) if (fs.existsSync(path.join(ROOT, f))) fs.copyFileSync(path.join(ROOT, f), path.join(OUT, f));
   for (const [r, html] of Object.entries(pages)) { const f = outFile(r); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, html); }
 
   /* ---------- 6. Sitemap and robots.txt ---------- */

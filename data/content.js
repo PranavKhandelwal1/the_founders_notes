@@ -71,3 +71,32 @@ const AUDIT = {
 /* What featured founders say. Add real quotes only, with their permission. The section stays hidden while this list is empty.
    Example: { quote: "It was an easy, friendly process.", name: "Founder name", business: "Business name" } */
 const TESTIMONIALS = [];
+
+/* Search engine titles and descriptions for each page. Titles: aim for under 60 characters. Descriptions: 140 to 160.
+   Story pages build their own from the story (name, business, place and summary). */
+const SEO = {
+  home: {
+    title: "Founders\u2019 Notes: free stories about independent wellness founders",
+    description: "Free, founder-approved stories about independent yoga, Pilates, martial arts and wellness business owners around the world. Read their journeys or get featured."
+  },
+  stories: {
+    title: "Founder stories: yoga, Pilates and wellness | Founders\u2019 Notes",
+    description: "Read how independent yoga teachers, studio owners and wellness founders started, what was hard, and what a normal week looks like. Every story is approved by the founder."
+  },
+  about: {
+    title: "About Founders\u2019 Notes | Free stories for independent founders",
+    description: "Founders\u2019 Notes is a small, independent publication that writes warm, plain-spoken stories about founders. Learn how it works and what we stand for."
+  },
+  "get-featured": {
+    title: "Get featured for free | Founders\u2019 Notes",
+    description: "How to share your story with Founders\u2019 Notes: a 20-minute chat, a draft you approve, and a free story page with a badge and quote cards. Common questions answered."
+  },
+  services: {
+    title: "Website design for yoga and wellness studios | Founders\u2019 Notes",
+    description: "Simple, clear websites for studios, teachers and independent class businesses: link-in-bio pages, starter sites and care plans. Ask for a quote or a free mini audit."
+  },
+  contact: {
+    title: "Contact Founders\u2019 Notes | Book a call or send a message",
+    description: "Book a 20-minute call, send a message, or write by email or WhatsApp to share your story, nominate a founder or ask about a website."
+  }
+};
