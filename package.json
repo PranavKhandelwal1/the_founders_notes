@@ -1,0 +1,12 @@
+{
+  "name": "founders-notes",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Founders' Notes website. The build turns data/ into one real HTML page per address.",
+  "scripts": {
+    "build": "node build.js",
+    "preview": "node build.js && npx --yes http-server dist -p 8080 -c-1"
+  },
+  "engines": { "node": ">=18" },
+  "devDependencies": { "jsdom": "^26.1.0" }
+}

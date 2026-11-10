@@ -1,13 +1,16 @@
 # Founders’ Notes
 
-A small, fast website that publishes free success stories about independent founders. No build step, no server, no dependencies: it is plain HTML, CSS and JavaScript.
+A small, fast website that publishes free success stories about independent founders. Plain HTML, CSS and JavaScript. A small build (`build.js`, run automatically by GitHub on every push) creates a real page for every story, plus the sitemap.
 
-**Preview:** double-click `index.html`.
+**Preview:** `npm install` then `npm run preview`, and open http://localhost:8080 (see `docs/SEO-AND-BUILD.md`).
 
 ## Folder map
 
 ```
 founders-notes/
+├── build.js            builds one real page per story, sitemap, robots.txt
+├── package.json        build tools
+├── .github/workflows/  deploy.yml, publishes the site automatically
 ├── index.html          the page structure (About text, portrait, logo, footer)
 ├── README.md           this file
 ├── data/               everything you edit day to day
@@ -23,15 +26,13 @@ founders-notes/
 │   ├── favicon.svg       browser-tab icon
 │   ├── logos/            logo.svg (dark), logo-white.svg
 │   └── brand/            original wordmark and monogram artwork
-└── docs/               HOW-TO.md (full guide), FOUNDER-TOOLKIT.md (templates, checklist), outreach-tracker.csv, MIGRATION-PLAN.md
+└── docs/               HOW-TO.md (full guide), FOUNDER-TOOLKIT.md (templates, checklist), outreach-tracker.csv, SEO-AND-BUILD.md
 ```
 
 ## Most common jobs
 
 - **Add a story:** `data/stories.js`, then put the photo in `images/`. Steps are in `docs/HOW-TO.md`, section 2.
 - **Change your details:** `data/config.js`.
-- **Go live:** upload the whole folder to Netlify, Cloudflare Pages or GitHub Pages (`docs/HOW-TO.md`, section 4).
+- **Go live:** push to GitHub; it publishes automatically (`docs/SEO-AND-BUILD.md`).
 
 Load order in `index.html`: `data/config.js`, `data/content.js`, `data/stories.js`, `js/features.js`, then `js/app.js`. Keep that order.
-# the_founders_notes
-# the_founders_notes

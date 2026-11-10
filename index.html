@@ -14,15 +14,15 @@
   <meta property="og:title" content="Founders’ Notes — Free stories for independent founders">
   <meta property="og:description" content="Free success stories about independent founders worldwide: yoga and Pilates teachers, studio owners, martial arts and fitness instructors.">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/features.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/features.css">
 </head>
 
 <body id="top">
@@ -36,7 +36,7 @@
 
   <header class="site-header" id="siteHeader">
     <div class="wrap bar">
-      <a class="logo" href="#home" aria-label="Home">
+      <a class="logo" href="/" aria-label="Home">
         <svg class="logo-svg" viewBox="0 0 740 992" aria-hidden="true" focusable="false">
           <use href="#fn-logo" />
         </svg>
@@ -44,14 +44,14 @@
       </a>
       <nav class="nav" aria-label="Primary">
         <div class="nav-links" id="navLinks">
-          <a class="mono" href="#stories">Stories</a>
-          <a class="mono" href="#about">About</a>
-          <a class="mono" href="#faq">FAQ</a>
-          <a class="mono" href="#services">Services</a>
-          <a class="mono" href="#get-in-touch">Contact</a>
-          <a class="btn btn-cta nav-cta-m" href="#get-featured">Get featured</a>
+          <a class="mono" href="/stories/">Stories</a>
+          <a class="mono" href="/about/">About</a>
+          <a class="mono" href="/get-featured/#faq">FAQ</a>
+          <a class="mono" href="/services/">Services</a>
+          <a class="mono" href="/contact/">Contact</a>
+          <a class="btn btn-cta nav-cta-m" href="/get-featured/">Get featured</a>
         </div>
-        <a class="btn btn-cta nav-cta" href="#get-featured">Get featured</a>
+        <a class="btn btn-cta nav-cta" href="/get-featured/">Get featured</a>
         <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="navLinks"
           aria-label="Open menu"><svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4 7h16M4 12h16M4 17h16" />
@@ -71,8 +71,8 @@
               <h1 class="hero-title"><span id="heroTitle"></span> <em id="heroTitleEm"></em></h1>
               <p class="hero-intro" id="heroIntro"></p>
               <div class="hero-actions">
-                <a class="btn btn-cta" href="#get-featured">Get featured for free</a>
-                <a class="btn btn-line" href="#stories">Explore the stories</a>
+                <a class="btn btn-cta" href="/get-featured/">Get featured for free</a>
+                <a class="btn btn-line" href="/stories/">Explore the stories</a>
               </div>
               <ul class="hero-checks" id="heroChecks"></ul>
             </div>
@@ -87,6 +87,7 @@
           <div>
             <span class="kicker mono">Stories</span>
             <h2 id="storiesTitle">Latest stories</h2>
+            <p class="stories-intro" id="storiesIntro"></p>
           </div>
           <div class="search">
             <label class="sr-only" for="q">Search stories</label>
@@ -223,7 +224,7 @@
           <h3 class="pk-title">Website packages</h3>
           <div class="packages" id="packages"></div>
           <div class="services-cta">
-            <a class="btn btn-cta" href="#get-in-touch">Get in touch</a>
+            <a class="btn btn-cta" href="/contact/">Get in touch</a>
             <p>Tell me a little about your business and what you need. I'll reply personally.</p>
           </div>
         </div>
@@ -293,7 +294,7 @@
         <h2>Ready to tell your <em>founder story</em>?</h2>
         <div class="f-cta-actions">
           <a class="btn btn-cta" href="" data-cal-link>Book a call</a>
-          <a class="btn btn-ghost" href="#get-featured">Get featured</a>
+          <a class="btn btn-ghost" href="/get-featured/">Get featured</a>
         </div>
       </div>
       <div class="f-grid">
@@ -321,11 +322,11 @@
         <div class="f-col">
           <h3>Explore</h3>
           <ul>
-            <li><a href="#stories">Stories</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#get-featured">Get featured</a></li>
-            <li><a href="#faq">FAQ</a></li>
-            <li><a href="#services">Services</a></li>
+            <li><a href="/stories/">Stories</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="/get-featured/">Get featured</a></li>
+            <li><a href="/get-featured/#faq">FAQ</a></li>
+            <li><a href="/services/">Services</a></li>
           </ul>
         </div>
         <div class="f-col">
@@ -336,7 +337,7 @@
           <h3>Contact</h3>
           <ul>
             <li><a href="" data-cal-link>Book a call</a></li>
-            <li><a href="#get-in-touch">Send a message</a></li>
+            <li><a href="/contact/">Send a message</a></li>
             <li><span class="f-remote">Remote &middot; Worldwide</span></li>
           </ul>
         </div>
@@ -361,11 +362,11 @@
   </div>
 
   <!-- Settings and content (edit these in /data), then the code that draws the page -->
-  <script src="data/config.js"></script>
-  <script src="data/content.js"></script>
-  <script src="data/stories.js"></script>
-  <script src="js/features.js"></script>
-  <script src="js/app.js"></script>
+  <script src="/data/config.js"></script>
+  <script src="/data/content.js"></script>
+  <script src="/data/stories.js"></script>
+  <script src="/js/features.js"></script>
+  <script src="/js/app.js"></script>
 </body>
 
 </html>
