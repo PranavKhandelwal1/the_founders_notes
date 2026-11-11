@@ -20,6 +20,31 @@
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    /* Layout for the small standalone pages (privacy, 404) */
+    .site-header { position: static }
+    main#main { padding: clamp(48px, 9vw, 96px) 0 clamp(56px, 9vw, 104px) }
+    .back-link { font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); text-decoration: none }
+    .back-link:hover { color: var(--head) }
+    .page-head { max-width: 720px; margin: 0 auto 2.4rem }
+    .page-head .kicker { display: inline-flex; margin-bottom: 1.1rem }
+    .page-head h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); line-height: 1.08; margin: 0 0 1rem }
+    .page-head .dek { font-size: 1.2rem; line-height: 1.5; color: var(--muted); margin: 0 0 1.2rem }
+    .page-head .updated { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0; padding-top: 1.2rem; border-top: 1px solid var(--line) }
+    .legal { max-width: 720px; margin: 0 auto; font-size: 1.12rem; line-height: 1.75; color: var(--ink) }
+    .legal h2 { font-size: 1.55rem; line-height: 1.25; margin: 2.6rem 0 .7rem; color: var(--head) }
+    .legal h2:first-child { margin-top: 0 }
+    .legal p { margin: 0 0 1rem }
+    .legal ul { margin: 0 0 1rem; padding-left: 1.3rem }
+    .legal li { margin: 0 0 .55rem; padding-left: .2rem }
+    .legal a { color: var(--head); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent) }
+    .page-foot { background: var(--dark); color: #B7BEC9; padding: 2rem 0; font-size: .95rem }
+    .page-foot p { margin: 0; line-height: 1.6 }
+    .page-foot a { color: #fff; text-decoration: underline; text-underline-offset: 3px }
+    body { min-height: 100vh; display: flex; flex-direction: column }
+    main#main { flex: 1 }
+    .nf-actions { display: flex; gap: .8rem; flex-wrap: wrap; margin-top: 1.8rem }
+  </style>
 </head>
 
 <body id="top">
