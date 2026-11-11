@@ -29,6 +29,7 @@ const STORIES = [
 
   {
     id: "1",
+    published: "2026-10-23",
     image: "images/patricia-thielemann.jpg",
     imageAlt: "Patricia Thielemann, founder of Spirit Yoga",
     tags: ["Yoga", "Mindfulness", "Teacher Training"],
@@ -57,6 +58,7 @@ const STORIES = [
 
   {
     id: "2",
+    published: "2026-10-26",
     image: "images/veena-pillai.jpg",
     imageAlt: "Veena V Pillai, karate instructor",
     tags: ["Karate", "Women in Sport", "Motherhood"],
@@ -87,6 +89,7 @@ const STORIES = [
 
   {
     id: "3",
+    published: "2026-10-27",
     image: "images/elena-lebedinets.jpg",
     imageAlt: "Elena Lebedinets, Pilates instructor",
     tags: ["Pilates", "Motherhood", "Personal Growth"],
@@ -120,6 +123,7 @@ const STORIES = [
 
   {
     id: "4",
+    published: "2026-10-28",
     image: "images/aishwarya.jpg",
     imageAlt: "Aishwarya Yogshala yoga instructor",
     tags: ["Yoga", "Wellness", "Women in Business"],
@@ -152,6 +156,7 @@ const STORIES = [
 
   {
     id: "5",
+    published: "2026-10-28",
     image: "images/irina-mindful.jpeg",
     imageAlt: "Irina practising meditation outdoors in nature",
     tags: ["Mindfulness", "Yoga", "Personal Growth"],
@@ -185,6 +190,7 @@ const STORIES = [
 
   {
     id: "6",
+    published: "2026-11-01",
     image: "images/yulia-korchagina.jpeg",
     imageAlt: "Yulia Korchagina, Ashtanga yoga teacher",
     tags: ["Ashtanga Yoga", "Yoga Philosophy", "Retreats"],
@@ -217,6 +223,7 @@ const STORIES = [
 
   {
     id: "7",
+    published: "2026-11-02",
     image: "images/queeny-cobelli.jpg",
     imageAlt: "Queeny Cobelli, yoga and dance instructor",
     tags: ["Yoga", "Dance", "Women in Wellness"],
@@ -280,6 +287,7 @@ const STORIES = [
   // },
   {
     id: "9",
+    published: "2026-11-04",
     image: "images/be-with-yoga.jpg",
     imageAlt: "Angela, Vinyasa yoga teacher and practitioner",
     tags: ["Vinyasa Yoga", "Yoga Philosophy", "Meditation"],
@@ -312,6 +320,7 @@ const STORIES = [
   },
   {
     id: "10",
+    published: "2026-11-05",
     image: "images/ekaterina.jpg",
     imageAlt: "Ekaterina Katya, yoga and movement instructor in Sri Lanka",
     tags: ["Yoga", "Movement", "Mindful Living"],
@@ -346,6 +355,7 @@ const STORIES = [
 
   {
     id: "11",
+    published: "2026-11-07",
     image: "images/anna_firstenko.jpg",
     imageAlt: "Anna Firstenko, yoga teacher",
     tags: ["Yoga", "Women's Wellness", "Mindfulness"],
@@ -379,6 +389,7 @@ const STORIES = [
 
   {
     id: "12",
+    published: "2026-11-09",
     image: "images/kami-yoga.jpg",
     imageAlt: "Kami, founder of Move with Kami",
     tags: ["Yoga", "Personal Growth", "Wellness"],
@@ -410,6 +421,7 @@ const STORIES = [
 
   {
     id: "13",
+    published: "2026-11-09",
     image: "images/kris.jpg",
     imageAlt: "Kris, founder of Present Practices",
     tags: ["Photography", "Yoga", "Women in Business"],
@@ -448,4 +460,4 @@ const STORIES = [
    otherwise its numeric id (higher id = newer). The first story becomes the big "Featured story" and the
    oldest story is #1, so numbers never change. You can paste new stories anywhere in the list. */
 STORIES.forEach((st, i) => { st._k = st.published ? Date.parse(st.published) : (isFinite(+st.id) ? +st.id : -i); });
-STORIES.sort((a, b) => b._k - a._k);
+STORIES.sort((a, b) => (b._k - a._k) || ((+b.id || 0) - (+a.id || 0)));   // same date: higher id (added later) first
