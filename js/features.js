@@ -76,7 +76,7 @@ const orgLd = () => ({
   ...(isSet(CONFIG.instagram) ? { sameAs: [instaUrl()] } : {})
 });
 const itemListLd = list => ({ '@type': 'ItemList', itemListElement: list.map((s, i) => ({ '@type': 'ListItem', position: i + 1, url: storyUrl(s), name: s.headline })) });
-const PAGE_NAMES = { stories: 'Stories', about: 'About', 'get-featured': 'Get featured', services: 'Services', contact: 'Contact' };
+const PAGE_NAMES = { stories: 'Stories', about: 'About', mission: 'Our mission', 'get-featured': 'Get featured', services: 'Services', contact: 'Contact' };
 
 /* Home, list and information pages */
 function setPageMeta(r) {
@@ -100,7 +100,7 @@ function setPageMeta(r) {
   if (r.page === 'home') graph.push(orgLd(), { '@type': 'WebSite', '@id': siteBase() + '/#website', name: brand, url: siteBase() + '/', publisher: { '@id': siteBase() + '/#organization' } });
   else graph.push(crumbLd(crumbs));
   if (r.page === 'stories') graph.push({ '@type': 'CollectionPage', name: title, description, url: siteBase() + r.path, mainEntity: itemListLd(subset) });
-  if (r.page === 'about') graph.push({ '@type': 'AboutPage', name: title, description, url: siteBase() + r.path });
+  if (r.page === 'about' || r.page === 'mission') graph.push({ '@type': 'AboutPage', name: title, description, url: siteBase() + r.path });
   if (r.page === 'contact') graph.push({ '@type': 'ContactPage', name: title, description, url: siteBase() + r.path });
   if (r.page === 'services') graph.push({ '@type': 'Service', name: 'Website design for yoga and wellness studios', provider: { '@id': siteBase() + '/#organization' }, areaServed: 'Worldwide', description });
   if (r.page === 'get-featured') graph.push({ '@type': 'FAQPage', mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) });

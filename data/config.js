@@ -6,7 +6,7 @@
 const CONFIG = {
   brand: "The Founders Notes",
   owner: "Pranav Khandelwal",
-  email: "hello@thefoundersnotes.com",
+  email: "foundersnotes09@gmail.com",
   instagram: "@the.founders_notes",                 // e.g. "@foundersnotes"
   whatsapp: "+919928490213",          // with country code, e.g. "+91 98765 43210"
   calendly: "https://calendly.com/foundersnotes09/founders-notes-chat",            // e.g. "https://calendly.com/yourname/20min"

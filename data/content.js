@@ -87,6 +87,10 @@ const SEO = {
     title: "About The Founders Notes | Free stories for independent founders",
     description: "The Founders Notes is a small, independent publication that writes warm, plain-spoken stories about founders. Learn how it works and what we stand for."
   },
+  mission: {
+    title: "Our mission: free founder stories for wellness | The Founders Notes",
+    description: "Why The Founders Notes exists: free, founder-approved stories for independent yoga, Pilates and fitness founders, who they are for, and where the publication is heading."
+  },
   "get-featured": {
     title: "Get featured for free | The Founders Notes",
     description: "How to share your story with The Founders Notes: a 20-minute chat, a draft you approve, and a free story page with a badge and quote cards. Common questions answered."

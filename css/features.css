@@ -105,3 +105,11 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none }
 .crumbs [aria-current] { color: var(--head) }
 .stories-intro { margin: .6rem 0 0; color: var(--muted); font-size: 1.1rem; max-width: 60ch }
 .stories-intro:empty { display: none }
+
+/* Mission page */
+.mission { max-width: 720px; margin: 0 auto }
+.mission h2 { margin: .4rem 0 1rem }
+.mission h3 { font-size: 1.35rem; margin: 2.2rem 0 .5rem; color: var(--head) }
+.mission p { font-size: 1.08rem; line-height: 1.75; margin: 0 0 1rem }
+.mission .mission-lead { font-size: 1.25rem; line-height: 1.55; color: var(--muted) }
+.mission-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem }

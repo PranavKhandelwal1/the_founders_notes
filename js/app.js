@@ -18,7 +18,7 @@ const slugify = t => String(t).toLowerCase().normalize('NFKD').replace(/[\u0300-
 const storySlug = s => (s.slug && slugify(s.slug)) || slugify(s.owner) || ('story-' + s.id);
 const storyPath = s => '/stories/' + storySlug(s) + '/';
 const asset = p => /^(https?:|\/|data:)/.test(p) ? p : '/' + String(p).replace(/^\.\//, '');
-const PAGES = { home: '/', stories: '/stories/', about: '/about/', 'get-featured': '/get-featured/', services: '/services/', contact: '/contact/' };
+const PAGES = { home: '/', stories: '/stories/', about: '/about/', mission: '/mission/', 'get-featured': '/get-featured/', services: '/services/', contact: '/contact/' };
 const tally = pick => { const m = new Map(); STORIES.forEach(s => [].concat(pick(s)).filter(Boolean).forEach(k => m.set(k, (m.get(k) || 0) + 1))); return m; };
 /* A topic or country gets its own page once at least two stories share it */
 const topicNames = () => [...tally(s => Array.isArray(s.tags) ? s.tags : [])].filter(([, n]) => n >= 2).sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0])).map(([k]) => k);
@@ -421,7 +421,7 @@ document.addEventListener('click', e => {
 
 /* ---------- Pages: every page is a real address (/about/, /stories/name/ ...) ---------- */
 let curPage = 'home';
-const PAGE_H1 = { stories: 'All founder stories', about: 'About The Founders Notes', 'get-featured': 'Get featured on The Founders Notes for free', services: 'Website design for yoga and wellness studios', contact: 'Contact The Founders Notes' };
+const PAGE_H1 = { stories: 'All founder stories', about: 'About The Founders Notes', mission: 'Our mission: why The Founders Notes exists', 'get-featured': 'Get featured on The Founders Notes for free', services: 'Website design for yoga and wellness studios', contact: 'Contact The Founders Notes' };
 function showPage(r) {
   const p = r.page; curPage = p;
   $$('[data-pages]').forEach(el => el.classList.toggle('pg-off', !el.dataset.pages.split(' ').includes(p)));
