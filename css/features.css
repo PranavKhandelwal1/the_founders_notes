@@ -22,6 +22,7 @@
 .icon-btn.on { background: var(--head); color: var(--bg); border-color: var(--head) }
 .icon-btn.done { color: var(--accent); border-color: var(--accent) }
 .icon-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round }
+.icon-btn svg.fill { fill: currentColor; stroke: none }
 .langs { margin-top: 1.2rem }
 .glance { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0; margin: clamp(24px, 4vw, 40px) 0; border-top: 1px solid var(--head); border-bottom: 1px solid var(--line) }
 .glance div { padding: 1rem 1.2rem 1rem 0 }
