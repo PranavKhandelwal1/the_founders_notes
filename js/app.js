@@ -196,7 +196,7 @@ function showStory(s, opts = {}) {
   ${s.sample || s.series ? `<p class="label">${s.series ? `<span class="cat-name">${esc(s.series)}</span>` : ''}${s.sample ? '<span class="sample">Sample</span>' : ''}</p>` : ''}
   <h1 tabindex="-1" id="storyTitle">${esc(s.headline)}</h1>
   <p class="dek">${esc(s.summary)}</p>
-  <p class="mono" style="color:var(--muted);margin-top:1.2rem">By ${esc(s.author || CONFIG.owner)} &middot; ${esc(s.readTime)}${s.published ? ' &middot; ' + esc(new Date(s.published + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })) : ''}</p>
+  <p class="mono" style="color:var(--muted);margin-top:1.2rem">${[s.author ? 'By ' + esc(s.author) : '', esc(s.readTime), s.published ? esc(new Date(s.published + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })) : ''].filter(Boolean).join(' &middot; ')}</p>
   ${tagsHtml(s)}
 </header>
 <div class="story-grid">
@@ -205,6 +205,7 @@ function showStory(s, opts = {}) {
     <div class="article">
       ${paras.join('')}
       ${s.sample ? '<p class="end-note">This is a sample story with an invented person, business and place, shown to demonstrate the format.</p>' : ''}
+      <p class="end-note correction">Something not right, or want to change a detail? <a href="${esc(mailto('Correction request: ' + s.business) + '&body=' + encodeURIComponent('Hello,\n\nI would like to request a change to the story about ' + s.business + ' (' + storyUrl(s) + ').\n\nWhat should change:\n\n'))}">Request a correction</a>. Founders can ask for changes or removal at any time.</p>
     </div>
   </div>
   <aside class="side" aria-label="Story sidebar">
