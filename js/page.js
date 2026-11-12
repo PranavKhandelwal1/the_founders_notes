@@ -1,4 +1,4 @@
-/* Founders’ Notes: small script for the static pages (privacy.html, 404.html).
+/* The Founders Notes: small script for the static pages (privacy.html, 404.html).
    Fills in the name, email link and year from data/config.js. */
 (function () {
   var all = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };

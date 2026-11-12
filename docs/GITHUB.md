@@ -1,4 +1,4 @@
-# Put Founders’ Notes on GitHub (and publish it free)
+# Put The Founders Notes on GitHub (and publish it free)
 
 GitHub keeps a copy of your project and, with **GitHub Pages**, can also host it as a live website for free. You do not need to know code to follow this.
 
@@ -28,7 +28,7 @@ git config --global user.email "you@example.com"
 cd founders-notes
 git init -b main
 git add .
-git commit -m "First version of Founders' Notes"
+git commit -m "First version of The Founders Notes"
 ```
 
 On github.com click **New repository**, name it `founders-notes`, keep it **Public**, do not add a README, and create it. Then run the two commands GitHub shows you, which look like this:

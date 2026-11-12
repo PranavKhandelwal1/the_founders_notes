@@ -1,4 +1,4 @@
-/* Founders’ Notes: extra features.
+/* The Founders Notes: extra features.
    Filters, story tools (listen, share, quote cards, badge, translations, video/audio), FAQ, nominations,
    packages, audit offer, testimonials, newsletter, analytics, link-preview tags.
    Loaded BEFORE app.js; app.js calls initFeatures() and enhanceStory(). Content lives in /data. */

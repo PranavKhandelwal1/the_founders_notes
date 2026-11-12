@@ -1,4 +1,4 @@
-# How to launch and run Founders’ Notes
+# How to launch and run The Founders Notes
 
 The project is a small folder of plain files. You edit text files in any plain-text editor (VS Code, Notepad, TextEdit set to plain text) and preview by double-clicking `index.html`, which opens in your browser. Fonts load from the internet, so be online.
 
@@ -23,7 +23,7 @@ Open `data/config.js`:
 
 ```js
 const CONFIG = {
-  brand: "Founders’ Notes",
+  brand: "The Founders Notes",
   owner: "Pranav Khandelwal",             // shown in "By ..." on every story and in the footer
   email: "foundersnotes09@gmail.com",
   instagram: "@the.founders_notes",       // your handle, with the @
@@ -38,7 +38,7 @@ Check these values before you go live (only `calendly` is still a placeholder):
 
 - **`owner`**: your name. It appears in the About section, footer and story bylines.
 - **`instagram`**: your handle, with the @. The Instagram links go to `instagram.com/yourhandle`.
-- **`whatsapp`**: your number with the country code. The WhatsApp links open a chat with a pre-written "Hi, I found you through Founders’ Notes" message.
+- **`whatsapp`**: your number with the country code. The WhatsApp links open a chat with a pre-written "Hi, I found you through The Founders Notes" message.
 - **`calendly`**: your booking link. To get one: create a free Calendly account, make an event called "20-minute chat", and copy its link. Every "Book a call" button on the site opens it in a new tab, and Calendly shows each visitor times in their own time zone, which suits a worldwide audience.
 
 Until the Calendly link and Instagram handle are set, their buttons just scroll to the Get in touch section. Until the WhatsApp number is set, its link opens an email instead.
@@ -178,7 +178,7 @@ See `docs/FOUNDER-TOOLKIT.md` for outreach templates, the approval record, and t
 
 **Finding founders.** Because you work remotely, you can feature anyone, anywhere. Find yoga and Pilates teachers, studio owners, martial arts and fitness instructors, and other independent founders on Instagram and Google Maps. Message them with something short like:
 
-> Hi [name], I'm [your name]. I run Founders’ Notes, a small publication that writes free stories about independent founders. I'd love to feature [business]. It's a 20-minute video chat, you approve everything before it goes live, and it costs nothing. Here's a link to book a time: [your Calendly link]
+> Hi [name], I'm [your name]. I run The Founders Notes, a small publication that writes free stories about independent founders. I'd love to feature [business]. It's a 20-minute video chat, you approve everything before it goes live, and it costs nothing. Here's a link to book a time: [your Calendly link]
 
 **The 20-minute chat (on video, booked through Calendly). Questions to ask:**
 
@@ -193,7 +193,7 @@ See `docs/FOUNDER-TOOLKIT.md` for outreach templates, the approval record, and t
 
 **Writing it.** Four short paragraphs in plain, warm language. Use only what the owner told you. Keep quotes word for word. Do not invent numbers, awards, results or "best in town" claims. For yoga, fitness and beauty, avoid health promises such as "cures" or "guaranteed results".
 
-**Written approval (important).** Send the full draft before publishing. Do not publish until the owner replies in writing, by email or message, something like "I approve this story for publication on Founders’ Notes." Save that message. Ask separately for permission to use their name, location and Instagram handle. If you change anything after they approve, send it again.
+**Written approval (important).** Send the full draft before publishing. Do not publish until the owner replies in writing, by email or message, something like "I approve this story for publication on The Founders Notes." Save that message. Ask separately for permission to use their name, location and Instagram handle. If you change anything after they approve, send it again.
 
 **Publishing.** Add the story (section 2), upload the site (section 4), send the owner the link and tag them on Instagram. If an owner later asks you to remove or change their story, do it promptly.
 
@@ -206,7 +206,7 @@ See `docs/FOUNDER-TOOLKIT.md` for outreach templates, the approval record, and t
 1. Upload the whole project folder as it is: `index.html` must stay at the top, next to the `css`, `js`, `data`, `images` and `assets` folders.
 2. Pick a host. Free options that work well for a static site include Netlify (drag and drop the folder), Cloudflare Pages and GitHub Pages. Any ordinary web host also works: upload the folder contents. You can leave out `docs`, `README.md` and `assets/brand`.
 3. Buy a domain from a registrar such as Cloudflare, Namecheap or Porkbun. A `.com` is best for a worldwide audience. Connect it to your host using the host's "custom domain" steps.
-4. Check the name before you commit: domain, Instagram handle, your local business register, and a trademark search (for example USPTO, UK IPO or your country's equivalent). "Founders’ Notes" is a fairly natural phrase, so make sure no one near your market already uses it.
+4. Check the name before you commit: domain, Instagram handle, your local business register, and a trademark search (for example USPTO, UK IPO or your country's equivalent). "The Founders Notes" is a fairly natural phrase, so make sure no one near your market already uses it.
 5. When you edit later, upload the changed files over the old ones (usually just `data/stories.js` and a new photo in `images`).
 
 **How the contact options work**

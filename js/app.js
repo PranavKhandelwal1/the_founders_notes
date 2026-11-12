@@ -1,4 +1,4 @@
-/* Founders’ Notes: rendering code. Content lives in /data, so you should not need to edit this file. */
+/* The Founders Notes: rendering code. Content lives in /data, so you should not need to edit this file. */
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -421,7 +421,7 @@ document.addEventListener('click', e => {
 
 /* ---------- Pages: every page is a real address (/about/, /stories/name/ ...) ---------- */
 let curPage = 'home';
-const PAGE_H1 = { stories: 'All founder stories', about: 'About Founders\u2019 Notes', 'get-featured': 'Get featured on Founders\u2019 Notes for free', services: 'Website design for yoga and wellness studios', contact: 'Contact Founders\u2019 Notes' };
+const PAGE_H1 = { stories: 'All founder stories', about: 'About The Founders Notes', 'get-featured': 'Get featured on The Founders Notes for free', services: 'Website design for yoga and wellness studios', contact: 'Contact The Founders Notes' };
 function showPage(r) {
   const p = r.page; curPage = p;
   $$('[data-pages]').forEach(el => el.classList.toggle('pg-off', !el.dataset.pages.split(' ').includes(p)));

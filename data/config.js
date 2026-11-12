@@ -4,7 +4,7 @@
    ============================================================================ */
 
 const CONFIG = {
-  brand: "Founders’ Notes",
+  brand: "The Founders Notes",
   owner: "Pranav Khandelwal",
   email: "foundersnotes09@gmail.com",
   instagram: "@the.founders_notes",                 // e.g. "@foundersnotes"

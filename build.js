@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* Founders' Notes: build script.
+/* The Founders Notes: build script.
 
    What it does (you never need to run it by hand: GitHub does it every time you push):
    1. Reads data/config.js, data/content.js and data/stories.js.

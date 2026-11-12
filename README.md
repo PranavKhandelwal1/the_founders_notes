@@ -1,4 +1,4 @@
-# Founders’ Notes
+# The Founders Notes
 
 A small, fast website that publishes free success stories about independent founders. Plain HTML, CSS and JavaScript. A small build (`build.js`, run automatically by GitHub on every push) creates a real page for every story, plus the sitemap.
 

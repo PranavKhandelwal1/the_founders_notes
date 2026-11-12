@@ -8,7 +8,7 @@ Open `outreach-tracker.csv` in Google Sheets or Excel. One row per founder. Sugg
 ## 2. Message templates
 
 **First message**
-> Hi [name], I'm Pranav. I run Founders' Notes, a small publication that writes free stories about independent founders. I'd love to feature [business]. It's a 20-minute video chat (or written answers or voice notes if you prefer), you approve everything before it goes live, and it costs nothing. Here's a link to book a time: [Calendly link]
+> Hi [name], I'm Pranav. I run The Founders Notes, a small publication that writes free stories about independent founders. I'd love to feature [business]. It's a 20-minute video chat (or written answers or voice notes if you prefer), you approve everything before it goes live, and it costs nothing. Here's a link to book a time: [Calendly link]
 
 **Follow-up**
 > Hi [name], just a gentle nudge in case my message got buried. No pressure at all. If a story about [business] would be useful to you, I'd be glad to write it.
