@@ -18,7 +18,7 @@ const slugify = t => String(t).toLowerCase().normalize('NFKD').replace(/[\u0300-
 const storySlug = s => (s.slug && slugify(s.slug)) || slugify(s.owner) || ('story-' + s.id);
 const storyPath = s => '/stories/' + storySlug(s) + '/';
 const asset = p => /^(https?:|\/|data:)/.test(p) ? p : '/' + String(p).replace(/^\.\//, '');
-const PAGES = { home: '/', stories: '/stories/', about: '/about/', mission: '/mission/', 'get-featured': '/get-featured/', services: '/services/', contact: '/contact/' };
+const PAGES = { home: '/', stories: '/stories/', about: '/about/', mission: '/mission/', 'get-featured': '/get-featured/', 'submit-story': '/submit-story/', services: '/services/', contact: '/contact/' };
 const tally = pick => { const m = new Map(); STORIES.forEach(s => [].concat(pick(s)).filter(Boolean).forEach(k => m.set(k, (m.get(k) || 0) + 1))); return m; };
 /* A topic or country gets its own page once at least two stories share it */
 const topicNames = () => [...tally(s => Array.isArray(s.tags) ? s.tags : [])].filter(([, n]) => n >= 2).sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0])).map(([k]) => k);
@@ -260,7 +260,7 @@ function renderContact() {
   ($('#chatList') || N()).innerHTML = rows.map(([ic, name, url]) =>
     `<li><a class="crow" href="${esc(url)}"${external(url) ? ' target="_blank" rel="noopener"' : ''}><span class="ci" aria-hidden="true">${ICONS[ic]}</span><span class="ct"><strong>${esc(name)}</strong></span><span class="go" aria-hidden="true">&rarr;</span></a></li>`
   ).join('');
-  ($('#footCats') || N()).innerHTML = STORIES.slice(0, 4).map(s => `<li><a href="${storyPath(s)}">${esc(s.business)}</a></li>`).join('');
+  ($('#footCats') || N()).innerHTML = STORIES.slice(0, 3).map(s => `<li><a href="${storyPath(s)}">${esc(s.business)}</a></li>`).join('');
 }
 const header = $('#siteHeader'), menuBtn = $('#menuBtn');
 function setMenu(open) {
@@ -276,11 +276,34 @@ const msgForm = $('#msgForm') || document.createElement('form'), msgNote = $('#m
 const msgUrl = () => (CONFIG.formEndpoint && CONFIG.formEndpoint.trim()) || (isSet(CONFIG.formAccessKey) ? 'https://api.web3forms.com/submit' : 'https://formsubmit.co/ajax/' + CONFIG.email);
 /* Extra fields when a Web3Forms access key is set (see data/config.js). Empty otherwise. */
 const formExtras = (subject, replyTo) => isSet(CONFIG.formAccessKey) ? { access_key: CONFIG.formAccessKey.trim(), subject, from_name: CONFIG.brand + ' website', replyto: replyTo } : {};
+/* Delivers one submission to every inbox. Web3Forms ties each free key to one email, so a second key (CONFIG.formAccessKeyExtra) reaches the second inbox.
+   Succeeds if at least one copy arrives. Returns { photoSent }. */
+async function postForm(fields, subject, replyTo, opts) {
+  opts = opts || {}; const file = opts.file, base = Object.assign({}, fields, { _replyto: replyTo, _subject: subject, _template: 'table', _captcha: 'false' });
+  const custom = (opts.endpoint || CONFIG.formEndpoint || '').trim();
+  const targets = custom ? [{ url: custom, extra: {} }]
+    : [CONFIG.formAccessKey, CONFIG.formAccessKeyExtra].filter(isSet).map(k => ({ url: 'https://api.web3forms.com/submit', extra: { access_key: k.trim(), subject, from_name: CONFIG.brand + ' website', replyto: replyTo } }));
+  if (!targets.length) targets.push({ url: 'https://formsubmit.co/ajax/' + CONFIG.email, extra: {} });
+  const one = async (t, withFile) => {
+    const data = Object.assign({}, base, t.extra); let res;
+    if (withFile) { const fd = new FormData(); Object.entries(data).forEach(([k, v]) => fd.append(k, v)); fd.append('attachment', file, file.name); res = await fetch(t.url, { method: 'POST', headers: { 'Accept': 'application/json' }, body: fd }); }
+    else res = await fetch(t.url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(Object.assign({ _honey: '' }, data)) });
+    let out = {}; try { out = await res.json(); } catch (_) { }
+    if (!res.ok || out.success === false || out.success === 'false') throw new Error(out.message || 'Request failed (' + res.status + ')');
+  };
+  const results = await Promise.allSettled(targets.map(async t => {
+    if (file) { try { await one(t, true); return true; } catch (_) { await one(t, false); return false; } }
+    await one(t, false); return true;
+  }));
+  const ok = results.filter(r => r.status === 'fulfilled');
+  if (!ok.length) throw results[0].reason;
+  return { photoSent: !file || ok.some(r => r.value), copies: ok.length, of: targets.length };
+}
 const reasonNote = err => err && err.message ? '<br><small>Reason: ' + esc(String(err.message).slice(0, 160)) + '</small>' : '';
 const setNote = (kind, html) => { msgNote.className = 'note' + (kind ? ' ' + kind : ''); msgNote.innerHTML = html; };
-const gmailUrl = (subject, body) => 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(CONFIG.email) + '&su=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body || '');
+const gmailUrl = (subject, body) => 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(CONFIG.email) + (isSet(CONFIG.emailCopy) ? '&cc=' + encodeURIComponent(CONFIG.emailCopy) : '') + '&su=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body || '');
 const fallbackLinks = (subject, body) => '<a href="' + esc(gmailUrl(subject, body)) + '" target="_blank" rel="noopener">Open in Gmail</a>, <a href="' + esc(mailto(subject) + '&body=' + encodeURIComponent(body)) + '">open your email app</a>, or write to <strong>' + esc(CONFIG.email) + '</strong>.';
-const openMail = (subject, body) => { const a = document.createElement('a'); a.href = mailto(subject) + '&body=' + encodeURIComponent(body); a.className = 'sr-only'; document.body.appendChild(a); a.click(); a.remove(); };
+const openMail = (subject, body) => { const a = document.createElement('a'); a.href = mailto(subject) + (isSet(CONFIG.emailCopy) ? '&cc=' + encodeURIComponent(CONFIG.emailCopy) : '') + '&body=' + encodeURIComponent(body); a.className = 'sr-only'; document.body.appendChild(a); a.click(); a.remove(); };
 msgForm.addEventListener('submit', async e => {
   e.preventDefault();
   if (!msgForm.checkValidity()) { msgForm.reportValidity(); return; }
@@ -296,13 +319,7 @@ msgForm.addEventListener('submit', async e => {
   const label = msgBtn.textContent;
   msgBtn.disabled = true; msgBtn.textContent = 'Sending\u2026'; setNote('', 'Sending your message\u2026');
   try {
-    const res = await fetch(msgUrl(), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(Object.assign({ name: n, email: em, business: biz, message: msg, _replyto: em, _subject: subject, _template: 'table', _captcha: 'false', _honey: '' }, formExtras(subject, em)))
-    });
-    let out = {}; try { out = await res.json(); } catch (_) { }
-    if (!res.ok || out.success === false || out.success === 'false') throw new Error(out.message || 'Request failed (' + res.status + ')');
+    await postForm({ name: n, email: em, business: biz, message: msg }, subject, em);
     setNote('ok', 'Thank you. Your message has been sent, and we will reply to ' + esc(em) + '.');
     msgForm.reset();
   } catch (err) {
@@ -363,6 +380,7 @@ function applyConfig() {
   setLink('[data-wa-link]', waUrl());
   setLink('[data-insta-link]', igUrl());
   setLink('[data-cal-link]', calUrl());
+  $$('[data-linkedin-link]').forEach(e => { if (isSet(CONFIG.linkedin)) { e.href = CONFIG.linkedin; e.target = '_blank'; e.rel = 'me noopener'; } else if (e.matches('.f-owner')) e.removeAttribute('href'); else e.hidden = true; });
   ($('#footTag') || N()).textContent = CONFIG.tagline;
   ($('#year') || N()).textContent = new Date().getFullYear();
 }
@@ -421,7 +439,7 @@ document.addEventListener('click', e => {
 
 /* ---------- Pages: every page is a real address (/about/, /stories/name/ ...) ---------- */
 let curPage = 'home';
-const PAGE_H1 = { stories: 'All founder stories', about: 'About The Founders Notes', mission: 'Our mission: why The Founders Notes exists', 'get-featured': 'Get featured on The Founders Notes for free', services: 'Website design for yoga and wellness studios', contact: 'Contact The Founders Notes' };
+const PAGE_H1 = { stories: 'All founder stories', about: 'About The Founders Notes', mission: 'Our mission: why The Founders Notes exists', 'get-featured': 'Get featured on The Founders Notes for free', 'submit-story': 'Submit your story to The Founders Notes', services: 'Website design for yoga and wellness studios', contact: 'Contact The Founders Notes' };
 function showPage(r) {
   const p = r.page; curPage = p;
   $$('[data-pages]').forEach(el => el.classList.toggle('pg-off', !el.dataset.pages.split(' ').includes(p)));

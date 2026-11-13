@@ -95,6 +95,10 @@ const SEO = {
     title: "Get featured for free | The Founders Notes",
     description: "How to share your story with The Founders Notes: a 20-minute chat, a draft you approve, and a free story page with a badge and quote cards. Common questions answered."
   },
+  "submit-story": {
+    title: "Submit your story | The Founders Notes",
+    description: "Share your founder story with The Founders Notes for free: answer a few questions about your journey, add a photo if you like, and approve the final story before it goes live."
+  },
   services: {
     title: "Website design for yoga and wellness studios | The Founders Notes",
     description: "Simple, clear websites for studios, teachers and independent class businesses: link-in-bio pages, starter sites and care plans. Ask for a quote or a free mini audit."

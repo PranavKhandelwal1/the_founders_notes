@@ -72,11 +72,11 @@ const crumbLd = items => ({ '@type': 'BreadcrumbList', itemListElement: items.ma
 const orgLd = () => ({
   '@type': 'Organization', '@id': siteBase() + '/#organization', name: CONFIG.brand, url: siteBase() + '/',
   logo: absUrl('assets/brand/monogram.png'), description: CONFIG.tagline,
-  founder: { '@type': 'Person', name: CONFIG.owner },
+  founder: { '@type': 'Person', name: CONFIG.owner, ...(isSet(CONFIG.linkedin) ? { sameAs: [CONFIG.linkedin] } : {}) },
   ...(isSet(CONFIG.instagram) ? { sameAs: [instaUrl()] } : {})
 });
 const itemListLd = list => ({ '@type': 'ItemList', itemListElement: list.map((s, i) => ({ '@type': 'ListItem', position: i + 1, url: storyUrl(s), name: s.headline })) });
-const PAGE_NAMES = { stories: 'Stories', about: 'About', mission: 'Our mission', 'get-featured': 'Get featured', services: 'Services', contact: 'Contact' };
+const PAGE_NAMES = { stories: 'Stories', about: 'About', mission: 'Our mission', 'get-featured': 'Get featured', 'submit-story': 'Submit your story', services: 'Services', contact: 'Contact' };
 
 /* Home, list and information pages */
 function setPageMeta(r) {
@@ -375,18 +375,59 @@ function wireForm(form, build) {
     }
     const label = btn.textContent; btn.disabled = true; btn.textContent = 'Sending…'; say('', 'Sending…');
     try {
-      const res = await fetch(endpoint || msgUrl(), {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(Object.assign({}, fields, { _replyto: replyTo, _subject: subject, _template: 'table', _captcha: 'false', _honey: '' }, endpoint ? {} : formExtras(subject, replyTo)))
-      });
-      let out = {}; try { out = await res.json(); } catch (_) { }
-      if (!res.ok || out.success === false || out.success === 'false') throw new Error(out.message || 'Request failed (' + res.status + ')');
+      await postForm(fields, subject, replyTo, { endpoint });
       say('ok', form.dataset.thanks || 'Thank you, that has been sent.');
       form.reset();
     } catch (err) {
       console.warn('Form was not delivered:', err && err.message);
       openMail(subject, body);
       say('err', 'That did not send directly, so your email app should open with the message ready. If it did not: ' + fallbackLinks(subject, body) + reasonNote(err));
+    } finally { btn.disabled = false; btn.textContent = label; }
+  });
+}
+
+/* ---------- Submit your story: 13 questions, optional photo ---------- */
+const PHOTO_MAX = 5 * 1024 * 1024;
+function wireStoryForm() {
+  const form = $('#storyForm'); if (!form) return;
+  const note = $('.note', form), btn = $('button[type="submit"]', form), photo = $('#sPhoto', form);
+  const say = (kind, html) => { note.className = 'note' + (kind ? ' ' + kind : ''); note.innerHTML = html; };
+  const v = id => $(id, form).value.trim();
+  photo.addEventListener('change', () => {
+    const file = photo.files[0]; photo.setCustomValidity('');
+    if (!file) return;
+    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) photo.setCustomValidity('Please choose a JPG, PNG or WebP image.');
+    else if (file.size > PHOTO_MAX) photo.setCustomValidity('That photo is over 5 MB. Please choose a smaller one.');
+    if (!photo.checkValidity()) photo.reportValidity();
+  });
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    if ($('[name="_hp"]', form).value || Date.now() - PAGE_LOADED < 3000) { form.reset(); return; }
+    const file = photo.files[0];
+    const answers = [
+      ['1. Full name', v('#sName')], ['2. Business or studio name', v('#sBiz')], ['3. Website', v('#sSite')], ['4. Instagram profile', v('#sInsta')],
+      ['5. City and country', v('#sCity')], ['Email', v('#sEmail')],
+      ['6. How did you start, and why this business?', v('#sStarted')], ['7. What did your first year look like?', v('#sYear1')],
+      ['8. Who are your regular customers, and what do they say about you?', v('#sCustomers')], ['9. What do you do differently from others near you?', v('#sDifferent')],
+      ["10. What is a moment you're proud of?", v('#sProud')], ['11. What is hard about running it?', v('#sChallenges')],
+      ['12. What advice would you give someone starting out?', v('#sAdvice')],
+      ['13. Founder photograph', file ? file.name + ' (attached)' : 'Not provided'],
+      ['14. Permission to edit and publish the story', 'Yes, given'], ['15. Agrees to be contacted about the feature', 'Yes']
+    ];
+    const subject = 'Story submission: ' + v('#sName') + ' (' + v('#sBiz') + ')', replyTo = v('#sEmail');
+    const body = answers.map(([q, a]) => q + '\n' + a).join('\n\n');
+    if (location.protocol === 'file:') { openMail(subject, body); say('', 'Your email app should open with your answers ready. If it did not: ' + fallbackLinks(subject, body)); return; }
+    const fields = Object.fromEntries(answers.map(([q, a]) => [q, a]));
+    const label = btn.textContent; btn.disabled = true; btn.textContent = 'Sending…'; say('', 'Sending your story…');
+    try {
+      const { photoSent } = await postForm(fields, subject, replyTo, { file });
+      say('ok', form.dataset.thanks + (photoSent ? '' : ' <br>Your photo could not be attached. Please email it to <strong>' + esc(CONFIG.email) + '</strong> with the subject "' + esc(subject) + '".'));
+      form.reset();
+    } catch (err) {
+      console.warn('Story was not delivered:', err && err.message);
+      openMail(subject, body);
+      say('err', 'That did not send directly, so your email app should open with your answers ready (your answers are still here). If it did not: ' + fallbackLinks(subject, body) + (file ? '<br><small>Please attach your photo to that email.</small>' : '') + reasonNote(err));
     } finally { btn.disabled = false; btn.textContent = label; }
   });
 }
@@ -416,6 +457,7 @@ function renderExtras() {
       body: `Nominated by: ${fields.your_name} (${fields.your_email})\nFounder: ${fields.founder}\nInstagram or website: ${fields.founder_link}\n\nWhy: ${fields.why}`
     };
   });
+  wireStoryForm();
   const nl = $('#newsletterForm');
   if (nl) wireForm(nl, () => {
     const em = $('#nlEmail', nl).value.trim();

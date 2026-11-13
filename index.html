@@ -52,14 +52,12 @@
       <nav class="nav" aria-label="Primary">
         <div class="nav-links" id="navLinks">
           <a class="mono" href="/stories/">Stories</a>
-          <a class="mono" href="/mission/">Mission</a>
           <a class="mono" href="/about/">About</a>
-          <a class="mono" href="/get-featured/#faq">FAQ</a>
           <a class="mono" href="/services/">Services</a>
           <a class="mono" href="/contact/">Contact</a>
-          <a class="btn btn-cta nav-cta-m" href="/get-featured/">Get featured</a>
+          <a class="btn btn-cta nav-cta-m" href="/submit-story/">Submit your story</a>
         </div>
-        <a class="btn btn-cta nav-cta" href="/get-featured/">Get featured</a>
+        <a class="btn btn-cta nav-cta" href="/submit-story/">Submit your story</a>
         <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="navLinks"
           aria-label="Open menu"><svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4 7h16M4 12h16M4 17h16" />
@@ -139,6 +137,7 @@
               <p class="about-note">I also build websites, and there's a short section on that further down for anyone
                 who ever wants one. It's separate from the stories, and being featured never depends on it.</p>
               <p class="sign">&mdash; <span data-owner></span></p>
+              <p class="about-li"><a class="btn btn-line" href="" data-linkedin-link rel="me">Connect with me on LinkedIn</a></p>
             </div>
           </div>
           <div class="trust" id="trust"></div>
@@ -201,11 +200,63 @@
               </div>
             </div>
             <div class="actions">
-              <a class="btn btn-cta" href="" data-cal-link>Book a call</a>
+              <a class="btn btn-cta" href="/submit-story/">Submit your story</a>
+              <a class="btn btn-line" href="" data-cal-link>Book a call</a>
               <a class="btn btn-line" href="" data-mail-link data-subject="I'd like to be featured">Email us</a>
               <button class="btn btn-line" type="button" id="copyBtn">Copy email</button>
             </div>
             <div class="sr-only" id="copied" role="status" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="submit-story" data-pages="submit-story">
+        <div class="wrap">
+          <div class="submit-grid">
+            <div class="submit-intro">
+              <span class="kicker mono">Submit your story</span>
+              <h2>Tell us your story. We will shape it with you.</h2>
+              <p>Answer in your own words, as briefly or as fully as you like. There are no wrong answers and it costs nothing. I will turn your answers into a warm, plain-spoken story, and <strong>nothing goes live until you have read and approved the final version.</strong></p>
+              <ul class="submit-points">
+                <li>Takes about 10 to 15 minutes</li>
+                <li>Free, always</li>
+                <li>You approve every word before it is published</li>
+              </ul>
+            </div>
+            <form class="msg story-form" id="storyForm" novalidate data-thanks="Thank you. Your story has been received. I will read it and write to you soon, and nothing is published without your approval.">
+              <h3>Your story</h3>
+              <fieldset>
+                <legend class="mono">About you</legend>
+                <label>1. Your full name<input id="sName" name="full_name" type="text" required autocomplete="name"></label>
+                <label>2. Business or studio name<input id="sBiz" name="business_name" type="text" required autocomplete="organization"></label>
+                <label>3. Website<input id="sSite" name="website" type="text" required placeholder="https://… or type: none yet"></label>
+                <label>4. Instagram profile<input id="sInsta" name="instagram" type="text" required placeholder="@yourhandle or link"></label>
+                <label>5. City and country<input id="sCity" name="city_country" type="text" required placeholder="e.g. Miami, USA"></label>
+                <label>Your email (so we can reach you)<input id="sEmail" name="email" type="email" required autocomplete="email"></label>
+              </fieldset>
+              <fieldset>
+                <legend class="mono">Your journey</legend>
+                <label>6. How did you start, and why this business?<textarea id="sStarted" name="how_did_you_start" required minlength="20" rows="5"></textarea></label>
+                <label>7. What did your first year look like?<textarea id="sYear1" name="first_year" required minlength="20" rows="5"></textarea></label>
+                <label>8. Who are your regular customers, and what do they say about you?<textarea id="sCustomers" name="regular_customers" required minlength="20" rows="5"></textarea></label>
+                <label>9. What do you do differently from others near you?<textarea id="sDifferent" name="what_you_do_differently" required minlength="20" rows="5"></textarea></label>
+                <label>10. What is a moment you're proud of?<textarea id="sProud" name="proud_moment" required minlength="20" rows="5"></textarea></label>
+                <label>11. What is hard about running it?<textarea id="sChallenges" name="what_is_hard" required minlength="20" rows="5"></textarea></label>
+                <label>12. What advice would you give someone starting out?<textarea id="sAdvice" name="advice" required minlength="20" rows="5"></textarea></label>
+              </fieldset>
+              <fieldset>
+                <legend class="mono">Photo and permissions</legend>
+                <label>13. Upload a founder photograph (optional)
+                  <input id="sPhoto" name="photo" type="file" accept="image/jpeg,image/png,image/webp">
+                  <small class="hint">JPG, PNG or WebP, up to 5 MB. A clear, well-lit photo of you works best.</small>
+                </label>
+                <label class="consent"><input id="sPermit" name="permission_to_edit_and_publish" type="checkbox" required><span>14. I give permission to edit and publish my submitted story. I understand I will see the final version first and can ask for changes or removal at any time.</span></label>
+                <label class="consent"><input id="sContact" name="agrees_to_be_contacted" type="checkbox" required><span>15. I agree to be contacted about the feature.</span></label>
+              </fieldset>
+              <input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+              <button class="btn btn-cta" type="submit">Submit my story</button>
+              <p class="note" role="status" aria-live="polite">Your answers go straight to our inbox and are used only to prepare your feature. See the <a href="/privacy.html">privacy policy</a>.</p>
+            </form>
           </div>
         </div>
       </section>
@@ -339,7 +390,7 @@
         <h2>Ready to tell your <em>founder story</em>?</h2>
         <div class="f-cta-actions">
           <a class="btn btn-cta" href="" data-cal-link>Book a call</a>
-          <a class="btn btn-ghost" href="/get-featured/">Get featured</a>
+          <a class="btn btn-ghost" href="/submit-story/">Submit your story</a>
           <a class="btn btn-ghost" href="" data-insta-link>Follow on Instagram</a>
         </div>
       </div>
@@ -363,30 +414,40 @@
                 <circle cx="12" cy="12" r="4" />
                 <circle cx="17.5" cy="6.5" r=".8" />
               </svg></a>
+            <a href="" data-linkedin-link aria-label="Pranav on LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3" /><path d="M8 10.5V17M8 7.2v.01M12 17v-3.5a2.2 2.2 0 0 1 4.4 0V17M12 10.5V17" /></svg></a>
           </div>
         </div>
-        <div class="f-col">
-          <h3>Explore</h3>
+        <nav class="f-col" aria-label="For founders">
+          <h3>For founders</h3>
           <ul>
-            <li><a href="/stories/">Stories</a></li>
-            <li><a href="/mission/">Mission</a></li>
-            <li><a href="/about/">About</a></li>
-            <li><a href="/get-featured/">Get featured</a></li>
+            <li><a href="/submit-story/">Submit your story</a></li>
+            <li><a href="/get-featured/">How getting featured works</a></li>
             <li><a href="/get-featured/#faq">FAQ</a></li>
-            <li><a href="/services/">Services</a></li>
+            <li><a href="/services/">Website services</a></li>
+          </ul>
+        </nav>
+        <nav class="f-col" aria-label="Read">
+          <h3>Read</h3>
+          <ul>
+            <li><a href="/stories/">All stories</a></li>
+          </ul>
+          <ul id="footCats"></ul>
+        </nav>
+        <nav class="f-col" aria-label="About">
+          <h3>About</h3>
+          <ul>
+            <li><a href="/about/">About us</a></li>
+            <li><a href="/mission/">Our mission</a></li>
+            <li><a href="/contact/">Contact</a></li>
             <li><a href="/privacy.html">Privacy</a></li>
           </ul>
-        </div>
+        </nav>
         <div class="f-col">
-          <h3>Latest stories</h3>
-          <ul id="footCats"></ul>
-        </div>
-        <div class="f-col">
-          <h3>Contact</h3>
+          <h3>Get in touch</h3>
           <ul>
             <li><a href="" data-cal-link>Book a call</a></li>
-            <li><a href="/contact/">Send a message</a></li>
             <li><a href="" data-mail-link><span data-email></span></a></li>
+            <li><a href="" data-wa-link>WhatsApp</a></li>
             <li><a href="" data-insta-link>Instagram</a></li>
             <li><span class="f-remote">Remote &middot; Worldwide</span></li>
           </ul>
@@ -396,7 +457,7 @@
         <p>&copy; <span id="year"></span> <span data-brand></span>. A remote, digital publication working with founders
           worldwide. Every story is published only with the founder's written approval.</p>
         <div class="f-meta">
-          <p>Published by <span data-owner></span></p><a class="to-top mono" href="#top">Back to top <span
+          <p>Published by <a class="f-owner" href="" data-linkedin-link><span data-owner></span></a></p><a class="to-top mono" href="#top">Back to top <span
               aria-hidden="true">&uarr;</span></a>
         </div>
       </div>

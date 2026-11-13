@@ -1879,8 +1879,15 @@ footer :focus-visible {
 
 .f-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, .75fr) minmax(0, .8fr) minmax(0, 1.4fr);
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, .8fr) minmax(0, 1.35fr);
   gap: 2.6rem clamp(24px, 4vw, 56px)
+}
+
+@media (max-width:1060px) {
+  .f-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr))
+  }
+  .f-brand { grid-column: 1 / -1 }
 }
 
 @media (max-width:900px) {
@@ -2231,3 +2238,11 @@ footer { padding-bottom: env(safe-area-inset-bottom) }
   .wrap { padding-inline: 16px }
   .hero-title { font-size: 2.3rem }
 }
+
+/* footer: stacked link lists inside one column, tidy headings */
+.f-col ul + ul { margin-top: .75rem }
+.f-col h3 { padding-bottom: .9rem; border-bottom: 1px solid #1E2530 }
+.f-col a { overflow-wrap: anywhere }
+.f-owner { color: inherit; text-decoration: underline; text-underline-offset: 3px }
+.f-owner:hover { color: #fff }
+.about-li { margin-top: 1.4rem }

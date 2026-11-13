@@ -10,7 +10,7 @@
         /stories/<name>/       one page per story
         /tag/<topic>/          one page per topic with 2+ stories
         /country/<country>/    one page per country with 2+ stories
-        /about/  /get-featured/  /services/  /contact/
+        /about/  /get-featured/  /submit-story/  /services/  /contact/
    4. Writes sitemap.xml and robots.txt, and copies everything else into dist/.
    The folder dist/ is what gets published. If anything is wrong, the build stops with a plain message,
    and the live site stays exactly as it was. */
