@@ -42,6 +42,7 @@ const STORIES = [
     founded: "2004",
     offers: "Yoga classes, teacher training, prenatal and postnatal yoga, corporate mindfulness programmes, retreats",
     instagram: "https://www.instagram.com/spirityoga_berlin/",
+    website: "https://spirityoga.de/",
     readTime: "5 min read",
     initials: "SY",
     body: [
@@ -102,6 +103,7 @@ const STORIES = [
     founded: "",
     offers: "Private Pilates sessions, Reformer Pilates, online classes",
     instagram: "https://www.instagram.com/helenespilates/",
+    website: "https://pilates-feel.ru/", 
     readTime: "5 min read",
     initials: "EP",
     body: [
@@ -136,6 +138,7 @@ const STORIES = [
     founded: "2026",
     offers: "Online group yoga sessions, personalised yoga instruction, mobility, mindful breathing, relaxation and wellness practices",
     instagram: "https://www.instagram.com/aishwaryayogshala/",
+    website: "https://aishwaryayogshala.vercel.app/",
     readTime: "5 min read",
     initials: "AY",
     body: [
@@ -299,7 +302,8 @@ const STORIES = [
     location: "Palma De Mallorca, Spain",
     founded: "2010",
     offers: "Vinyasa Yoga, Pranayama, meditation, yoga philosophy, retreats, mentoring sessions",
-    instagram: "",
+    instagram: "https://www.instagram.com/bewithyoga/",
+    website: "https://bewithyoga.live/",
     readTime: "5 min read",
     initials: "A",
     body: [
