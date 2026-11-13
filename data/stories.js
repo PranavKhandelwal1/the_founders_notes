@@ -99,9 +99,10 @@ const STORIES = [
     business: "Elena Lebedinets Pilates Studio",
     owner: "Elena Lebedinets",
     location: "Vladivostok, Russia",
-    founded: "",
+    founded: "Elena Lebedinets Pilates Studio",
     offers: "Private Pilates sessions, Reformer Pilates, online classes",
     instagram: "https://www.instagram.com/helenespilates/",
+    website: "https://pilates-feel.ru/",
     readTime: "5 min read",
     initials: "EP",
     body: [
@@ -299,7 +300,7 @@ const STORIES = [
     location: "Palma De Mallorca, Spain",
     founded: "2010",
     offers: "Vinyasa Yoga, Pranayama, meditation, yoga philosophy, retreats, mentoring sessions",
-    instagram: "",
+    instagram: "https://www.instagram.com/bewithyoga/",
     readTime: "5 min read",
     initials: "A",
     body: [
