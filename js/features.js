@@ -401,9 +401,17 @@ function wireStoryForm() {
   /* progress */
   const fill = $('#progFill'), ptxt = $('#progText'), bar = $('.progress-bar', form);
   const isDone = el => el.type === 'checkbox' ? el.checked : (el.value.trim().length >= (el.minLength > 0 ? el.minLength : 1) && el.checkValidity());
-  const progress = () => {
-    const done = required.filter(isDone).length, pct = Math.round(done / required.length * 100);
-    ptxt.textContent = done + ' of ' + required.length + ' answered'; fill.style.width = pct + '%'; bar.setAttribute('aria-valuenow', pct);
+  const live = $('#progLive'); let wasComplete = false;
+  const progress = (silent) => {
+    const done = required.filter(isDone).length, pct = Math.round(done / required.length * 100), complete = done === required.length;
+    ptxt.textContent = complete ? 'Ready to send' : done + ' of ' + required.length + ' answered'; fill.style.width = pct + '%'; bar.setAttribute('aria-valuenow', pct);
+    form.classList.toggle('is-complete', complete);
+    if (complete && !wasComplete && silent !== true) {
+      form.classList.remove('celebrate'); void form.offsetWidth; form.classList.add('celebrate');   // plays once per fill
+      live.textContent = 'All questions answered. Ready to send.';
+    }
+    if (!complete) { form.classList.remove('celebrate'); live.textContent = ''; }
+    wasComplete = complete;
   };
 
   /* draft saved on this device (never leaves the browser until you send) */
@@ -428,8 +436,8 @@ function wireStoryForm() {
   if (invite && !$('#sInvite').value) $('#sInvite').value = invite.slice(0, 40);
   form.addEventListener('input', () => { progress(); clearTimeout(timer); timer = setTimeout(save, 400); });
   form.addEventListener('change', progress);
-  $('#draftClear').addEventListener('click', () => { if (!confirm('Clear everything you have typed and start again?')) return; form.reset(); store.del(); banner.hidden = true; ds.textContent = ''; progress(); });
-  progress();
+  $('#draftClear').addEventListener('click', () => { if (!confirm('Clear everything you have typed and start again?')) return; form.reset(); store.del(); banner.hidden = true; ds.textContent = ''; progress(true); });
+  progress(true);
 
   photo.addEventListener('change', () => {
     const file = photo.files[0]; photo.setCustomValidity('');
@@ -463,7 +471,7 @@ function wireStoryForm() {
       const { photoSent } = await postForm(payload, subject, replyTo, { file });
       store.del();
       showDone(answers, v('#sName'), replyTo, file && !photoSent ? subject : '');
-      form.reset(); progress(); ds.textContent = '';
+      form.reset(); progress(true); ds.textContent = '';
     } catch (err) {
       console.warn('Application was not delivered:', err && err.message);
       openMail(subject, body);
