@@ -55,9 +55,9 @@
           <a class="mono" href="/about/">About</a>
           <a class="mono" href="/services/">Services</a>
           <a class="mono" href="/contact/">Contact</a>
-          <a class="btn btn-cta nav-cta-m" href="/submit-story/">Submit your story</a>
+          <a class="btn btn-cta nav-cta-m" href="/submit-story/">Apply to be featured</a>
         </div>
-        <a class="btn btn-cta nav-cta" href="/submit-story/">Submit your story</a>
+        <a class="btn btn-cta nav-cta" href="/submit-story/">Apply to be featured</a>
         <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="navLinks"
           aria-label="Open menu"><svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4 7h16M4 12h16M4 17h16" />
@@ -77,7 +77,7 @@
               <h1 class="hero-title"><span id="heroTitle"></span> <em id="heroTitleEm"></em></h1>
               <p class="hero-intro" id="heroIntro"></p>
               <div class="hero-actions">
-                <a class="btn btn-cta" href="/get-featured/">Get featured for free</a>
+                <a class="btn btn-cta" href="/submit-story/">Apply to be featured</a>
                 <a class="btn btn-line" href="/stories/">Explore the stories</a>
               </div>
               <ul class="hero-checks" id="heroChecks"></ul>
@@ -85,6 +85,7 @@
             <div class="hero-visual" id="heroVisual" role="group" aria-label="Featured stories"></div>
           </div>
           <div class="keyfacts" id="keyfacts"></div>
+          <div class="proof" id="proof"></div>
         </div>
       </div>
 
@@ -174,7 +175,7 @@
             <p>Right now the reach is small, and I would rather build this slowly and well than loudly.</p>
 
             <div class="mission-actions">
-              <a class="btn btn-cta" href="/get-featured/">Get featured for free</a>
+              <a class="btn btn-cta" href="/submit-story/">Apply to be featured</a>
               <a class="btn btn-line" href="/stories/">Read the stories</a>
             </div>
           </div>
@@ -214,49 +215,75 @@
         <div class="wrap">
           <div class="submit-grid">
             <div class="submit-intro">
-              <span class="kicker mono">Submit your story</span>
-              <h2>Tell us your story. We will shape it with you.</h2>
-              <p>Answer in your own words, as briefly or as fully as you like. There are no wrong answers and it costs nothing. I will turn your answers into a warm, plain-spoken story, and <strong>nothing goes live until you have read and approved the final version.</strong></p>
+              <span class="kicker mono">Apply to be featured</span>
+              <h2>Apply to be featured on <span data-brand></span>.</h2>
+              <p>I read every application myself and feature a small number of independent founders. Answer in your own words, as briefly or as fully as you like. If it is a fit, I will turn your answers into a warm, plain-spoken story, and <strong>nothing goes live until you have read and approved the final version.</strong></p>
+              <ol class="steps-next">
+                <li><strong>You apply.</strong> About 10 to 15 minutes, and you can leave and come back: your answers are saved on this device.</li>
+                <li><strong>I reply <span data-reply-time></span>.</strong> I will tell you if it is a fit and suggest a time to talk if you would like to add anything.</li>
+                <li><strong>You approve the draft.</strong> You see the finished story first and can change or remove anything, at any time.</li>
+              </ol>
               <ul class="submit-points">
-                <li>Takes about 10 to 15 minutes</li>
                 <li>Free, always</li>
-                <li>You approve every word before it is published</li>
+                <li>No obligation to buy anything</li>
               </ul>
             </div>
-            <form class="msg story-form" id="storyForm" novalidate data-thanks="Thank you. Your story has been received. I will read it and write to you soon, and nothing is published without your approval.">
-              <h3>Your story</h3>
+            <div class="story-wrap">
+            <form class="msg story-form" id="storyForm" novalidate data-thanks="Thank you. Your application has been received.">
+              <div class="progress" aria-live="off">
+                <div class="progress-row mono"><span id="progText">0 of 15 answered</span><span id="draftState" aria-live="polite"></span></div>
+                <div class="progress-bar" role="progressbar" aria-label="Application progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="progFill"></i></div>
+              </div>
+              <p class="draft-banner" id="draftBanner" hidden>We restored your saved answers. <button type="button" class="link-btn" id="draftClear">Start again</button></p>
               <fieldset>
                 <legend class="mono">About you</legend>
-                <label>1. Your full name<input id="sName" name="full_name" type="text" required autocomplete="name"></label>
-                <label>2. Business or studio name<input id="sBiz" name="business_name" type="text" required autocomplete="organization"></label>
-                <label>3. Website<input id="sSite" name="website" type="text" required placeholder="https://… or type: none yet"></label>
-                <label>4. Instagram profile<input id="sInsta" name="instagram" type="text" required placeholder="@yourhandle or link"></label>
-                <label>5. City and country<input id="sCity" name="city_country" type="text" required placeholder="e.g. Miami, USA"></label>
-                <label>Your email (so we can reach you)<input id="sEmail" name="email" type="email" required autocomplete="email"></label>
+                <label>1. Your full name<input id="sName" name="full_name" type="text" required autocomplete="name" aria-describedby="sNameh"><small class="hint" id="sNameh">As you would like it to appear on your story.</small></label>
+                <label>2. Business or studio name<input id="sBiz" name="business_name" type="text" required autocomplete="organization" aria-describedby="sBizh"><small class="hint" id="sBizh">The name your customers know you by.</small></label>
+                <label>3. Website<input id="sSite" name="website" type="text" required placeholder="https://…" aria-describedby="sSiteh"><small class="hint" id="sSiteh">No website yet? Just type: none yet.</small></label>
+                <label>4. Instagram profile<input id="sInsta" name="instagram" type="text" required placeholder="@yourhandle" aria-describedby="sInstah"><small class="hint" id="sInstah">Your handle or a link to your profile.</small></label>
+                <label>5. City and country<input id="sCity" name="city_country" type="text" required placeholder="e.g. Miami, USA" aria-describedby="sCityh"><small class="hint" id="sCityh">Where you run your business.</small></label>
+                <label>Your email<input id="sEmail" name="email" type="email" required autocomplete="email" aria-describedby="sEmailh"><small class="hint" id="sEmailh">Only used to reply to your application.</small></label>
+                <label>Invite code (optional)<input id="sInvite" name="invite_code" type="text" autocomplete="off" placeholder="If someone invited you" aria-describedby="sInviteh"><small class="hint" id="sInviteh">Not needed to apply. If a founder or partner gave you a code, add it here.</small></label>
               </fieldset>
               <fieldset>
                 <legend class="mono">Your journey</legend>
-                <label>6. How did you start, and why this business?<textarea id="sStarted" name="how_did_you_start" required minlength="20" rows="5"></textarea></label>
-                <label>7. What did your first year look like?<textarea id="sYear1" name="first_year" required minlength="20" rows="5"></textarea></label>
-                <label>8. Who are your regular customers, and what do they say about you?<textarea id="sCustomers" name="regular_customers" required minlength="20" rows="5"></textarea></label>
-                <label>9. What do you do differently from others near you?<textarea id="sDifferent" name="what_you_do_differently" required minlength="20" rows="5"></textarea></label>
-                <label>10. What is a moment you're proud of?<textarea id="sProud" name="proud_moment" required minlength="20" rows="5"></textarea></label>
-                <label>11. What is hard about running it?<textarea id="sChallenges" name="what_is_hard" required minlength="20" rows="5"></textarea></label>
-                <label>12. What advice would you give someone starting out?<textarea id="sAdvice" name="advice" required minlength="20" rows="5"></textarea></label>
+                <label>6. How did you start, and why this business?<textarea id="sStarted" name="how_did_you_start" required minlength="20" rows="5" aria-describedby="sStartedh"></textarea><small class="hint" id="sStartedh">A few sentences: what you did before, the moment you decided, and why this work.</small></label>
+                <label>7. What did your first year look like?<textarea id="sYear1" name="first_year" required minlength="20" rows="5" aria-describedby="sYear1h"></textarea><small class="hint" id="sYear1h">The first months, what worked, what surprised you. Rough numbers are fine.</small></label>
+                <label>8. Who are your regular customers, and what do they say about you?<textarea id="sCustomers" name="regular_customers" required minlength="20" rows="5" aria-describedby="sCustomersh"></textarea><small class="hint" id="sCustomersh">Who comes back, and a line or two in their words if you remember it.</small></label>
+                <label>9. What do you do differently from others near you?<textarea id="sDifferent" name="what_you_do_differently" required minlength="20" rows="5" aria-describedby="sDifferenth"></textarea><small class="hint" id="sDifferenth">What would someone get from you that they would not get down the road?</small></label>
+                <label>10. What is a moment you're proud of?<textarea id="sProud" name="proud_moment" required minlength="20" rows="5" aria-describedby="sProudh"></textarea><small class="hint" id="sProudh">One specific moment: a customer, a milestone, a day it all clicked.</small></label>
+                <label>11. What is hard about running it?<textarea id="sChallenges" name="what_is_hard" required minlength="20" rows="5" aria-describedby="sChallengesh"></textarea><small class="hint" id="sChallengesh">Be honest. Time, money, self-doubt, anything. Readers connect with this most.</small></label>
+                <label>12. What advice would you give someone starting out?<textarea id="sAdvice" name="advice" required minlength="20" rows="5" aria-describedby="sAdviceh"></textarea><small class="hint" id="sAdviceh">One or two things you wish you had known at the start.</small></label>
               </fieldset>
               <fieldset>
                 <legend class="mono">Photo and permissions</legend>
                 <label>13. Upload a founder photograph (optional)
-                  <input id="sPhoto" name="photo" type="file" accept="image/jpeg,image/png,image/webp">
-                  <small class="hint">JPG, PNG or WebP, up to 5 MB. A clear, well-lit photo of you works best.</small>
+                  <input id="sPhoto" name="photo" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="sPhotoh">
+                  <small class="hint" id="sPhotoh">JPG, PNG or WebP, up to 5 MB. A clear, well-lit photo of you works best. If it does not attach, I will ask you to email it.</small>
                 </label>
                 <label class="consent"><input id="sPermit" name="permission_to_edit_and_publish" type="checkbox" required><span>14. I give permission to edit and publish my submitted story. I understand I will see the final version first and can ask for changes or removal at any time.</span></label>
                 <label class="consent"><input id="sContact" name="agrees_to_be_contacted" type="checkbox" required><span>15. I agree to be contacted about the feature.</span></label>
               </fieldset>
               <input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-              <button class="btn btn-cta" type="submit">Submit my story</button>
-              <p class="note" role="status" aria-live="polite">Your answers go straight to our inbox and are used only to prepare your feature. See the <a href="/privacy.html">privacy policy</a>.</p>
+              <button class="btn btn-cta" type="submit">Send my application</button>
+              <p class="note" role="status" aria-live="polite">Your answers go straight to my inbox and are used only to prepare your feature. See the <a href="/privacy.html">privacy policy</a>.</p>
             </form>
+            <div class="story-done" id="storyDone" hidden tabindex="-1" role="status">
+              <span class="kicker mono">Application received</span>
+              <h3>Thank you, <span id="doneName"></span>.</h3>
+              <p>Your application is with me. I will read it and reply <span data-reply-time></span> at <strong id="doneEmail"></strong>.</p>
+              <ol class="steps-next">
+                <li><strong>I read your answers</strong> and may write back with a question or two.</li>
+                <li><strong>I write your story</strong> in plain, warm language.</li>
+                <li><strong>You approve it</strong> before anything goes live.</li>
+              </ol>
+              <p class="done-photo" id="donePhoto" hidden></p>
+              <div class="done-actions">
+                <button type="button" class="btn btn-line" id="doneSave">Save a copy of my answers</button>
+                <a class="btn btn-line" href="/stories/">Read other founders' stories</a>
+              </div>
+            </div>
+            </div>
           </div>
         </div>
       </section>
@@ -390,7 +417,7 @@
         <h2>Ready to tell your <em>founder story</em>?</h2>
         <div class="f-cta-actions">
           <a class="btn btn-cta" href="" data-cal-link>Book a call</a>
-          <a class="btn btn-ghost" href="/submit-story/">Submit your story</a>
+          <a class="btn btn-ghost" href="/submit-story/">Apply to be featured</a>
         </div>
       </div>
       <div class="f-grid">
@@ -429,7 +456,7 @@
         <nav class="f-col" aria-label="For founders">
           <h3>For founders</h3>
           <ul>
-            <li><a href="/submit-story/">Submit your story</a></li>
+            <li><a href="/submit-story/">Apply to be featured</a></li>
             <li><a href="/get-featured/">How it works</a></li>
             <li><a href="/get-featured/#faq">FAQ</a></li>
           </ul>

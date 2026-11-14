@@ -144,7 +144,7 @@ const inviteHtml = () => `<article class="card invite">
 <span class="mono">For business owners</span>
 <h3>Teach or run a studio? Get featured for free.</h3>
 <p>A short chat, a draft you approve, and a story that's yours to share.</p>
-<a class="btn btn-cta" href="/get-featured/">Get featured</a>
+<a class="btn btn-cta" href="/submit-story/">Apply to be featured</a>
   </div>
 </article>`;
 
@@ -204,6 +204,7 @@ function showStory(s, opts = {}) {
     <div class="cover">${media(s)}${numHtml(s)}</div>
     <div class="article">
       ${paras.join('')}
+      <aside class="story-invite" aria-label="Apply to be featured"><span class="kicker mono">Your turn</span><h2>Run your own studio or business?</h2><p>Your story belongs here too. It is free, it takes about 10 to 15 minutes to apply, and nothing is published until you approve it.</p><a class="btn btn-cta" href="/submit-story/">Apply to be featured</a></aside>
       ${s.sample ? '<p class="end-note">This is a sample story with an invented person, business and place, shown to demonstrate the format.</p>' : ''}
       <p class="end-note correction">Something not right, or want to change a detail? <a href="${esc(mailto('Correction request: ' + s.business) + '&body=' + encodeURIComponent('Hello,\n\nI would like to request a change to the story about ' + s.business + ' (' + storyUrl(s) + ').\n\nWhat should change:\n\n'))}">Request a correction</a>. Founders can ask for changes or removal at any time.</p>
     </div>
@@ -364,10 +365,17 @@ function renderStatic() {
   ($('#heroTitleEm') || N()).textContent = HERO.titleEm;
   ($('#heroChecks') || N()).innerHTML = HERO.checks.map(c => `<li>${esc(c)}</li>`).join('');
   ($('#heroIntro') || N()).textContent = HERO.intro;
+  renderProof();
   ($('#keyfacts') || N()).innerHTML = HERO.facts.map(f => `<div><strong>${esc(f.big.replace('{count}', STORIES.length).replace('{countries}', siteStats().countries).replace('{disciplines}', siteStats().disciplines))}</strong><span class="mono">${esc(f.label)}</span></div>`).join('');
   ($('#trust') || N()).innerHTML = TRUST.map((t, i) => `<div><span class="mono">0${i + 1}</span><h3>${esc(t.title)}</h3><p>${esc(t.text)}</p></div>`).join('');
   ($('#steps') || N()).innerHTML = STEPS.map(t => `<li><h3>${esc(t.title)}</h3><p>${esc(t.text)}</p></li>`).join('');
   ($('#serviceGrid') || N()).innerHTML = SERVICES.map((t, i) => `<div class="service"><span class="mono">0${i + 1}</span><h3>${esc(t.title)}</h3><p>${esc(t.text)}</p></div>`).join('');
+}
+function renderProof() {
+  const el = $('#proof'); if (!el) return;
+  const pick = STORIES.filter(s => !s.sample && s.pullQuote).slice().sort((x, y) => (y.published || '').localeCompare(x.published || '') || Number(y.id) - Number(x.id))[0];
+  if (!pick) { el.hidden = true; return; }
+  el.innerHTML = `<figure style="margin:0"><blockquote><p>${esc('“' + pick.pullQuote + '”')}</p><cite>${esc(pick.owner)}, ${esc(pick.business)} &middot; <a href="${esc(storyUrl(pick))}">Read the story</a></cite></blockquote></figure>`;
 }
 function applyConfig() {
   $$('[data-brand]').forEach(e => e.textContent = CONFIG.brand);
@@ -439,7 +447,7 @@ document.addEventListener('click', e => {
 
 /* ---------- Pages: every page is a real address (/about/, /stories/name/ ...) ---------- */
 let curPage = 'home';
-const PAGE_H1 = { stories: 'All founder stories', about: 'About The Founders Notes', mission: 'Our mission: why The Founders Notes exists', 'get-featured': 'Get featured on The Founders Notes for free', 'submit-story': 'Submit your story to The Founders Notes', services: 'Website design for yoga and wellness studios', contact: 'Contact The Founders Notes' };
+const PAGE_H1 = { stories: 'All founder stories', about: 'About The Founders Notes', mission: 'Our mission: why The Founders Notes exists', 'get-featured': 'Get featured on The Founders Notes for free', 'submit-story': 'Apply to be featured on The Founders Notes', services: 'Website design for yoga and wellness studios', contact: 'Contact The Founders Notes' };
 function showPage(r) {
   const p = r.page; curPage = p;
   $$('[data-pages]').forEach(el => el.classList.toggle('pg-off', !el.dataset.pages.split(' ').includes(p)));

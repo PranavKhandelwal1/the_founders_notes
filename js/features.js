@@ -65,13 +65,7 @@ function applyMeta(m) {
   setTag('property', 'og:description', m.description);
   setTag('property', 'og:url', siteBase() + m.path);
   setTag('property', 'og:image', absUrl(m.image || 'assets/og-image.jpg'));
-  setTag('property', 'og:image:alt', m.imageAlt || '');
-  setTag('property', 'og:locale', 'en_GB');
-  setTag('property', 'article:published_time', m.published || '');
   setTag('name', 'twitter:card', 'summary_large_image');
-  setTag('name', 'twitter:title', m.title);
-  setTag('name', 'twitter:description', m.description);
-  setTag('name', 'twitter:image', absUrl(m.image || 'assets/og-image.jpg'));
   setCanonical(siteBase() + m.path);
 }
 const crumbLd = items => ({ '@type': 'BreadcrumbList', itemListElement: items.map((it, i) => ({ '@type': 'ListItem', position: i + 1, name: it[0], item: siteBase() + it[1] })) });
@@ -82,7 +76,7 @@ const orgLd = () => ({
   ...(isSet(CONFIG.instagram) ? { sameAs: [instaUrl()] } : {})
 });
 const itemListLd = list => ({ '@type': 'ItemList', itemListElement: list.map((s, i) => ({ '@type': 'ListItem', position: i + 1, url: storyUrl(s), name: s.headline })) });
-const PAGE_NAMES = { stories: 'Stories', about: 'About', mission: 'Our mission', 'get-featured': 'Get featured', 'submit-story': 'Submit your story', services: 'Services', contact: 'Contact' };
+const PAGE_NAMES = { stories: 'Stories', about: 'About', mission: 'Our mission', 'get-featured': 'Get featured', 'submit-story': 'Apply to be featured', services: 'Services', contact: 'Contact' };
 
 /* Home, list and information pages */
 function setPageMeta(r) {
@@ -113,26 +107,20 @@ function setPageMeta(r) {
   ldSet('ld-page', { '@context': 'https://schema.org', '@graph': graph });
 }
 
-const sameAsOf = s => [s.website, s.instagram ? igHref(s.instagram) : ''].filter(Boolean);
-
 /* One story */
 function setStoryMeta(sh) {
   const s = sh._orig || sh;
   const overlap = s.business.toLowerCase().includes(s.owner.toLowerCase().split(' ')[0]);   // "Queeny Cobelli Yoga" already holds the name
   const options = [overlap ? `${s.business}: founder story` : `${s.owner}, founder of ${s.business}`, `${s.owner}: founder story`].map(t => `${t} | ${CONFIG.brand}`);
-  let title = options.find(t => t.length <= 62) || options[options.length - 1];
-  if (s.seoTitle) { const withBrand = `${s.seoTitle} | ${CONFIG.brand}`; title = withBrand.length <= 62 ? withBrand : s.seoTitle; }
-  const description = (!sh._lang && s.metaDescription) || clip(sh.summary, 160), path = storyPath(s), img = s.image ? absUrl(asset(s.image)) : '';
-  applyMeta({ title, description, path, type: 'article', image: s.image ? asset(s.image) : '', imageAlt: s.imageAlt || '', published: s.published || '' });
+  const title = options.find(t => t.length <= 62) || options[options.length - 1];
+  const description = clip(sh.summary, 160), path = storyPath(s), img = s.image ? absUrl(asset(s.image)) : '';
+  applyMeta({ title, description, path, type: 'article', image: s.image ? asset(s.image) : '' });
   const article = {
     '@type': 'Article', headline: clip(sh.headline, 110), description: sh.summary, url: siteBase() + path,
     mainEntityOfPage: siteBase() + path, inLanguage: sh._lang || 'en',
     author: { '@type': 'Person', name: s.author || CONFIG.owner },
     publisher: { '@id': siteBase() + '/#organization' },
-    about: { '@type': 'Person', name: s.owner, ...(s.business ? { jobTitle: 'Founder, ' + s.business } : {}), ...(s.location ? { homeLocation: { '@type': 'Place', name: s.location } } : {}), ...(sameAsOf(s).length ? { sameAs: sameAsOf(s) } : {}) },
-    articleSection: (s.tags && s.tags[0]) || 'Founder stories',
-    ...(s.tags && s.tags.length ? { keywords: s.tags.join(', ') } : {}),
-    wordCount: (Array.isArray(sh.body) ? sh.body : []).filter(p => typeof p === 'string').join(' ').split(/\s+/).filter(Boolean).length
+    about: { '@type': 'Person', name: s.owner, ...(s.instagram ? { sameAs: [igHref(s.instagram)] } : {}) }
   };
   if (img) article.image = img;
   if (s.published) { article.datePublished = s.published; article.dateModified = s.published; }
@@ -398,13 +386,51 @@ function wireForm(form, build) {
   });
 }
 
-/* ---------- Submit your story: 13 questions, optional photo ---------- */
-const PHOTO_MAX = 5 * 1024 * 1024;
+/* ---------- Apply to be featured: 15 questions, saved draft, progress, confirmation ---------- */
+const PHOTO_MAX = 5 * 1024 * 1024, DRAFT_KEY = 'fn-apply-draft-v1';
 function wireStoryForm() {
   const form = $('#storyForm'); if (!form) return;
+  $$('[data-reply-time]').forEach(e => e.textContent = CONFIG.replyTime || 'within a few days');
   const note = $('.note', form), btn = $('button[type="submit"]', form), photo = $('#sPhoto', form);
   const say = (kind, html) => { note.className = 'note' + (kind ? ' ' + kind : ''); note.innerHTML = html; };
   const v = id => $(id, form).value.trim();
+  const fields = $$('input[type="text"],input[type="email"],textarea', form).filter(el => el.name && el.name !== '_hp');
+  const checks = $$('input[type="checkbox"]', form);
+  const required = [...fields.filter(el => el.required), ...checks.filter(el => el.required)];
+
+  /* progress */
+  const fill = $('#progFill'), ptxt = $('#progText'), bar = $('.progress-bar', form);
+  const isDone = el => el.type === 'checkbox' ? el.checked : (el.value.trim().length >= (el.minLength > 0 ? el.minLength : 1) && el.checkValidity());
+  const progress = () => {
+    const done = required.filter(isDone).length, pct = Math.round(done / required.length * 100);
+    ptxt.textContent = done + ' of ' + required.length + ' answered'; fill.style.width = pct + '%'; bar.setAttribute('aria-valuenow', pct);
+  };
+
+  /* draft saved on this device (never leaves the browser until you send) */
+  const ds = $('#draftState'), banner = $('#draftBanner'); let timer;
+  const store = {
+    get() { try { return JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null'); } catch (_) { return null; } },
+    set(o) { try { localStorage.setItem(DRAFT_KEY, JSON.stringify(o)); return true; } catch (_) { return false; } },
+    del() { try { localStorage.removeItem(DRAFT_KEY); } catch (_) { } }
+  };
+  const snapshot = () => Object.fromEntries(fields.map(el => [el.id, el.value]));
+  const save = () => {
+    const o = snapshot(); if (!Object.values(o).some(x => x.trim())) { store.del(); ds.textContent = ''; return; }
+    ds.textContent = store.set(o) ? 'Draft saved on this device' : '';
+  };
+  const restore = () => {
+    const d = store.get(); if (!d) return false; let any = false;
+    fields.forEach(el => { if (d[el.id]) { el.value = d[el.id]; any = true; } });
+    return any;
+  };
+  const params = new URLSearchParams(location.search), invite = params.get('invite');
+  if (restore()) banner.hidden = false;
+  if (invite && !$('#sInvite').value) $('#sInvite').value = invite.slice(0, 40);
+  form.addEventListener('input', () => { progress(); clearTimeout(timer); timer = setTimeout(save, 400); });
+  form.addEventListener('change', progress);
+  $('#draftClear').addEventListener('click', () => { if (!confirm('Clear everything you have typed and start again?')) return; form.reset(); store.del(); banner.hidden = true; ds.textContent = ''; progress(); });
+  progress();
+
   photo.addEventListener('change', () => {
     const file = photo.files[0]; photo.setCustomValidity('');
     if (!file) return;
@@ -412,14 +438,15 @@ function wireStoryForm() {
     else if (file.size > PHOTO_MAX) photo.setCustomValidity('That photo is over 5 MB. Please choose a smaller one.');
     if (!photo.checkValidity()) photo.reportValidity();
   });
+
   form.addEventListener('submit', async e => {
     e.preventDefault();
     if (!form.checkValidity()) { form.reportValidity(); return; }
     if ($('[name="_hp"]', form).value || Date.now() - PAGE_LOADED < 3000) { form.reset(); return; }
-    const file = photo.files[0];
+    const file = photo.files[0], invCode = v('#sInvite');
     const answers = [
       ['1. Full name', v('#sName')], ['2. Business or studio name', v('#sBiz')], ['3. Website', v('#sSite')], ['4. Instagram profile', v('#sInsta')],
-      ['5. City and country', v('#sCity')], ['Email', v('#sEmail')],
+      ['5. City and country', v('#sCity')], ['Email', v('#sEmail')], ['Invite code', invCode || 'None'],
       ['6. How did you start, and why this business?', v('#sStarted')], ['7. What did your first year look like?', v('#sYear1')],
       ['8. Who are your regular customers, and what do they say about you?', v('#sCustomers')], ['9. What do you do differently from others near you?', v('#sDifferent')],
       ["10. What is a moment you're proud of?", v('#sProud')], ['11. What is hard about running it?', v('#sChallenges')],
@@ -427,21 +454,35 @@ function wireStoryForm() {
       ['13. Founder photograph', file ? file.name + ' (attached)' : 'Not provided'],
       ['14. Permission to edit and publish the story', 'Yes, given'], ['15. Agrees to be contacted about the feature', 'Yes']
     ];
-    const subject = 'Story submission: ' + v('#sName') + ' (' + v('#sBiz') + ')', replyTo = v('#sEmail');
+    const subject = 'Application: ' + v('#sName') + ' (' + v('#sBiz') + ')' + (invCode ? ' [invite ' + invCode + ']' : ''), replyTo = v('#sEmail');
     const body = answers.map(([q, a]) => q + '\n' + a).join('\n\n');
     if (location.protocol === 'file:') { openMail(subject, body); say('', 'Your email app should open with your answers ready. If it did not: ' + fallbackLinks(subject, body)); return; }
-    const fields = Object.fromEntries(answers.map(([q, a]) => [q, a]));
-    const label = btn.textContent; btn.disabled = true; btn.textContent = 'Sending…'; say('', 'Sending your story…');
+    const payload = Object.fromEntries(answers);
+    const label = btn.textContent; btn.disabled = true; btn.textContent = 'Sending…'; say('', 'Sending your application…');
     try {
-      const { photoSent } = await postForm(fields, subject, replyTo, { file });
-      say('ok', form.dataset.thanks + (photoSent ? '' : ' <br>Your photo could not be attached. Please email it to <strong>' + esc(CONFIG.email) + '</strong> with the subject "' + esc(subject) + '".'));
-      form.reset();
+      const { photoSent } = await postForm(payload, subject, replyTo, { file });
+      store.del();
+      showDone(answers, v('#sName'), replyTo, file && !photoSent ? subject : '');
+      form.reset(); progress(); ds.textContent = '';
     } catch (err) {
-      console.warn('Story was not delivered:', err && err.message);
+      console.warn('Application was not delivered:', err && err.message);
       openMail(subject, body);
-      say('err', 'That did not send directly, so your email app should open with your answers ready (your answers are still here). If it did not: ' + fallbackLinks(subject, body) + (file ? '<br><small>Please attach your photo to that email.</small>' : '') + reasonNote(err));
+      say('err', 'That did not send directly, so your email app should open with your answers ready (your answers are still here and saved). If it did not: ' + fallbackLinks(subject, body) + (file ? '<br><small>Please attach your photo to that email.</small>' : '') + reasonNote(err));
     } finally { btn.disabled = false; btn.textContent = label; }
   });
+
+  function showDone(answers, name, email, photoSubject) {
+    const done = $('#storyDone');
+    $('#doneName').textContent = name.split(' ')[0] || name; $('#doneEmail').textContent = email;
+    const pn = $('#donePhoto');
+    if (photoSubject) { pn.hidden = false; pn.innerHTML = 'Your photo could not be attached. Please email it to <strong>' + esc(CONFIG.email) + '</strong> with the subject <em>' + esc(photoSubject) + '</em>.'; } else pn.hidden = true;
+    $('#doneSave').onclick = () => {
+      const text = 'My application to ' + CONFIG.brand + '\n' + new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) + '\n\n' + answers.map(([q, a]) => q + '\n' + a).join('\n\n');
+      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type: 'text/plain' })); a.download = 'my-application-' + CONFIG.brand.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.txt';
+      document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    };
+    form.hidden = true; done.hidden = false; done.scrollIntoView({ block: 'start', behavior: 'smooth' }); done.focus({ preventScroll: true });
+  }
 }
 
 /* ---------- Static sections ---------- */

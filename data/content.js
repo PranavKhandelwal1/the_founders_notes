@@ -96,8 +96,8 @@ const SEO = {
     description: "How to share your story with The Founders Notes: a 20-minute chat, a draft you approve, and a free story page with a badge and quote cards. Common questions answered."
   },
   "submit-story": {
-    title: "Submit your story | The Founders Notes",
-    description: "Share your founder story with The Founders Notes for free: answer a few questions about your journey, add a photo if you like, and approve the final story before it goes live."
+    title: "Apply to be featured | The Founders Notes",
+    description: "Apply to be featured on The Founders Notes for free: answer a few questions about your journey, add a photo if you like, and approve the final story before it goes live."
   },
   services: {
     title: "Website design for yoga and wellness studios | The Founders Notes",
