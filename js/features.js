@@ -65,7 +65,13 @@ function applyMeta(m) {
   setTag('property', 'og:description', m.description);
   setTag('property', 'og:url', siteBase() + m.path);
   setTag('property', 'og:image', absUrl(m.image || 'assets/og-image.jpg'));
+  setTag('property', 'og:image:alt', m.imageAlt || '');
+  setTag('property', 'og:locale', 'en_GB');
+  setTag('property', 'article:published_time', m.published || '');
   setTag('name', 'twitter:card', 'summary_large_image');
+  setTag('name', 'twitter:title', m.title);
+  setTag('name', 'twitter:description', m.description);
+  setTag('name', 'twitter:image', absUrl(m.image || 'assets/og-image.jpg'));
   setCanonical(siteBase() + m.path);
 }
 const crumbLd = items => ({ '@type': 'BreadcrumbList', itemListElement: items.map((it, i) => ({ '@type': 'ListItem', position: i + 1, name: it[0], item: siteBase() + it[1] })) });
@@ -107,20 +113,26 @@ function setPageMeta(r) {
   ldSet('ld-page', { '@context': 'https://schema.org', '@graph': graph });
 }
 
+const sameAsOf = s => [s.website, s.instagram ? igHref(s.instagram) : ''].filter(Boolean);
+
 /* One story */
 function setStoryMeta(sh) {
   const s = sh._orig || sh;
   const overlap = s.business.toLowerCase().includes(s.owner.toLowerCase().split(' ')[0]);   // "Queeny Cobelli Yoga" already holds the name
   const options = [overlap ? `${s.business}: founder story` : `${s.owner}, founder of ${s.business}`, `${s.owner}: founder story`].map(t => `${t} | ${CONFIG.brand}`);
-  const title = options.find(t => t.length <= 62) || options[options.length - 1];
-  const description = clip(sh.summary, 160), path = storyPath(s), img = s.image ? absUrl(asset(s.image)) : '';
-  applyMeta({ title, description, path, type: 'article', image: s.image ? asset(s.image) : '' });
+  let title = options.find(t => t.length <= 62) || options[options.length - 1];
+  if (s.seoTitle) { const withBrand = `${s.seoTitle} | ${CONFIG.brand}`; title = withBrand.length <= 62 ? withBrand : s.seoTitle; }
+  const description = (!sh._lang && s.metaDescription) || clip(sh.summary, 160), path = storyPath(s), img = s.image ? absUrl(asset(s.image)) : '';
+  applyMeta({ title, description, path, type: 'article', image: s.image ? asset(s.image) : '', imageAlt: s.imageAlt || '', published: s.published || '' });
   const article = {
     '@type': 'Article', headline: clip(sh.headline, 110), description: sh.summary, url: siteBase() + path,
     mainEntityOfPage: siteBase() + path, inLanguage: sh._lang || 'en',
     author: { '@type': 'Person', name: s.author || CONFIG.owner },
     publisher: { '@id': siteBase() + '/#organization' },
-    about: { '@type': 'Person', name: s.owner, ...(s.instagram ? { sameAs: [igHref(s.instagram)] } : {}) }
+    about: { '@type': 'Person', name: s.owner, ...(s.business ? { jobTitle: 'Founder, ' + s.business } : {}), ...(s.location ? { homeLocation: { '@type': 'Place', name: s.location } } : {}), ...(sameAsOf(s).length ? { sameAs: sameAsOf(s) } : {}) },
+    articleSection: (s.tags && s.tags[0]) || 'Founder stories',
+    ...(s.tags && s.tags.length ? { keywords: s.tags.join(', ') } : {}),
+    wordCount: (Array.isArray(sh.body) ? sh.body : []).filter(p => typeof p === 'string').join(' ').split(/\s+/).filter(Boolean).length
   };
   if (img) article.image = img;
   if (s.published) { article.datePublished = s.published; article.dateModified = s.published; }

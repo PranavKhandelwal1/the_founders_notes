@@ -92,7 +92,35 @@ function finish(dom, routePath) {
   const isStory = routePath.startsWith('/stories/') && routePath !== '/stories/';
   doc.querySelectorAll('.pg-off, section[hidden], .toast').forEach(e => e.remove());   // other pages' sections are not part of this page
   if (isStory) doc.getElementById('homeView').innerHTML = '';
+  addImageSizes(doc);
   return dom.serialize();
+}
+
+/* Image sizes (read from the files) so browsers reserve space and the page does not jump while loading. */
+function imageSize(file) {
+  try {
+    const buf = fs.readFileSync(file);
+    if (buf.slice(1, 4).toString() === 'PNG') return { w: buf.readUInt32BE(16), h: buf.readUInt32BE(20) };
+    if (buf[0] === 0xff && buf[1] === 0xd8) {
+      let i = 2;
+      while (i < buf.length) {
+        if (buf[i] !== 0xff) { i++; continue; }
+        const m = buf[i + 1];
+        if (m >= 0xc0 && m <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(m)) return { h: buf.readUInt16BE(i + 5), w: buf.readUInt16BE(i + 7) };
+        i += 2 + buf.readUInt16BE(i + 2);
+      }
+    }
+  } catch (e) { }
+  return null;
+}
+function addImageSizes(doc) {
+  let first = true;
+  doc.querySelectorAll('main img[src^="/images/"], #storyView img[src^="/images/"]').forEach(img => {
+    const sz = imageSize(path.join(ROOT, decodeURIComponent(img.getAttribute('src')).replace(/^\//, '')));
+    if (sz && !img.getAttribute('width')) { img.setAttribute('width', sz.w); img.setAttribute('height', sz.h); }
+    if (first && img.closest('.story-hero, .hero, header, #storyView')) { img.removeAttribute('loading'); img.setAttribute('fetchpriority', 'high'); }   // the top photo is the largest thing on screen, so do not delay it
+    first = false;
+  });
 }
 
 const outFile = routePath => path.join(OUT, routePath === '/' ? 'index.html' : routePath.replace(/^\//, ''), routePath === '/' ? '' : 'index.html');
@@ -133,9 +161,14 @@ const outFile = routePath => path.join(OUT, routePath === '/' ? 'index.html' : r
   for (const [r, html] of Object.entries(pages)) { const f = outFile(r); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, html); }
 
   /* ---------- 6. Sitemap and robots.txt ---------- */
+  const dates = STORIES.map(s => s.published).filter(Boolean).sort();
+  const newest = dates[dates.length - 1];
+  const storyDate = {};
+  STORIES.forEach(s => { const slug = (s.slug || s.owner || '').toString().toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || ('story-' + s.id); storyDate['/stories/' + slug + '/'] = s.published; });
+  const lastmod = u => storyDate[u] || ((u === '/' || u === '/stories/') ? newest : '');
   const urls = [...routes, '/privacy.html'];
   const sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-    urls.map(u => `  <url><loc>${SITE}${u}</loc></url>`).join('\n') + '\n</urlset>\n';
+    urls.map(u => `  <url><loc>${SITE}${u}</loc>${lastmod(u) ? `<lastmod>${lastmod(u)}</lastmod>` : ''}</url>`).join('\n') + '\n</urlset>\n';
   fs.writeFileSync(path.join(OUT, 'sitemap.xml'), sitemap);
   fs.writeFileSync(path.join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 

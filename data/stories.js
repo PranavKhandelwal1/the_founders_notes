@@ -14,6 +14,9 @@
      image       the founder's photo, e.g. "images/name.jpg" (the story banner)
      imageAlt    describes the photo
      imagePos    optional crop focus, e.g. "center top"
+     seoTitle    optional: the title Google shows (keep under ~60 characters: name, what they do, place)
+     metaDescription  optional: the text under the title in Google (120 to 155 characters)
+     slug        optional: the page address. Changing it later breaks links already shared, so choose once.
      headline, summary, business, owner, location, founded, offers,
      instagram, readTime, initials (shown if there is no photo),
      author      optional: overrides the "By ..." byline
@@ -30,6 +33,8 @@ const STORIES = [
   {
     id: "1",
     published: "2026-10-23",
+    seoTitle: "Spirit Yoga Berlin: Patricia Thielemann's Story",
+    metaDescription: "Patricia Thielemann founded Spirit Yoga in Berlin in 2004. Read how she built one of Germany's best-known yoga schools and trained 1,000+ teachers.",
     image: "images/patricia-thielemann.jpg",
     imageAlt: "Patricia Thielemann, founder of Spirit Yoga",
     tags: ["Yoga", "Mindfulness", "Teacher Training"],
@@ -60,6 +65,8 @@ const STORIES = [
   {
     id: "2",
     published: "2026-10-26",
+    seoTitle: "Veena V Pillai: HR Career to Karate Instructor",
+    metaDescription: "Veena V Pillai left an HR career to teach karate full time. A 3rd Dan Black Belt, she shares how she built classes across branches as a new mother.",
     image: "images/veena-pillai.jpg",
     imageAlt: "Veena V Pillai, karate instructor",
     tags: ["Karate", "Women in Sport", "Motherhood"],
@@ -91,6 +98,8 @@ const STORIES = [
   {
     id: "3",
     published: "2026-10-27",
+    seoTitle: "Elena Lebedinets: Pilates Studio in Vladivostok",
+    metaDescription: "After motherhood and a spinal injury, Elena Lebedinets found Pilates. Read how she started a home Pilates studio in Vladivostok.",
     image: "images/elena-lebedinets.jpg",
     imageAlt: "Elena Lebedinets, Pilates instructor",
     tags: ["Pilates", "Motherhood", "Personal Growth"],
@@ -105,7 +114,7 @@ const STORIES = [
     instagram: "https://www.instagram.com/helenespilates/",
     website: "https://pilates-feel.ru/", 
     readTime: "5 min read",
-    initials: "EP",
+    initials: "EL",
     body: [
       "Five years ago, Elena Lebedinets became a mother to the daughter she had dreamed of since childhood. But the reality of motherhood was more emotionally challenging than she had expected. Anxiety, fear, the demands of a successful career, and discomfort from a herniated disc in her thoracic spine left her feeling vulnerable and exhausted. She knew something in her life needed to change.",
       "Elena began a journey of self-discovery through traditional psychotherapy, searching for greater harmony between her mind and body. Pilates eventually brought the pieces together. It offered the calm she needed, the relaxation she longed for, and the support her back was missing. The moment she lay down on the Reformer, she discovered a sense of relief and well-being that transformed her everyday life.",
@@ -126,6 +135,8 @@ const STORIES = [
   {
     id: "4",
     published: "2026-10-28",
+    seoTitle: "Aishwarya Yogshala: Powerlifter Turned Yoga Teacher",
+    metaDescription: "Former state-level powerlifter Aishwarya Sharma launched Aishwarya Yogshala in 2026, offering online group and personalised yoga from Delhi.",
     image: "images/aishwarya.jpg",
     imageAlt: "Aishwarya Yogshala yoga instructor",
     tags: ["Yoga", "Wellness", "Women in Business"],
@@ -160,6 +171,8 @@ const STORIES = [
   {
     id: "5",
     published: "2026-10-28",
+    seoTitle: "Irina Mindful: From IT Career to Mindfulness",
+    metaDescription: "A former IT engineer, Irina turned yoga, meditation and psychology into Irina Mindful, an online space for self-awareness. Read her story.",
     image: "images/irina-mindful.jpeg",
     imageAlt: "Irina practising meditation outdoors in nature",
     tags: ["Mindfulness", "Yoga", "Personal Growth"],
@@ -194,6 +207,8 @@ const STORIES = [
   {
     id: "6",
     published: "2026-11-01",
+    seoTitle: "Yulia Korchagina: Ashtanga Yoga Teacher, Moscow",
+    metaDescription: "Yulia Korchagina turned recovery from scoliosis into a career teaching Ashtanga and Hatha yoga and running retreats from Moscow.",
     image: "images/yulia-korchagina.jpeg",
     imageAlt: "Yulia Korchagina, Ashtanga yoga teacher",
     tags: ["Ashtanga Yoga", "Yoga Philosophy", "Retreats"],
@@ -227,6 +242,8 @@ const STORIES = [
   {
     id: "7",
     published: "2026-11-02",
+    seoTitle: "Queeny Cobelli: Yoga and Dance Instructor, Cambridge",
+    metaDescription: "Queeny Cobelli went from gym regular to a fully booked yoga and dance instructor at local gyms in Cambridge, UK. Read how she built her classes.",
     image: "images/queeny-cobelli.jpg",
     imageAlt: "Queeny Cobelli, yoga and dance instructor",
     tags: ["Yoga", "Dance", "Women in Wellness"],
@@ -291,7 +308,9 @@ const STORIES = [
   {
     id: "9",
     published: "2026-11-04",
-    image: "images/be-with-yoga.jpg",
+    seoTitle: "Angela Yoga: Vinyasa Yoga Teacher in Mallorca",
+    metaDescription: "Angela has taught Vinyasa yoga since 2010 and studied in India with leading teachers. Read her story from Palma de Mallorca.",
+    image: "images/angela-vinyasa-yoga-mallorca.jpg",
     imageAlt: "Angela, Vinyasa yoga teacher and practitioner",
     tags: ["Vinyasa Yoga", "Yoga Philosophy", "Meditation"],
     sample: false,
@@ -325,6 +344,8 @@ const STORIES = [
   {
     id: "10",
     published: "2026-11-05",
+    seoTitle: "Ekaterina: Yoga Teacher in Batigama, Sri Lanka",
+    metaDescription: "Ekaterina teaches Hatha yoga, mobility and breathwork in Batigama, Sri Lanka, and online. Read how sport and dance led her to yoga.",
     image: "images/ekaterina.jpg",
     imageAlt: "Ekaterina Katya, yoga and movement instructor in Sri Lanka",
     tags: ["Yoga", "Movement", "Mindful Living"],
@@ -360,18 +381,20 @@ const STORIES = [
   {
     id: "11",
     published: "2026-11-07",
+    seoTitle: "Anna Firstenko: 10 Years Teaching Yoga",
+    metaDescription: "Anna Firstenko has taught yoga since 2016, rebuilding her studio after the pandemic and war. Now in Switzerland, she shares her story.",
     image: "images/anna_firstenko.jpg",
     imageAlt: "Anna Firstenko, yoga teacher",
     tags: ["Yoga", "Women's Wellness", "Mindfulness"],
     sample: false,
-    headline: "Starting Again, Never Giving Up: Anna Firstenko’s 10-Year Yoga Journey",
+    headline: "Starting again, never giving up: Anna Firstenko’s 10-year yoga journey",
     summary: "From practising yoga at home to teaching for a decade, opening studios, and rebuilding her career after repeated challenges, Anna Firstenko’s journey is one of resilience, self-discovery and a lasting commitment to yoga.",
     business: "Independent Yoga Teaching",
     owner: "Anna Firstenko",
     location: "Switzerland",
     founded: "2016",
     offers: "Yoga classes, breathing exercises, mindfulness practices, women's circles and yoga lectures",
-    instagram: "@anna_firstenko",
+    instagram: "https://www.instagram.com/anna_firstenko/",
     readTime: "4 min read",
     initials: "AF",
     body: [
@@ -394,18 +417,20 @@ const STORIES = [
   {
     id: "12",
     published: "2026-11-09",
+    seoTitle: "Move with Kami: Yoga Teacher, Chicago Area",
+    metaDescription: "Back problems led Kami to yoga in 2020. Read how she became a teacher of private Hatha, Vinyasa and Yin classes near Chicago.",
     image: "images/kami-yoga.jpg",
     imageAlt: "Kami, founder of Move with Kami",
     tags: ["Yoga", "Personal Growth", "Wellness"],
     sample: false,
-    headline: "From Back Pain to a New Purpose: Kami’s Journey into Yoga",
+    headline: "From back pain to a new purpose: Kami’s journey into yoga",
     summary: "What began as a way to strengthen her body and support her recovery from back problems became a passion and a new direction. Today, Kami is building her teaching practice while continuing to explore the many dimensions of yoga.",
     business: "Move with Kami",
     owner: "Kami",
     location: "Chicago area, Illinois, USA",
     founded: "2025",
     offers: "Private one-to-one Hatha, Vinyasa and Yin Yoga classes, online and in person; pursuing further training in Original Hot Yoga and Prenatal Yoga",
-    instagram: "@movewithkami",
+    instagram: "https://www.instagram.com/movewithkami/",
     readTime: "3 min read",
     initials: "K",
     body: [
@@ -426,6 +451,8 @@ const STORIES = [
   {
     id: "13",
     published: "2026-11-09",
+    seoTitle: "Present Practices: Photography for Yoga Teachers",
+    metaDescription: "Photographer Kris combines 15 years of portrait work with yoga training to help teachers and wellness brands be seen. Read her story.",
     image: "images/kris.jpg",
     imageAlt: "Kris, founder of Present Practices",
     tags: ["Photography", "Yoga", "Women in Business"],

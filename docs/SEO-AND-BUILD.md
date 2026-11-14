@@ -23,3 +23,9 @@ Install Node.js, then in this folder: `npm install` and `npm run preview`, and o
 2. Ask each featured founder to link to their story page from their website or Instagram bio (the "Featured in" badge on each story has the code).
 3. Publish a new story regularly; Google favours sites that keep growing.
 4. Check Search Console after a few weeks for pages that are not indexed.
+
+## Search title and description per story (optional, recommended)
+Each story can carry two extra lines in `data/stories.js`:
+- `seoTitle`: what Google shows as the blue title. Keep it under about 60 characters: name, what they do, place. ("The Founders Notes" is added automatically when it fits.)
+- `metaDescription`: the grey text under it, 120 to 155 characters.
+The headline and summary on the page itself are not changed. If these lines are missing, the build creates a title and description from the story as before.
