@@ -378,6 +378,8 @@ function renderProof() {
   el.innerHTML = `<figure style="margin:0"><blockquote><p>${esc('“' + pick.pullQuote + '”')}</p><cite>${esc(pick.owner)}, ${esc(pick.business)} &middot; <a href="${esc(storyUrl(pick))}">Read the story</a></cite></blockquote></figure>`;
 }
 function applyConfig() {
+  const pf = $('#aboutPortrait');
+  if (pf && isSet(CONFIG.ownerPhoto) && !$('img', pf)) { const im = new Image(); im.src = CONFIG.ownerPhoto; im.alt = 'Photo of ' + CONFIG.owner; im.loading = 'lazy'; im.decoding = 'async'; pf.prepend(im); pf.classList.add('has-photo'); const lg = $('.about-logo', pf); if (lg) lg.remove(); }
   $$('[data-brand]').forEach(e => e.textContent = CONFIG.brand);
   $$('[data-owner]').forEach(e => e.textContent = CONFIG.owner);
   $$('[data-email]').forEach(e => e.textContent = CONFIG.email);

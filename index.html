@@ -118,7 +118,7 @@
       <section class="sec" id="about" data-pages="about" style="border-top:1px solid var(--line)">
         <div class="wrap">
           <div class="about">
-            <figure class="portrait" style="margin:0">
+            <figure class="portrait" id="aboutPortrait" style="margin:0">
               <svg class="about-logo" viewBox="0 0 740 992" aria-hidden="true" focusable="false">
                 <use href="#fn-logo" />
               </svg>
@@ -127,191 +127,39 @@
             <div class="about-copy">
               <span class="kicker mono">About</span>
               <h2>Hello, I'm <span data-owner></span>.</h2>
+              <p class="lead-line">I write down the stories that independent founders never have time to tell.</p>
               <p>Most of the founders I come across have a story worth telling, and almost none of them have the
-                time to tell it. They're teaching, answering messages and washing the blankets. So I started <span
+                time to tell it. They're busy running classes, answering messages and keeping the business going. So I started <span
                   data-brand></span> to do that part for them.</p>
-              <p>I'm a web designer, and I work remotely, so we talk by video at a time that suits you. I ask how it
-                began, what the first year was like, and what a normal week looks like. Then I write it up in plain,
-                warm language, the way you might tell it to a friend.</p>
-              <p>Nothing is published until you've read the draft and said yes in writing. You can change anything, or
-                ask me to take your story down later. There is no fee, and no catch.</p>
-              <p class="about-note">I also build websites, and there's a short section on that further down for anyone
-                who ever wants one. It's separate from the stories, and being featured never depends on it.</p>
-              <p class="sign">&mdash; <span data-owner></span></p>
-              <p class="about-li"><a class="btn btn-line" href="" data-linkedin-link rel="me">Connect with me on LinkedIn</a></p>
-            </div>
-          </div>
-          <div class="trust" id="trust"></div>
-        </div>
-      </section>
-
-      <section class="sec" id="mission" data-pages="mission" style="border-top:1px solid var(--line)">
-        <div class="wrap">
-          <div class="mission">
-            <span class="kicker mono">Our mission</span>
-            <h2>Why <span data-brand></span> exists.</h2>
-            <p class="mission-lead"><span data-brand></span> is new and still small. That is exactly why it is worth
-              saying clearly what it is for, who it is for, and where it is going.</p>
-
-            <h3>The goal</h3>
-            <p>To make sure the independent people behind yoga and Pilates studios, martial arts schools and fitness
-              classes get a story that is told well and can be found. Most of them are too busy teaching to write about
-              themselves, so I do the writing. The founder approves every word in writing, and the story is published
-              free on its own page that search engines and other people can find.</p>
-
-            <h3>Who it is for</h3>
-            <p><strong>Founders:</strong> independent yoga teachers, Pilates instructors, studio owners, and martial
-              arts and fitness instructors, anywhere in the world, especially people running something small on their
-              own.</p>
-            <p><strong>Readers:</strong> students looking for a teacher or studio with a real story behind it, and
-              anyone curious about what it takes to start something small and personal.</p>
-
-            <h3>Where it is heading</h3>
-            <p>A growing library of real, approved stories from many countries. It starts with yoga and Pilates, and
-              grows into martial arts and fitness. Each story gets its own page, a shareable quote card and a badge the
-              founder can use.</p>
-            <p>The stories stay free for founders. I also design websites for founders who want one. That is a separate
-              service, and being featured never depends on it.</p>
-            <p>Right now the reach is small, and I would rather build this slowly and well than loudly.</p>
-
-            <div class="mission-actions">
-              <a class="btn btn-cta" href="/submit-story/">Apply to be featured</a>
-              <a class="btn btn-line" href="/stories/">Read the stories</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="sec feature" id="get-featured" data-pages="get-featured">
-        <div class="wrap">
-          <div class="feat-head">
-            <div>
-              <span class="kicker mono">Get featured</span>
-              <h2>Teach or run a studio? Get featured for free.</h2>
-            </div>
-            <p>Three simple steps. You stay in control from the first chat to the final publish.</p>
-          </div>
-          <ol class="steps" id="steps"></ol>
-          <div class="contact">
-            <div class="mail"><small>Contact us</small>
-              <div class="icon-links">
-                <a href="" data-mail-link aria-label="Email us" title="Email"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></svg></a>
-                <a href="" data-wa-link aria-label="Chat on WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.8 7L4 20l1.1-4.9A8 8 0 1 1 21 12z" /></svg></a>
-                <a href="" data-insta-link aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r=".8" /></svg></a>
-              </div>
-            </div>
-            <div class="actions">
-              <a class="btn btn-cta" href="/submit-story/">Submit your story</a>
-              <a class="btn btn-line" href="" data-cal-link>Book a call</a>
-              <a class="btn btn-line" href="" data-mail-link data-subject="I'd like to be featured">Email us</a>
-              <button class="btn btn-line" type="button" id="copyBtn">Copy email</button>
-            </div>
-            <div class="sr-only" id="copied" role="status" aria-live="polite"></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="sec" id="submit-story" data-pages="submit-story">
-        <div class="wrap">
-          <div class="submit-grid">
-            <div class="submit-intro">
-              <span class="kicker mono">Apply to be featured</span>
-              <h2>Apply to be featured on <span data-brand></span>.</h2>
-              <p>I read every application myself and feature a small number of independent founders. Answer in your own words, as briefly or as fully as you like. If it is a fit, I will turn your answers into a warm, plain-spoken story, and <strong>nothing goes live until you have read and approved the final version.</strong></p>
-              <ol class="steps-next">
-                <li><strong>You apply.</strong> About 10 to 15 minutes, and you can leave and come back: your answers are saved on this device.</li>
-                <li><strong>I reply <span data-reply-time></span>.</strong> I will tell you if it is a fit and suggest a time to talk if you would like to add anything.</li>
-                <li><strong>You approve the draft.</strong> You see the finished story first and can change or remove anything, at any time.</li>
-              </ol>
-              <ul class="submit-points">
-                <li>Free, always</li>
-                <li>No obligation to buy anything</li>
+              <p>I'm a software developer, and I work remotely. We talk by video at a time that suits you, wherever in the
+                world you are, and I do the writing, in plain, warm language, the way you might tell it to a friend.</p>
+              <ul class="about-facts" aria-label="At a glance">
+                <li><span class="mono">Free</span>No fee and no catch</li>
+                <li><span class="mono">Your yes</span>Nothing is published without it</li>
+                <li><span class="mono">Remote</span>Founders from anywhere</li>
               </ul>
-            </div>
-            <div class="story-wrap">
-            <form class="msg story-form" id="storyForm" novalidate data-thanks="Thank you. Your application has been received.">
-              <div class="progress" aria-live="off">
-                <div class="progress-row mono"><span class="prog-label"><svg class="prog-tick" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg><span id="progText">0 of 15 answered</span></span><span id="draftState" aria-live="polite"></span></div>
-                <span class="sr-only" id="progLive" role="status"></span>
-                <div class="progress-bar" role="progressbar" aria-label="Application progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="progFill"></i></div>
-              </div>
-              <p class="draft-banner" id="draftBanner" hidden>We restored your saved answers. <button type="button" class="link-btn" id="draftClear">Start again</button></p>
-              <fieldset>
-                <legend class="mono">About you</legend>
-                <label>1. Your full name<input id="sName" name="full_name" type="text" required autocomplete="name" aria-describedby="sNameh"><small class="hint" id="sNameh">As you would like it to appear on your story.</small></label>
-                <label>2. Business or studio name<input id="sBiz" name="business_name" type="text" required autocomplete="organization" aria-describedby="sBizh"><small class="hint" id="sBizh">The name your customers know you by.</small></label>
-                <label>3. Website<input id="sSite" name="website" type="text" required placeholder="https://…" aria-describedby="sSiteh"><small class="hint" id="sSiteh">No website yet? Just type: none yet.</small></label>
-                <label>4. Instagram profile<input id="sInsta" name="instagram" type="text" required placeholder="@yourhandle" aria-describedby="sInstah"><small class="hint" id="sInstah">Your handle or a link to your profile.</small></label>
-                <label>5. City and country<input id="sCity" name="city_country" type="text" required placeholder="e.g. Miami, USA" aria-describedby="sCityh"><small class="hint" id="sCityh">Where you run your business.</small></label>
-                <label>Your email<input id="sEmail" name="email" type="email" required autocomplete="email" aria-describedby="sEmailh"><small class="hint" id="sEmailh">Only used to reply to your application.</small></label>
-                <label>Invite code (optional)<input id="sInvite" name="invite_code" type="text" autocomplete="off" placeholder="If someone invited you" aria-describedby="sInviteh"><small class="hint" id="sInviteh">Not needed to apply. If a founder or partner gave you a code, add it here.</small></label>
-              </fieldset>
-              <fieldset>
-                <legend class="mono">Your journey</legend>
-                <label>6. How did you start, and why this business?<textarea id="sStarted" name="how_did_you_start" required minlength="20" rows="5" aria-describedby="sStartedh"></textarea><small class="hint" id="sStartedh">A few sentences: what you did before, the moment you decided, and why this work.</small></label>
-                <label>7. What did your first year look like?<textarea id="sYear1" name="first_year" required minlength="20" rows="5" aria-describedby="sYear1h"></textarea><small class="hint" id="sYear1h">The first months, what worked, what surprised you. Rough numbers are fine.</small></label>
-                <label>8. Who are your regular customers, and what do they say about you?<textarea id="sCustomers" name="regular_customers" required minlength="20" rows="5" aria-describedby="sCustomersh"></textarea><small class="hint" id="sCustomersh">Who comes back, and a line or two in their words if you remember it.</small></label>
-                <label>9. What do you do differently from others near you?<textarea id="sDifferent" name="what_you_do_differently" required minlength="20" rows="5" aria-describedby="sDifferenth"></textarea><small class="hint" id="sDifferenth">What would someone get from you that they would not get down the road?</small></label>
-                <label>10. What is a moment you're proud of?<textarea id="sProud" name="proud_moment" required minlength="20" rows="5" aria-describedby="sProudh"></textarea><small class="hint" id="sProudh">One specific moment: a customer, a milestone, a day it all clicked.</small></label>
-                <label>11. What is hard about running it?<textarea id="sChallenges" name="what_is_hard" required minlength="20" rows="5" aria-describedby="sChallengesh"></textarea><small class="hint" id="sChallengesh">Be honest. Time, money, self-doubt, anything. Readers connect with this most.</small></label>
-                <label>12. What advice would you give someone starting out?<textarea id="sAdvice" name="advice" required minlength="20" rows="5" aria-describedby="sAdviceh"></textarea><small class="hint" id="sAdviceh">One or two things you wish you had known at the start.</small></label>
-              </fieldset>
-              <fieldset>
-                <legend class="mono">Photo and permissions</legend>
-                <label>13. Upload a founder photograph (optional)
-                  <input id="sPhoto" name="photo" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="sPhotoh">
-                  <small class="hint" id="sPhotoh">JPG, PNG or WebP, up to 5 MB. A clear, well-lit photo of you works best. If it does not attach, I will ask you to email it.</small>
-                </label>
-                <label class="consent"><input id="sPermit" name="permission_to_edit_and_publish" type="checkbox" required><span>14. I give permission to edit and publish my submitted story. I understand I will see the final version first and can ask for changes or removal at any time.</span></label>
-                <label class="consent"><input id="sContact" name="agrees_to_be_contacted" type="checkbox" required><span>15. I agree to be contacted about the feature.</span></label>
-              </fieldset>
-              <input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-              <button class="btn btn-cta" type="submit">Send my application</button>
-              <p class="note" role="status" aria-live="polite">Your answers go straight to my inbox and are used only to prepare your feature. See the <a href="/privacy.html">privacy policy</a>.</p>
-            </form>
-            <div class="story-done" id="storyDone" hidden tabindex="-1" role="status">
-              <span class="kicker mono">Application received</span>
-              <h3><svg class="done-tick" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg><span>Thank you, <span id="doneName"></span>.</span></h3>
-              <p>Your application is with me. I will read it and reply <span data-reply-time></span> at <strong id="doneEmail"></strong>.</p>
-              <ol class="steps-next">
-                <li><strong>I read your answers</strong> and may write back with a question or two.</li>
-                <li><strong>I write your story</strong> in plain, warm language.</li>
-                <li><strong>You approve it</strong> before anything goes live.</li>
-              </ol>
-              <p class="done-photo" id="donePhoto" hidden></p>
-              <div class="done-actions">
-                <button type="button" class="btn btn-line" id="doneSave">Save a copy of my answers</button>
-                <a class="btn btn-line" href="/stories/">Read other founders' stories</a>
-              </div>
-            </div>
+              <p class="about-note">I also build websites, and there is a short section on that further down for anyone
+                who ever wants one. It is separate from the stories, and being featured never depends on it.</p>
+              <p class="sign">&mdash; <span data-owner></span></p>
+              <p class="about-actions"><a class="btn btn-cta" href="/submit-story/">Apply to be featured</a>
+                <a class="btn btn-line" href="" data-linkedin-link rel="me">Connect on LinkedIn</a></p>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="sec" id="faq" data-pages="get-featured">
+      <section class="sec" id="howstory" data-pages="about">
         <div class="wrap">
-          <div class="faq-grid">
-            <div>
-              <div class="sec-head">
-                <span class="kicker mono">Is this for me?</span>
-                <h2>Questions founders ask</h2>
-              </div>
-              <div class="faq" id="faqList"></div>
-            </div>
-            <form class="msg nominate" id="nominateForm" novalidate data-thanks="Thank you. I will reach out to them, and nothing is published without their approval.">
-              <h3>Nominate a founder</h3>
-              <p class="note-lead">Know a teacher or studio owner with a story worth telling? Introduce them. I will invite them, and nothing is published unless they say yes.</p>
-              <label>Your name<input id="nName" type="text" autocomplete="name" required></label>
-              <label>Your email<input id="nEmail" type="email" autocomplete="email" required></label>
-              <label>Founder's name<input id="nFounder" type="text" required></label>
-              <label>Their Instagram or website<input id="nLink" type="text" required></label>
-              <label>Why their story matters<textarea id="nWhy" required></textarea></label>
-              <input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-              <button class="btn btn-cta" type="submit">Send nomination</button>
-              <p class="note" role="status" aria-live="polite">Your details are used only to follow up on this nomination.</p>
-            </form>
+          <div class="sec-head">
+            <span class="kicker mono">The process</span>
+            <h2>How a story comes together</h2>
           </div>
+          <ol class="how-steps">
+            <li><span class="mono">01</span><h3>We talk</h3><p>A relaxed video chat of about 20 minutes, or written answers if you prefer. I ask how it began, what the first year was like, and what a normal week looks like.</p></li>
+            <li><span class="mono">02</span><h3>I write it up</h3><p>In plain, warm language, the way you might tell it to a friend. I only use what you have told me.</p></li>
+            <li><span class="mono">03</span><h3>You read it first</h3><p>Change anything you like. Nothing is published until you have said yes in writing, photos included.</p></li>
+            <li><span class="mono">04</span><h3>It goes live</h3><p>Free to read and to share anywhere. You can ask me to change it or take it down at any time.</p></li>
+          </ol>
         </div>
       </section>
 

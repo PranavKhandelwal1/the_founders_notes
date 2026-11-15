@@ -193,3 +193,27 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none }
   .progress-bar i::after { display: none }
   .story-form button[type="submit"] { transition: none }
 }
+
+/* About page redesign */
+.about-copy .lead-line { font-family: var(--f-head); font-size: clamp(1.5rem, 2.6vw, 2.1rem); line-height: 1.25; color: var(--head); max-width: 24ch; margin: 0 0 1.5rem; text-wrap: balance }
+.about-copy p:first-of-type.lead-line { font-size: clamp(1.5rem, 2.6vw, 2.1rem); line-height: 1.25 }
+.about-copy h2 { margin-bottom: 1rem }
+.about-facts { list-style: none; margin: 1.8rem 0 1.6rem; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; max-width: 60ch }
+.about-facts li { border-top: 1px solid var(--head); padding-top: .8rem; color: var(--muted); font-size: .95rem; line-height: 1.4 }
+.about-facts .mono { display: block; color: var(--accent); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; margin-bottom: .35rem }
+@media (max-width: 560px) { .about-facts { grid-template-columns: 1fr } }
+.about-actions { display: flex; gap: .8rem; flex-wrap: wrap; margin-top: 1.6rem }
+.portrait.has-photo { padding: 0; min-height: 440px }
+.portrait.has-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover }
+.portrait.has-photo figcaption { position: relative; z-index: 1; margin-top: auto; width: 100%; padding: 1.2rem; border: 0; color: #fff; background: linear-gradient(transparent, rgba(0,0,0,.6)) }
+.how-steps { list-style: none; margin: clamp(28px, 4vw, 48px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); counter-reset: none }
+.how-steps li { border-top: 1px solid var(--head); padding-top: 1.1rem }
+.how-steps .mono { color: var(--accent) }
+.how-steps h3 { font-size: 1.45rem; margin: .6rem 0 .5rem }
+.how-steps p { color: var(--muted); font-size: 1rem; line-height: 1.6; margin: 0 }
+@media (max-width: 980px) { .how-steps { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
+@media (max-width: 560px) { .how-steps { grid-template-columns: 1fr } }
+.about-cta { text-align: center; max-width: 640px; margin: 0 auto; padding: clamp(12px, 3vw, 32px) 0 }
+.about-cta h2 { font-size: clamp(2rem, 4vw, 2.9rem); margin: 0 0 .9rem }
+.about-cta p { color: var(--muted); margin: 0 auto }
+.about-cta .about-actions { justify-content: center }

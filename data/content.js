@@ -85,7 +85,7 @@ const SEO = {
   },
   about: {
     title: "About The Founders Notes | Free stories for independent founders",
-    description: "The Founders Notes is a small, independent publication that writes warm, plain-spoken stories about founders. Learn how it works and what we stand for."
+    description: "Meet Pranav Khandelwal, the software developer behind The Founders Notes, a free publication of warm, founder-approved stories. See how a story is made."
   },
   mission: {
     title: "Our mission: free founder stories for wellness | The Founders Notes",
