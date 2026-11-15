@@ -452,7 +452,41 @@ const STORIES = [
     ],
     pullQuote: "You don't need to be younger, more flexible or more confident to be photographed. You just need to be ready to be seen.",
     pullAfter: 5
-  }
+  },
+  {
+     id: "13",
+     image: "images/alida-kamal-yoga.jpeg",
+     imageAlt: "Alida Maugeri, founder of Kamla Yoga in Catania, Italy",
+     tags: ["Yoga Studio", "Wellness", "Yoga Retreats"],
+     sample: false,
+     headline: "From Law to Yoga: How Alida Maugeri Built a Wellness Community in Catania, Italy.",
+     summary: "After stepping away from her legal career and spending years learning and working in India, Alida Maugeri returned to Italy to establish Kamla Yoga. Today, her Catania wellness centre brings together yoga, Pilates, Tai Chi, Qi Gong, retreats and a community built around mindful living.",
+     business: "Kamla Yoga",
+     owner: "Alida Maugeri",
+     location: "Catania, Sicily, Italy",
+     founded: "Kamla Yoga Studio",
+     offers: "Yoga classes, Pilates, Tai Chi, Qi Gong, workshops, wellness retreats and coworking space",
+     instagram: "https://www.instagram.com/kamlayoga/",
+     website: "https://kamlayoga.com/",
+     readTime: "6 min read",
+     initials: "KM",
+     body: [
+       "Sometimes, building a business means leaving behind the career you once imagined for yourself. For Alida Maugeri, founder of Kamla Yoga in Catania, Italy, that decision began with a personal transformation that eventually became her life's work.",
+       "Alida originally pursued a career in law, but yoga gradually changed the direction of her life. Her interest developed into a deeper commitment, leading her to pause her legal career and dedicate herself to studying yoga. She eventually travelled to India, where she became involved in different aspects of teaching and management at the yoga school where she trained. The experience profoundly shaped her understanding of yoga, education, and the kind of space she wanted to create.",
+       "Those years abroad helped Alida develop a vision that went beyond simply teaching yoga classes. She wanted to build a welcoming environment where people could explore different practices, learn from dedicated teachers, and make wellness a meaningful part of their everyday lives.",
+       "When she eventually returned to Italy and opened Kamla Yoga in Catania, she faced a significant challenge. After living abroad for 13 years, she was starting again in her hometown without an established local client base or reputation. The first year required considerable faith, determination, and a clear sense of purpose. Building the business became her priority, demanding her full attention and commitment.",
+       "Gradually, that commitment developed into a thriving wellness community. Today, Kamla Yoga welcomes professionals who live and work in the surrounding area, with students ranging from their late twenties to their seventies. Alida describes her clients as thoughtful and kind people who appreciate not only the classes but also the atmosphere and personal attention that make the studio distinctive.",
+       "One of the defining features of Kamla Yoga is the variety of practices available under one roof. Alongside different styles of yoga, the studio offers Pilates, Tai Chi, and Qi Gong, as well as workshops and retreats. Alida is supported by a team of qualified and dedicated teachers who share her commitment to creating meaningful experiences for students.",
+       "The studio itself reflects the philosophy behind the business. Its newly renovated space features three main practice rooms and a coworking area. Every room has been designed with warmth and attention to detail, creating an environment where people can feel comfortable, connected, and welcome. For Alida, the physical surroundings are an important part of the experience she wants to offer.",
+       "Among the moments that make running Kamla Yoga worthwhile, Alida particularly values hearing from people who have attended her retreats. Sometimes, former participants reach out to tell her that they have overcome something they had been struggling with in their lives. Knowing that an experience at one of her retreats helped someone discover new strength is deeply meaningful to her.",
+       "But building a wellness business also brings challenges that are not always visible from the outside. Alida admits that finding time to switch off is one of the hardest parts. When you are at the heart of a business, professional responsibilities can easily become part of your personal life. Learning to create boundaries, take proper time off, and navigate changing market conditions remains an ongoing process.",
+       "For anyone considering starting their own business, Alida has practical advice. Be mentally and emotionally prepared for unexpected challenges, because things do not always develop as planned. Build a network of potential collaborators and clients early, and invest in promoting your business even before opening its doors. Most importantly, continue promoting it as your business grows.",
+       "Today, Kamla Yoga represents the vision Alida developed through years of personal practice, education, and experience abroad. What began as a departure from a legal career has become a space bringing together movement, mindfulness, community, and personal development in Catania.",
+       "For Alida, the most meaningful measure of success is not simply the number of classes or people walking through the studio doors. It is the knowledge that someone leaves a class, workshop, or retreat feeling stronger, more connected, and better equipped to face their own journey."
+     ],
+     pullQuote: "It truly warms my heart when someone tells me they have found new strength through an experience they shared with me.",
+     pullAfter: 1
+}
 
 ];
 
