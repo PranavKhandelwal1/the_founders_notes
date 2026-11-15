@@ -454,7 +454,7 @@ const STORIES = [
     pullAfter: 5
   },
   {
-     id: "13",
+     id: "14",
      image: "images/alida-kamal-yoga.jpeg",
      imageAlt: "Alida Maugeri, founder of Kamla Yoga in Catania, Italy",
      tags: ["Yoga Studio", "Wellness", "Yoga Retreats"],
