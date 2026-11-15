@@ -150,9 +150,6 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none }
 @media (prefers-reduced-motion: reduce) { .progress-bar i { transition: none } }
 
 /* End of story invitation */
-.story-invite { margin: 3rem 0 0; padding: clamp(24px, 4vw, 36px); border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 4px }
-.story-invite h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin: .5rem 0 .8rem }
-.story-invite p { color: var(--muted); max-width: 52ch; margin: 0 0 1.3rem }
 
 /* Home proof strip */
 .proof { display: block; padding: clamp(28px, 4vw, 48px) 0; border-bottom: 1px solid var(--line) }
@@ -218,13 +215,6 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none }
 .about-cta p { color: var(--muted); margin: 0 auto }
 .about-cta .about-actions { justify-content: center }
 
-/* Support independent founders (below every story) */
-.support { margin: 3rem 0 0; padding: clamp(24px, 4vw, 36px) 0 0; border-top: 1px solid var(--head) }
-.support h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin: .5rem 0 .8rem }
-.support p { color: var(--muted); max-width: 56ch; margin: 0 0 1.3rem }
-.support-actions { display: flex; flex-wrap: wrap; gap: .7rem }
-.support .support-note { margin: 1.2rem 0 0; font-size: .95rem }
-.support + .story-invite { margin-top: 2.2rem }
 
 /* Contact us: addresses by topic */
 .email-grid { list-style: none; margin: clamp(24px, 4vw, 40px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 22px) }

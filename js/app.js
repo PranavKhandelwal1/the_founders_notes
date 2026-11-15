@@ -204,8 +204,6 @@ function showStory(s, opts = {}) {
     <div class="cover">${media(s)}${numHtml(s)}</div>
     <div class="article">
       ${paras.join('')}
-      ${supportHtml(s)}
-      <aside class="story-invite" aria-label="Apply to be featured"><span class="kicker mono">Your turn</span><h2>Run your own studio or business?</h2><p>Your story belongs here too. It is free, it takes about 10 to 15 minutes to apply, and nothing is published until you approve it.</p><a class="btn btn-cta" href="/submit-story/">Apply to be featured</a></aside>
       ${s.sample ? '<p class="end-note">This is a sample story with an invented person, business and place, shown to demonstrate the format.</p>' : ''}
       <p class="end-note correction">Something not right, or want to change a detail? <a href="${esc(mailto('Correction request: ' + s.business) + '&body=' + encodeURIComponent('Hello,\n\nI would like to request a change to the story about ' + s.business + ' (' + storyUrl(s) + ').\n\nWhat should change:\n\n'))}">Request a correction</a>. Founders can ask for changes or removal at any time.</p>
     </div>
@@ -216,11 +214,6 @@ function showStory(s, opts = {}) {
       <dl class="facts">
         ${fact('Business', s.business)}${fact('Owner', s.owner)}${fact('Location', s.location)}${fact('Founded', s.founded)}${fact('Offers', s.offers)}${s.instagram ? `<div><dt>Instagram</dt><dd><a class="ig-link" href="${esc(igHref(s.instagram))}" target="_blank" rel="noopener" aria-label="${esc(s.business)} on Instagram" title="Instagram">${ICONS.insta}</a></dd></div>` : ''}
       </dl>
-    </div>
-    <div class="box cta-box">
-      <h2>Want a website that tells your story like this?</h2>
-      <p>I design and build simple, clear websites for studios, teachers and independent class businesses. Tell me about yours.</p>
-      <a class="btn btn-cta" href="${esc(mailto('Website enquiry (after reading ' + s.business + ')'))}">Get in touch</a>
     </div>
   </aside>
 </div>
@@ -243,24 +236,6 @@ function renderHero() {
   ($('#heroVisual') || N()).innerHTML = picks.map((s, i) =>
     `<a class="hv" href="${storyPath(s)}" style="background:${coverOf(s).color}">${media(s, 'xMinYMid', i === 0 ? 375 : 282)}${numHtml(s)}<span class="hv-cap"><span class="mono">${esc(tagsOf(s)[0] || 'Story')}${s.sample ? ' &middot; Sample' : ''}</span><strong>${esc(s.business)}</strong></span></a>`
   ).join('');
-}
-/* "Support independent founders" block shown right below every story */
-function supportHtml(s) {
-  const base = (isSet(CONFIG.siteUrl) ? CONFIG.siteUrl.replace(/\/+$/, '') : location.origin) + storyPath(s);
-  const wa = 'https://wa.me/?text=' + encodeURIComponent((s.headline || s.business) + ' ' + base);
-  const site = /^https?:/.test(s.website || '') ? s.website : (s.website ? 'https://' + s.website : '');
-  return `<section class="support" aria-labelledby="supportTitle">
-        <span class="kicker mono">Support independent founders</span>
-        <h2 id="supportTitle">Support ${esc(s.owner || s.business)} and founders like them</h2>
-        <p>Independent founders grow through word of mouth, not big budgets. If this story meant something to you, these small things make a real difference.</p>
-        <div class="support-actions">
-          ${site ? `<a class="btn btn-cta" href="${esc(site)}" target="_blank" rel="noopener">Visit ${esc(s.business)}</a>` : ''}
-          ${s.instagram ? `<a class="btn btn-line" href="${esc(igHref(s.instagram))}" target="_blank" rel="noopener">Follow on Instagram</a>` : ''}
-          <a class="btn btn-line" href="${esc(wa)}" target="_blank" rel="noopener">Share on WhatsApp</a>
-          <button type="button" class="btn btn-line" data-act="copylink">Copy link</button>
-        </div>
-        <p class="support-note">Tell a friend, leave a kind word, or pay them a visit. It all helps.</p>
-      </section>`;
 }
 const ICONS = {
   mail: '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',

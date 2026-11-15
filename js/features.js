@@ -293,7 +293,9 @@ function enhanceStory(sh) {
   if (s.website) btns.push(`<a class="btn btn-line" href="${esc(s.website)}" target="_blank" rel="noopener">Visit website</a>`);
   if (s.booking) btns.push(`<a class="btn btn-line" href="${esc(s.booking)}" target="_blank" rel="noopener">Book with ${esc(s.owner.split(' ')[0])}</a>`);
   btns.push(`<a class="btn btn-line" href="/stories/">Read more stories</a>`);
-  article.insertAdjacentHTML('beforeend', `<aside class="visit" aria-label="Visit ${esc(s.business)}"><span class="mono kicker-s">Support independent founders</span><h2>Visit ${esc(s.business)}</h2><p>${esc(s.location || '')}${s.offers ? ' &middot; ' + esc(offers.slice(0, 3).join(', ')) : ''}</p><div class="visit-btns">${btns.join('')}</div></aside>`);
+  const visitHtml = `<aside class="visit" aria-label="Visit ${esc(s.business)}"><h2>Visit ${esc(s.business)}</h2><p>${esc(s.location || '')}${s.offers ? ' &middot; ' + esc(offers.slice(0, 3).join(', ')) : ''}</p><div class="visit-btns">${btns.join('')}</div></aside>`;
+  const corr = $('.correction', article);
+  if (corr) corr.insertAdjacentHTML('beforebegin', visitHtml); else article.insertAdjacentHTML('beforeend', visitHtml);
 
   /* founder kit */
   if (side) {
