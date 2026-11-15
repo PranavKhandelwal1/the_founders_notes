@@ -491,8 +491,19 @@ const STORIES = [
 
 ];
 
-/* Newest story first, automatically. Order = `published` date if a story has one (e.g. published: "2026-10-27"),
-   otherwise its numeric id (higher id = newer). The first story becomes the big "Featured story" and the
-   oldest story is #1, so numbers never change. You can paste new stories anywhere in the list. */
-STORIES.forEach((st, i) => { st._k = st.published ? Date.parse(st.published) : (isFinite(+st.id) ? +st.id : -i); });
+/* Newest story first, automatically.
+   - A story with `published` (e.g. published: "2026-10-27") is ordered by that date.
+   - A story WITHOUT a date counts as published at the same time as the newest dated story with a lower id,
+     so the story you add last (highest id) always appears first. No date needed.
+   The first story becomes the big "Featured story" and the oldest story is #1, so numbers never change.
+   You can paste new stories anywhere in the list. */
+(() => {
+  const byId = STORIES.map((st, i) => ({ st, n: isFinite(+st.id) ? +st.id : -1 - i })).sort((a, b) => a.n - b.n);
+  let latest = 0;   // newest date seen so far, walking from the lowest id to the highest
+  byId.forEach(({ st }) => {
+    const d = st.published ? Date.parse(st.published) : NaN;
+    if (isFinite(d)) latest = Math.max(latest, d);
+    st._k = isFinite(d) ? d : latest;
+  });
+})();
 STORIES.sort((a, b) => (b._k - a._k) || ((+b.id || 0) - (+a.id || 0)));   // same date: higher id (added later) first
