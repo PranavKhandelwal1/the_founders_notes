@@ -374,7 +374,7 @@ function renderProof() {
 function applyConfig() {
   $$('[data-reply-time]').forEach(e => { e.textContent = CONFIG.replyTime || 'within a few days'; });
   const pf = $('#aboutPortrait');
-  if (pf && isSet(CONFIG.ownerPhoto) && !$('img', pf)) { const im = new Image(); im.src = CONFIG.ownerPhoto; im.alt = 'Photo of ' + CONFIG.owner; im.loading = 'lazy'; im.decoding = 'async'; pf.prepend(im); pf.classList.add('has-photo'); const lg = $('.about-logo', pf); if (lg) lg.remove(); }
+  if (pf && isSet(CONFIG.ownerPhoto) && !$('img', pf)) { const im = new Image(); im.src = /^(https?:)?\/\/|^\//.test(CONFIG.ownerPhoto) ? CONFIG.ownerPhoto : '/' + CONFIG.ownerPhoto.replace(/^\.?\//, ''); im.alt = 'Photo of ' + CONFIG.owner; im.loading = 'lazy'; im.decoding = 'async'; pf.prepend(im); pf.classList.add('has-photo'); const lg = $('.about-logo', pf); if (lg) lg.remove(); }
   $$('[data-brand]').forEach(e => e.textContent = CONFIG.brand);
   $$('[data-owner]').forEach(e => e.textContent = CONFIG.owner);
   $$('[data-email]').forEach(e => e.textContent = CONFIG.email);

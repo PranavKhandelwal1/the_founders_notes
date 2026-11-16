@@ -9,7 +9,7 @@ const CONFIG = {
   email: "hello@thefoundersnotes.com",
   instagram: "@the.founders_notes",                 // e.g. "@foundersnotes"
   replyTime: "within 3 working days",      // shown on the Apply page and confirmation. Only promise what you can keep.
-  ownerPhoto: "",                          // optional: path to your photo, e.g. "images/pranav.jpg". Shown on the About page instead of the logo. Leave empty to keep the logo.
+  ownerPhoto: "images/pranav.jpg",                          // optional: path to your photo, e.g. "images/pranav.jpg". Shown on the About page instead of the logo. Leave empty to keep the logo.
   linkedin: "https://www.linkedin.com/in/pranav-khandelwal-57a25b1b1/",   // your personal LinkedIn profile (shown on About page and footer). Leave empty to hide.
   whatsapp: "+919928490213",          // with country code, e.g. "+91 98765 43210"
   calendly: "https://calendly.com/foundersnotes09/founders-notes-chat",            // e.g. "https://calendly.com/yourname/20min"
