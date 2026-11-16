@@ -487,7 +487,44 @@ const STORIES = [
      ],
      pullQuote: "It truly warms my heart when someone tells me they have found new strength through an experience they shared with me.",
      pullAfter: 1
+},
+{
+  id: "15",
+  published: "2026-11-16",
+  image: "images/francesca-kelly.jpeg",
+  imageAlt: "Francesca Kelly, founder of Onda Yoga Studio in Berlin",
+  tags: ["Yoga Studio", "Community", "Women in Business"],
+  sample: false,
+  headline: "Building More Than a Yoga Studio: How Francesca Kelly Kept a Berlin Yoga Community Together.",
+  summary: "After years of teaching yoga across different countries, Francesca Kelly returned to Berlin and opened Onda Yoga Studio to preserve a community she didn't want to lose. Today, Onda brings together generations of practitioners through shared experience, dedicated teachers and a love of yoga.",
+  business: "Onda Yoga Studio",
+  owner: "Francesca Kelly",
+  location: "Berlin, Germany",
+  founded: "Onda Yoga Studio",
+  offers: "Yoga classes, hot yoga, experienced yoga teachers, community practice and yoga philosophy",
+  instagram: "https://www.instagram.com/francesca_carossino/",
+  website: "https://ondayogastudio.de/",
+  readTime: "7 min read",
+  initials: "OY",
+  body: [
+    "For Francesca Kelly, opening a yoga studio was never just about starting a business. It was about protecting something meaningful: a community that had become an important part of her life. Today, as the founder of Onda Yoga Studio in Berlin, she has created a space where people can continue practising, connecting and growing together.",
+    "Francesca began teaching yoga in 2017. During her first three years, she worked as a travelling teacher, moving between countries and spending months at different studios. In the hot yoga community, this kind of international exchange offered teachers opportunities to share their knowledge, learn from different instructors and experience new communities. For Francesca, those years were an important part of her development as both a teacher and a practitioner.",
+    "Just before the pandemic, she returned to Berlin, a city where she had lived before beginning her teaching career. She found her way back to the very first studio where she had discovered and practised yoga, this time as a teacher. But after the pandemic, the studio owner could no longer keep the business running. Faced with the possibility of losing a community she cared deeply about, Francesca decided to take a leap and open Onda.",
+    "Her motivation was simple but powerful: she didn't want the community to disappear. She wanted to give people a place to return to, somewhere they could continue their practice and maintain the connections they had built. Onda was born from that desire to keep something valuable alive.",
+    "The first year was far from picture-perfect. Renovation work was still unfinished when the studio opened, but Francesca couldn't afford to keep the doors closed any longer. Instead of waiting for everything to be ready, she opened the space and continued improving it along the way.",
+    "What surprised her most was the response from the community. Students showed incredible patience, encouragement and willingness to help while the studio found its feet. That experience taught Francesca an important lesson about letting go of perfectionism. Things didn't have to be perfect to be meaningful. Sometimes, the best approach is simply to begin, learn and improve as you go. Her new motto became: better done than perfect.",
+    "One of the most special things about Onda is the diversity of its students. The community includes people in their early twenties as well as practitioners in their late seventies. For Francesca, seeing different generations practising alongside one another is a reminder that yoga does not belong to a particular age, body type or stage of life. There is always room to learn, challenge yourself and discover something new.",
+    "The depth of experience among Onda's teachers is another important part of the studio's identity. Some have been teaching for more than 20 years, bringing decades of dedication, study and personal exploration to their classes. Francesca values having this level of experience under one roof. Rather than treating yoga as a passing trend, these teachers approach it as a lifelong practice that continues to evolve.",
+    "For Francesca, some of the proudest moments are found in everyday experiences. Watching students become curious about yoga beyond physical postures, exploring its philosophy, breathing practices and self-inquiry, is particularly rewarding. But just as meaningful is seeing friendships develop between students. People begin by sharing a practice and gradually build relationships that extend beyond the studio walls.",
+    "Running Onda also means learning to accept that communities change. Berlin is a city where many people arrive for a particular chapter of their lives before moving elsewhere. Some of the studio's long-standing students have moved on, and the community has experienced changes in membership. These transitions can be difficult, especially when people have shared years of practice and personal experiences. Francesca tries to remember that everyone who has been part of Onda has contributed something to the community it is today.",
+    "Behind the welcoming atmosphere of a yoga studio is the considerable work required to keep a business running. Francesca knows this particularly well as a solo entrepreneur. Teaching is only one part of the role. There is also management, accounting, cleaning, marketing, administration and constant problem-solving. The responsibilities rarely end when the last class finishes.",
+    "She is also honest about the personal sacrifices involved. Running Onda has meant missing Christmases with family, spending less time with friends and recognising the impact that business responsibilities can have on personal relationships. She doesn't regret her decision, but she believes aspiring entrepreneurs should understand what building something of their own really demands. Her advice is to go into the journey with open eyes and remember the life you are building the business for.",
+    "Today, Onda Yoga Studio continues to be more than a place to practise yoga. It is a shared space shaped by experienced teachers, different generations and the relationships built through regular practice. What began as an effort to preserve a community has become a reminder that a successful studio is not defined only by its classes, but also by the sense of belonging it creates."
+  ],
+  pullQuote: "I didn't want to see that community come to an end. I wanted to keep it together, give it a home, and create a space where people could continue practising, connecting and growing together.",
+  pullAfter: 3
 }
+
 
 ];
 
