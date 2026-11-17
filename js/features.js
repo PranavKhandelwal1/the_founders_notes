@@ -507,9 +507,19 @@ function renderExtras() {
     $('#voicesGrid').innerHTML = TESTIMONIALS.map(t => `<figure class="voice"><blockquote><p>“${esc(t.quote)}”</p></blockquote><figcaption class="mono">${esc(t.name)}${t.business ? ', ' + esc(t.business) : ''}</figcaption></figure>`).join('');
   }
   const pk = $('#packages');
-  if (pk) pk.innerHTML = PACKAGES.map(p => `<article class="pack"><h3>${esc(p.title)}</h3><p class="price mono">${esc(p.price || 'Ask for a quote')}</p><p>${esc(p.text)}</p><ul>${p.items.map(i => `<li>${esc(i)}</li>`).join('')}</ul><a class="btn btn-line" href="${esc(mailto('Package enquiry: ' + p.title))}">Ask about this</a></article>`).join('');
-  const au = $('#audit');
-  if (au) au.innerHTML = `<div class="audit"><div><h3>${esc(AUDIT.title)}</h3><p>${esc(AUDIT.text)}</p></div><a class="btn btn-cta" href="/contact/" data-prefill="I'd like the free mini website audit. My website or Instagram link: ">Ask for my audit</a></div>`;
+  if (pk) pk.innerHTML = PACKAGES.map(p => `<article class="pack${p.popular ? ' popular' : ''}">${p.popular ? '<span class="pop-tag mono">Most popular</span>' : ''}<h3>${esc(p.title)}</h3><p class="price mono">${esc(p.price || 'Ask for a quote')}</p><p>${esc(p.text)}</p><ul>${p.items.map(i => `<li>${esc(i)}</li>`).join('')}</ul><a class="btn ${p.popular ? 'btn-cta' : 'btn-line'}" href="/contact/" data-prefill="${esc("Hi, I'd like to ask about the " + p.title + ". My business and what I need: ")}">Ask about this</a></article>`).join('');
+  const sf = $('#servicesFor'); if (sf) sf.textContent = SERVICES_FOR;
+  const st = $('#svcSteps');
+  if (st) st.innerHTML = SERVICE_STEPS.map((x, i) => `<li><span class="mono">0${i + 1}</span><h4>${esc(x.title)}</h4><p>${esc(x.text)}</p></li>`).join('');
+  const sq = $('#svcFaq');
+  if (sq) sq.innerHTML = SERVICE_FAQ.map(f => `<details class="faq-item"><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('');
+  const sw = $('#svcWork');
+  if (sw) {
+    sw.hidden = !WORK.length;
+    sw.innerHTML = WORK.length ? `<h3 class="pk-title">Recent work</h3><div class="work-grid">${WORK.map(w => `<a class="work" href="${esc(w.url || '#')}" target="_blank" rel="noopener">${w.image ? `<img src="/${esc(String(w.image).replace(/^\.?\//, ''))}" alt="${esc(w.name)}" loading="lazy">` : ''}<h4>${esc(w.name)}</h4><p>${esc(w.text)}</p></a>`).join('')}</div>` : '';
+  }
+  const auditHtml = `<div class="audit"><span class="audit-tag mono">Free</span><div><h3>${esc(AUDIT.title)}</h3><p>${esc(AUDIT.text)}</p></div><a class="btn btn-cta" href="/contact/" data-prefill="I'd like the free mini website audit. My website or Instagram link: ">Ask for my audit</a></div>`;
+  ['#audit'].forEach(sel => { const el = $(sel); if (el) el.innerHTML = auditHtml; });
 
   const nom = $('#nominateForm');
   if (nom) wireForm(nom, () => {

@@ -461,6 +461,8 @@ const PAGE_H1 = { stories: 'All founder stories', about: 'About The Founders Not
 function showPage(r) {
   const p = r.page; curPage = p;
   $$('[data-pages]').forEach(el => el.classList.toggle('pg-off', !el.dataset.pages.split(' ').includes(p)));
+  $$('.first-vis').forEach(el => el.classList.remove('first-vis'));
+  const fv = $$('#homeView > section[data-pages]').find(el => !el.classList.contains('pg-off')); if (fv) fv.classList.add('first-vis');   // first visible section: trimmed top spacing (works when hidden sections stay in the page)
   document.body.dataset.page = p;
   $$('.nav-links a:not(.btn)').forEach(l => {
     let on = false;

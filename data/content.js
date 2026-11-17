@@ -57,10 +57,34 @@ const PRINCIPLES = [
 
 /* Website packages. Add a price (for example "From \u20B912,000") and it shows on the card. Leave price empty to show "Ask for a quote". */
 const PACKAGES = [
-  { title: "Link-in-bio page", price: "", text: "One tidy page for your Instagram bio.", items: ["Timetable, menu or booking links", "Fast on a phone", "Your colours and logo"] },
-  { title: "Studio starter site", price: "", text: "A small, clear website for a studio or teacher.", items: ["Home, classes, about and contact", "Booking or enquiry setup", "Local search basics"] },
-  { title: "Care plan", price: "", text: "Your site kept online and up to date.", items: ["Hosting and backups", "Small edits each month", "Quick help when something breaks"] }
+  { title: "Link-in-bio page", price: "Free quote in 3 working days", text: "One tidy page for your Instagram bio.", items: ["Timetable, menu or booking links", "Fast on a phone", "Your colours and logo"] },
+  { title: "Studio starter site", price: "Free quote in 3 working days", popular: true, text: "A small, clear website for a studio or teacher.", items: ["Home, classes, about and contact", "Booking or enquiry setup", "Local search basics"] },
+  { title: "Care plan", price: "Free quote in 3 working days", text: "Your site kept online and up to date.", items: ["Hosting and backups", "Small edits each month", "Quick help when something breaks"] }
 ];
+
+/* Who the packages are for (one line above the packages). */
+const SERVICES_FOR = "Made for yoga and Pilates studios, martial arts schools, fitness teachers and retreat hosts, including people who have no website yet.";
+
+/* How working together goes. */
+const SERVICE_STEPS = [
+  { title: "You message me", text: "Tell me about your business and what you need." },
+  { title: "We talk for 20 minutes", text: "A short call to understand your classes and your people." },
+  { title: "I send a first version", text: "A draft within a few days, for you to react to." },
+  { title: "You approve, it goes live", text: "Nothing is published until you are happy." }
+];
+
+/* Questions people ask before they write. */
+const SERVICE_FAQ = [
+  { q: "How long does it take?", a: "A link-in-bio page can take a few days. A small studio site usually takes two to three weeks, depending on how quickly we agree the words and photos." },
+  { q: "Who owns the website and the domain?", a: "You do. The domain is registered in your name, and you keep the site's files if you ever want to move." },
+  { q: "What does the care plan cover?", a: "Hosting, backups, small monthly edits such as a new timetable, and quick help when something breaks." },
+  { q: "I don't have a website yet. Can you still help?", a: "Yes. Most people start from nothing, with just an Instagram page and a booking link." },
+  { q: "Do I have to buy anything to be featured?", a: "No. Being featured is always free and never depends on any service." }
+];
+
+/* Real work you have done for founders. Add real projects only. The section stays hidden while this list is empty.
+   Example: { name: "Business name", url: "https://example.com", image: "images/example.jpg", text: "What you built and what changed." } */
+const WORK = [];
 
 /* Free mini website audit, offered to founders you have featured. */
 const AUDIT = {

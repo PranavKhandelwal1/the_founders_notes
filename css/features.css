@@ -245,3 +245,39 @@ footer, .site-footer { border-top-left-radius: 32px; border-top-right-radius: 32
 .pager a:hover { border-color: var(--head) }
 .pager .pg-cur { background: var(--head); color: var(--bg); border-color: var(--head) }
 .pager-note { text-align: center; color: var(--muted); font-size: .75rem; margin: 1rem 0 0 }
+
+/* ---------- Services page upgrade ---------- */
+.who-for { margin: -.2rem 0 1.4rem; max-width: 62ch; color: var(--ink); font-size: 1.1rem }
+.audit { position: relative; background: var(--soft); border: 1.5px solid var(--accent); margin: 0 0 clamp(28px, 4vw, 48px) }
+.audit-tag { position: absolute; top: -13px; left: 24px; padding: .3rem .8rem; border-radius: 999px; background: var(--accent); color: #fff; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase }
+:root[data-theme="dark"] .audit-tag { color: #0C0F14 }
+.home-audit { padding-block: clamp(36px, 5vw, 64px) }
+.home-audit .audit { margin-top: 0 }
+.pack { position: relative }
+.pack.popular { border: 1.5px solid var(--accent); box-shadow: 0 18px 36px -26px rgba(12,15,20,.5) }
+.pop-tag { position: absolute; top: -13px; right: 20px; padding: .3rem .8rem; border-radius: 999px; background: var(--accent); color: #fff; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase }
+:root[data-theme="dark"] .pop-tag { color: #0C0F14 }
+.pack .btn { margin-top: auto; align-self: flex-start }
+.pk-title { margin: clamp(36px, 5vw, 56px) 0 1rem }
+.svc-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: clamp(14px, 2vw, 24px); counter-reset: none }
+.svc-steps li { padding: 1.3rem 1.4rem; border: 1px solid var(--line); border-radius: var(--r-lg, 14px); background: var(--card) }
+.svc-steps .mono { color: var(--accent); font-size: .8rem; letter-spacing: .1em }
+.svc-steps h4 { margin: .5rem 0 .35rem; font: 600 1.15rem/1.2 var(--f-head) }
+.svc-steps p { margin: 0; color: var(--muted) }
+.svc-faq { max-width: 820px }
+.work-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px }
+.work { display: block; padding: 12px; border: 1px solid var(--line); border-radius: 20px; text-decoration: none; color: inherit; background: var(--card) }
+.work img { width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 14px }
+.work h4 { margin: .8rem .4rem .2rem; font: 600 1.15rem var(--f-head) }
+.work p { margin: 0 .4rem .5rem; color: var(--muted) }
+.audit, .pack { overflow: visible !important }
+
+/* ---------- Tighter spacing: less empty space under the menu ---------- */
+.sec { padding-block: clamp(44px, 6.5vw, 84px) }
+#homeView > .sec:first-of-type { padding-top: clamp(20px, 3vw, 36px) }
+/* the sr-only heading is the first child, so match the first real section after it */
+#homeView > h1.sr-only + .sec { padding-top: clamp(20px, 3vw, 36px) }
+.first-vis.sec { padding-top: clamp(20px, 3vw, 36px) }
+.stories-head { padding-top: clamp(24px, 3.5vw, 40px) }
+#homeView > #stories.first-vis .stories-head { padding-top: clamp(20px, 3vw, 36px) }
+#stories, #stories.first-vis { padding-top: 0 !important }
