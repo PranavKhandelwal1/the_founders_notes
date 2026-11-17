@@ -225,3 +225,23 @@ a.chip { display: inline-flex; align-items: center; text-decoration: none }
 .email-card p { margin: 0; color: var(--muted); font-size: .98rem; line-height: 1.55 }
 @media (max-width: 980px) { .email-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
 @media (max-width: 560px) { .email-grid { grid-template-columns: 1fr } }
+
+/* ---------- Rounded edges (colours unchanged) ---------- */
+:root { --r-lg: 24px }
+.btn, button.btn, .nav-cta, .chip, .tag, .tags li a, .tags li { border-radius: 999px !important }
+.card, article.card, .lead, .pack, .email-card, .audit, .service, .qa, .submit-form, .done, .keyfacts, .cta-box, .side > *, .toast { border-radius: var(--r-lg) !important; overflow: hidden }
+.card .cover, .lead .cover, .cover, .portrait, .hv, .hero-visual > * { border-radius: 20px !important; overflow: hidden }
+.cover img, .portrait img, .hv img, .story figure, .story figure img, .story img { border-radius: 20px }
+.card .cover { margin: 10px 10px 0 }
+.lead { padding: 12px }
+input, textarea, select { border-radius: 12px !important }
+.nl-fields input[type="email"] { border-radius: 999px !important }
+.num { border-radius: 8px }
+footer, .site-footer { border-top-left-radius: 32px; border-top-right-radius: 32px }
+
+/* ---------- Pagination ---------- */
+.pager { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .5rem }
+.pager a, .pager .pg-cur { min-width: 44px; height: 44px; padding: 0 1rem; display: inline-grid; place-items: center; border: 1px solid var(--line); border-radius: 999px; color: var(--head); text-decoration: none; font: 500 .85rem var(--f-mono) }
+.pager a:hover { border-color: var(--head) }
+.pager .pg-cur { background: var(--head); color: var(--bg); border-color: var(--head) }
+.pager-note { text-align: center; color: var(--muted); font-size: .75rem; margin: 1rem 0 0 }

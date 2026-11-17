@@ -149,17 +149,28 @@ const inviteHtml = () => `<article class="card invite">
 </article>`;
 
 /* ---------- Home: search, lead, grid ---------- */
-let query = '', fTag = '', fCountry = '';
+let query = '', fTag = '', fCountry = '', pageNo = 1;
+const PER_PAGE = 9;   // three rows of three
 function initSearch() {
-  ($('#q') || N()).addEventListener('input', e => { query = e.target.value; renderStories(true); });
+  ($('#q') || N()).addEventListener('input', e => { query = e.target.value; pageNo = 1; renderStories(true); });
 }
+document.addEventListener('click', e => {
+  const a = e.target.closest('#seeAll a[data-page]'); if (!a) return;
+  e.preventDefault(); pageNo = +a.dataset.page;
+  try { history.pushState(null, '', a.getAttribute('href')); } catch (_) { }
+  renderStories(true);
+  const top = $('#stories'); if (top) top.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+window.addEventListener('popstate', () => { pageNo = parseInt(new URLSearchParams(location.search).get('page'), 10) || 1; renderStories(); });
 function renderStories(announce) {
   const q = query.trim().toLowerCase();
   const list = STORIES.filter(s =>
     (!fTag || tagsOf(s).includes(fTag)) && (!fCountry || countryOf(s) === fCountry) &&
     (!q || [s.headline, s.summary, s.business, s.owner, s.location, s.offers, tagsOf(s).join(' ')].join(' ').toLowerCase().includes(q)));
-  const shown = curPage === 'home' ? list.slice(0, 4) : list;   // the home page shows only the latest few
-  const [lead, ...rest] = shown;
+  const home = curPage === 'home';
+  let lead = null, rest, pages = 1;
+  if (home) { const shown = list.slice(0, 4); lead = shown[0]; rest = shown.slice(1); }   // the home page shows only the latest few
+  else { pages = Math.max(1, Math.ceil(list.length / PER_PAGE)); pageNo = Math.min(Math.max(pageNo, 1), pages); rest = list.slice((pageNo - 1) * PER_PAGE, pageNo * PER_PAGE); }
   ($('#lead') || N()).innerHTML = lead ? `<article class="lead" style="${catVars(lead)}">
   <div class="cover">${media(lead, 'xMinYMid')}${numHtml(lead)}</div>
   <div class="lead-body">
@@ -170,9 +181,11 @@ function renderStories(announce) {
     <p class="byline mono"><span>${esc(lead.owner)}</span><span>${esc(lead.location)}</span><span>${esc(lead.readTime)}</span></p>
     <a class="btn btn-dark" href="${storyPath(lead)}">Read the story</a>
   </div>
-</article>` : `<p class="empty">No stories match${query ? ' &ldquo;' + esc(query) + '&rdquo;' : ' those filters'}. Try another word, or choose &ldquo;All&rdquo;.</p>`;
-  ($('#grid') || N()).innerHTML = rest.map(cardHtml).join('') + inviteHtml();
-  ($('#seeAll') || N()).innerHTML = curPage === 'home' && list.length > shown.length ? `<a class="btn btn-line" href="/stories/">See all ${list.length} stories</a>` : '';
+</article>` : (list.length ? '' : `<p class="empty">No stories match${query ? ' &ldquo;' + esc(query) + '&rdquo;' : ' those filters'}. Try another word, or choose &ldquo;All&rdquo;.</p>`);
+  ($('#grid') || N()).innerHTML = rest.map(cardHtml).join('') + (home || pageNo === pages ? inviteHtml() : '');
+  const url = n => (location.pathname + (n > 1 ? '?page=' + n : ''));
+  ($('#seeAll') || N()).innerHTML = home ? (list.length > 4 ? `<a class="btn btn-line" href="/stories/">See all ${list.length} stories</a>` : '')
+    : pages > 1 ? `<nav class="pager" aria-label="Pages of stories">${pageNo > 1 ? `<a class="pg-prev" href="${url(pageNo - 1)}" data-page="${pageNo - 1}" rel="prev">&larr; Previous</a>` : ''}${Array.from({ length: pages }, (_, i) => i + 1).map(n => n === pageNo ? `<span class="pg-cur" aria-current="page">${n}</span>` : `<a href="${url(n)}" data-page="${n}" aria-label="Page ${n}">${n}</a>`).join('')}${pageNo < pages ? `<a class="pg-next" href="${url(pageNo + 1)}" data-page="${pageNo + 1}" rel="next">Next &rarr;</a>` : ''}</nav><p class="pager-note mono">Showing ${(pageNo - 1) * PER_PAGE + 1}–${Math.min(pageNo * PER_PAGE, list.length)} of ${list.length} stories</p>` : '';
   if (announce) ($('#live') || N()).textContent = `Showing ${list.length} ${list.length === 1 ? 'story' : 'stories'}.`;
 }
 
@@ -472,6 +485,7 @@ function route() {
   $('#homeView').hidden = false;
   $('#storyView').hidden = true;
   showPage(r);
+  pageNo = parseInt(new URLSearchParams(location.search).get('page'), 10) || 1;
   renderFilters(); renderStories();
   setPageMeta(r);
   const pf = new URLSearchParams(location.search).get('prefill'), m = $('#mMsg');
