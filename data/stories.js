@@ -523,8 +523,44 @@ const STORIES = [
   ],
   pullQuote: "I didn't want to see that community come to an end. I wanted to keep it together, give it a home, and create a space where people could continue practising, connecting and growing together.",
   pullAfter: 3
+},
+{
+  id: "16",
+  published: "2026-11-17",
+  image: "images/helene-retsinias-anido.jpg",
+  imageAlt: "Helene Retsinias Anido, yoga teacher and founder of Yoga with Hélène in Barnet, London",
+  tags: ["Yoga", "Mindfulness", "Community"],
+  sample: false,
+  headline: "Come As You Are: How Helene Retsinias Anido Built a Welcoming Yoga Community in North London.",
+  summary: "Helene Retsinias Anido turned her personal love of yoga into a teaching journey. Through Yoga with Hélène in Barnet, North London, she helps people of different ages and abilities explore movement, breathwork, mindfulness and yoga philosophy.",
+  business: "Yoga with Hélène",
+  owner: "Helene Retsinias Anido",
+  location: "Barnet, North London, United Kingdom",
+  founded: "2022",
+  offers: "Adult yoga classes, children's yoga, personalised sessions, seasonal workshops, breathwork and mindfulness",
+  instagram: "https://www.instagram.com/yoga_with_helene/",
+  website: "https://www.yogawithhelene.com/",
+  readTime: "8 min read",
+  initials: "HA",
+  body: [
+    "For Helene Retsinias Anido, yoga was never simply about learning physical postures. What began as a personal practice gradually became a way of understanding herself, navigating life's changes and finding more space and perspective in everyday life. Eventually, she realised that something that had made such a difference to her own life was worth sharing with others.",
+    "Her journey as a teacher began in 2017, when she started teaching children's yoga while raising her own children. Five years later, in 2022, she expanded her teaching to adults. These experiences helped shape her understanding of how yoga can support people at different stages of life, with different needs and experiences.",
+    "That vision became Yoga with Hélène, an independent yoga business based in Barnet, North London. Her intention was to create a welcoming space where people could explore yoga at their own pace, move beyond physical postures and discover what the practice could bring into their everyday lives.",
+    "Building her teaching business was a gradual process. The early days involved finding her confidence, getting to know the local community and learning what worked best for her students. She started small, building her classes one at a time. A weekly newsletter helped her stay connected with people, share reflections and develop relationships with her growing community. Personalised sessions also gave her opportunities to learn and develop as a teacher.",
+    "Over time, those small beginnings became something meaningful. Students returned, relationships developed, and Helene began building the kind of community she had hoped to create. Her classes welcome a diverse mix of local men and women, from complete beginners to experienced practitioners. Some students are still in their late teens, occasionally attending alongside their mothers, while her oldest student is in her eighties.",
+    "Their reasons for practising are just as varied. Some come to improve their movement, stretch and feel more comfortable in their bodies. Others want a moment of calm in an otherwise busy week or an opportunity to reconnect with themselves. Helene believes everyone should feel welcome, regardless of their experience or ability.",
+    "What makes her approach distinctive is the way she brings together movement, breathwork, mindfulness and yoga philosophy. She doesn't view yoga as a fitness class or a collection of perfect postures. Instead, she encourages students to explore the practice more deeply without making it complicated or inaccessible.",
+    "Her classes are intentionally small and personal, allowing her to pay attention to individual needs rather than expecting everyone to move in exactly the same way. She also organises seasonal workshops, creating opportunities to spend more time exploring particular themes and aspects of yoga.",
+    "One of Helene's proudest achievements is the community she has built, one class and one person at a time. Her work has also reached beyond the yoga room. Reflections and ideas that originally began as a weekly newsletter for her students have been published by Elephant Journal and OM Yoga Magazine & Lifestyle.",
+    "Despite these achievements, Helene finds that running an independent business requires much more than teaching. She describes herself as the teacher, administrator, accountant, website manager, graphic designer and marketing department all at once. While teaching is the part she loves most, finding the time and energy to promote her classes and reach new people can be challenging.",
+    "Like many independent business owners, she has learned that building something locally requires patience, consistency and belief in what you offer, particularly when you are managing everything yourself.",
+    "For anyone considering joining her classes, Helene has a reassuring message: you don't need to be flexible, experienced or particularly good at yoga to begin. You don't need to touch your toes or stand on your head. She encourages students to listen to their bodies, take their time and find their own way into the practice.",
+    "For Helene, yoga isn't about getting somewhere or achieving the perfect posture. It is about paying attention to where you are right now. Through Yoga with Hélène, she continues to share this philosophy with her local community, reminding people that they don't need to change who they are before stepping onto a yoga mat.",
+    "Her journey is a reminder that meaningful businesses don't always begin with ambitious expansion plans. Sometimes, they grow through small classes, thoughtful conversations, consistent effort and the relationships built along the way. In Barnet, Helene has created a welcoming community where people can come as they are and remain curious."
+  ],
+  pullQuote: "Yoga is not about getting somewhere or achieving a perfect posture. It's about paying attention to where you are right now.",
+  pullAfter: 6
 }
-
 
 ];
 
