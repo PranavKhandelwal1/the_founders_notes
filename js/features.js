@@ -91,7 +91,7 @@ function setPageMeta(r) {
     crumbs.push(['Stories', '/stories/'], [r.tag + ' founders', r.path]);
   } else if (r.country) {
     const topics = [...new Set(subset.flatMap(tagsOf))].slice(0, 3);
-    title = `Independent founders in ${r.country}: ${subset.length} stories | ${brand}`;
+    title = `Founders in ${r.country}: ${subset.length} stories | ${brand}`;
     description = clip(`Read ${subset.length} stories from independent founders in ${r.country}${topics.length ? ', including ' + topics.join(', ').toLowerCase() : ''}: how they started and what a normal week looks like.`, 160);
     crumbs.push(['Stories', '/stories/'], ['Founders in ' + r.country, r.path]);
   } else if (r.page !== 'home') crumbs.push([PAGE_NAMES[r.page], r.path]);
@@ -378,6 +378,7 @@ function wireForm(form, build) {
     const label = btn.textContent; btn.disabled = true; btn.textContent = 'Sending…'; say('', 'Sending…');
     try {
       await postForm(fields, subject, replyTo, { endpoint });
+      track(form.id === 'newsletterForm' ? 'newsletter_signup' : 'nomination_submit');
       say('ok', form.dataset.thanks || 'Thank you, that has been sent.');
       form.reset();
     } catch (err) {
@@ -471,6 +472,7 @@ function wireStoryForm() {
     const label = btn.textContent; btn.disabled = true; btn.textContent = 'Sending…'; say('', 'Sending your application…');
     try {
       const { photoSent } = await postForm(payload, subject, replyTo, { file });
+      track('application_submit', { has_photo: !!file });
       store.del();
       showDone(answers, v('#sName'), replyTo, file && !photoSent ? subject : '');
       form.reset(); progress(true); ds.textContent = '';

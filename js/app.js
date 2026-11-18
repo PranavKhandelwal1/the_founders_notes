@@ -201,7 +201,8 @@ function showStory(s, opts = {}) {
   const pq = `<blockquote class="pull"><p>${esc('\u201C' + s.pullQuote + '\u201D')}</p><cite class="mono">${esc(s.owner)}, ${esc(s.business)}</cite></blockquote>`;
   const at = Math.min(Math.max(s.pullAfter || 2, 1), paras.length);
   paras.splice(at, 0, pq);
-  const fact = (k, v) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`;
+  const NA_VALUE = /^\s*(|n\/?a|nil+|null|none|-|\u2014)\s*$/i;   // blank or "not applicable": hide the row instead of showing an empty or wrong value
+  const fact = (k, v) => (v == null || NA_VALUE.test(String(v))) ? '' : `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`;
   ($('#storyView') || N()).innerHTML = `
   <div class="wrap story" style="${catVars(s)}">
 <nav class="crumbs mono" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/stories/">Stories</a><span aria-hidden="true">/</span><span aria-current="page">${esc(s.owner)}</span></nav>
@@ -225,7 +226,7 @@ function showStory(s, opts = {}) {
     <div class="box">
       <h2>Business facts</h2>
       <dl class="facts">
-        ${fact('Business', s.business)}${fact('Owner', s.owner)}${fact('Location', s.location)}${fact('Founded', s.founded)}${fact('Offers', s.offers)}${s.instagram ? `<div><dt>Instagram</dt><dd><a class="ig-link" href="${esc(igHref(s.instagram))}" target="_blank" rel="noopener" aria-label="${esc(s.business)} on Instagram" title="Instagram">${ICONS.insta}</a></dd></div>` : ''}
+        ${fact('Business', s.business)}${fact('Owner', s.owner)}${fact('Location', s.location)}${fact('Founded', /\b(1[89]|20)\d{2}\b/.test(String(s.founded || '')) ? s.founded : '')}${fact('Offers', s.offers)}${s.instagram ? `<div><dt>Instagram</dt><dd><a class="ig-link" href="${esc(igHref(s.instagram))}" target="_blank" rel="noopener" aria-label="${esc(s.business)} on Instagram" title="Instagram">${ICONS.insta}</a></dd></div>` : ''}
       </dl>
     </div>
   </aside>
@@ -284,6 +285,19 @@ const msgForm = $('#msgForm') || document.createElement('form'), msgNote = $('#m
 const msgUrl = () => (CONFIG.formEndpoint && CONFIG.formEndpoint.trim()) || (isSet(CONFIG.formAccessKey) ? 'https://api.web3forms.com/submit' : 'https://formsubmit.co/ajax/' + CONFIG.email);
 /* Extra fields when a Web3Forms access key is set (see data/config.js). Empty otherwise. */
 const formExtras = (subject, replyTo) => isSet(CONFIG.formAccessKey) ? { access_key: CONFIG.formAccessKey.trim(), subject, from_name: CONFIG.brand + ' website', replyto: replyTo } : {};
+/* Conversion events for Google Tag Manager. They are only queued in the page's dataLayer; nothing leaves the browser
+   unless the visitor accepted cookies (js/consent.js). Never put names, emails or message text in an event. */
+function track(name, params) { try { (window.dataLayer = window.dataLayer || []).push(Object.assign({ event: name }, params || {})); } catch (_) { } }
+document.addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('a'); if (!a) return;
+  const h = a.getAttribute('href') || '';
+  if (a.hasAttribute('data-prefill')) { const box = a.closest('.pack, .audit'), h3 = box && box.querySelector('h3'); track('enquiry_click', { label: h3 ? h3.textContent : 'contact' }); }
+  else if (/calendly\.com/i.test(h)) track('book_call_click');
+  else if (/wa\.me|whatsapp/i.test(h)) track('whatsapp_click');
+  else if (/^mailto:/i.test(h)) track('email_click');
+  else if (/\/submit-story\/?$/.test(h)) track('apply_click');
+});
+
 /* Delivers one submission to every inbox. Web3Forms ties each free key to one email, so a second key (CONFIG.formAccessKeyExtra) reaches the second inbox.
    Succeeds if at least one copy arrives. Returns { photoSent }. */
 async function postForm(fields, subject, replyTo, opts) {
@@ -328,6 +342,7 @@ msgForm.addEventListener('submit', async e => {
   msgBtn.disabled = true; msgBtn.textContent = 'Sending\u2026'; setNote('', 'Sending your message\u2026');
   try {
     await postForm({ name: n, email: em, business: biz, message: msg }, subject, em);
+    track('contact_submit');
     setNote('ok', 'Thank you. Your message has been sent, and we will reply to ' + esc(em) + '.');
     msgForm.reset();
   } catch (err) {
@@ -490,6 +505,8 @@ function route() {
   pageNo = parseInt(new URLSearchParams(location.search).get('page'), 10) || 1;
   renderFilters(); renderStories();
   setPageMeta(r);
+  // the first pictures are what visitors see first: load them straight away, everything below waits until scrolled to
+  $$('main img').filter(i => !i.closest('.pg-off')).slice(0, 3).forEach((i, n) => { i.setAttribute('loading', 'eager'); if (n === 0) i.setAttribute('fetchpriority', 'high'); });
   const pf = new URLSearchParams(location.search).get('prefill'), m = $('#mMsg');
   if (pf && m) m.value = pf;
 }

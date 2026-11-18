@@ -134,8 +134,16 @@ const outFile = routePath => path.join(OUT, routePath === '/' ? 'index.html' : r
 
   /* ---------- 6. Sitemap and robots.txt ---------- */
   const urls = [...routes, '/privacy.html'];
+  /* lastmod: a story page uses its own published date; the home page and the stories list use the newest story date.
+     Pages with no honest date carry none, because Google ignores dates that are always "today". */
+  const lastmod = {}; let newest = '';
+  for (const [r, html] of Object.entries(pages)) {
+    const m = html.match(/"datePublished":\s*"(\d{4}-\d{2}-\d{2})/);
+    if (m && /^\/stories\/.+/.test(r)) { lastmod[r] = m[1]; if (m[1] > newest) newest = m[1]; }
+  }
+  if (newest) { lastmod['/'] = newest; lastmod['/stories/'] = newest; }
   const sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-    urls.map(u => `  <url><loc>${SITE}${u}</loc></url>`).join('\n') + '\n</urlset>\n';
+    urls.map(u => `  <url><loc>${SITE}${u}</loc>${lastmod[u] ? `<lastmod>${lastmod[u]}</lastmod>` : ''}</url>`).join('\n') + '\n</urlset>\n';
   fs.writeFileSync(path.join(OUT, 'sitemap.xml'), sitemap);
   fs.writeFileSync(path.join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 

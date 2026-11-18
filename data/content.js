@@ -7,7 +7,7 @@ const SERVICES = [
   { title: "Website building", text: "A clear, fast, mobile-friendly site built around the questions your customers actually ask you." },
   { title: "Website redesign", text: "A tidy-up for a site that has fallen out of date, keeping what works and fixing what doesn't." },
   { title: "SEO", text: "Sensible page titles, structure and local-search basics, so people nearby can find you." },
-  { title: "Booking and enquiry setup", text: "Simple ways for customers to book a class, a private session or a retreat place, or send an enquiry, without message tag." },
+  { title: "Booking and enquiry setup", text: "Simple ways for customers to book a class, a private session or a retreat place, or send an enquiry, without long message chains." },
   { title: "Instagram-to-website link pages", text: "One tidy page for your Instagram bio that points to your timetable, menu or booking." },
   { title: "Hosting and maintenance", text: "Your site kept online, updated and backed up, so you can get on with running your business." }
 ];
@@ -100,31 +100,31 @@ const TESTIMONIALS = [];
    Story pages build their own from the story (name, business, place and summary). */
 const SEO = {
   home: {
-    title: "The Founders Notes: free stories about independent wellness founders",
+    title: "The Founders Notes | Free stories of independent founders",
     description: "Free, founder-approved stories about independent yoga, Pilates, martial arts and wellness business owners around the world. Read their journeys or get featured."
   },
   stories: {
-    title: "Founder stories: yoga, Pilates and wellness | The Founders Notes",
-    description: "Read how independent yoga teachers, studio owners and wellness founders started, what was hard, and what a normal week looks like. Every story is approved by the founder."
+    title: "Founder stories: yoga, Pilates, wellness | Founders Notes",
+    description: "Read how independent yoga teachers, studio owners and wellness founders started, what was hard, and what a normal week looks like. Founder-approved."
   },
   about: {
-    title: "About The Founders Notes | Free stories for independent founders",
+    title: "About Pranav Khandelwal | The Founders Notes",
     description: "Meet Pranav Khandelwal, the software developer behind The Founders Notes, a free publication of warm, founder-approved stories. See how a story is made."
   },
   mission: {
-    title: "Our mission: free founder stories for wellness | The Founders Notes",
-    description: "Why The Founders Notes exists: free, founder-approved stories for independent yoga, Pilates and fitness founders, who they are for, and where the publication is heading."
+    title: "Our mission: free founder stories | The Founders Notes",
+    description: "Why The Founders Notes exists: free, founder-approved stories for independent yoga, Pilates and fitness founders, who they are for and where it is heading."
   },
   "get-featured": {
     title: "Get featured for free | The Founders Notes",
-    description: "How to share your story with The Founders Notes: a 20-minute chat, a draft you approve, and a free story page with a badge and quote cards. Common questions answered."
+    description: "How to share your story with The Founders Notes: a 20-minute chat, a draft you approve, and a free story page with a badge and quote cards. Your questions answered."
   },
   "submit-story": {
     title: "Apply to be featured | The Founders Notes",
-    description: "Apply to be featured on The Founders Notes for free: answer a few questions about your journey, add a photo if you like, and approve the final story before it goes live."
+    description: "Apply to be featured on The Founders Notes for free: answer a few questions, add a photo if you like, and approve the final story before it goes live."
   },
   services: {
-    title: "Website design for yoga and wellness studios | The Founders Notes",
+    title: "Website design for yoga studios | The Founders Notes",
     description: "Simple, clear websites for studios, teachers and independent class businesses: link-in-bio pages, starter sites and care plans. Ask for a quote or a free mini audit."
   },
   contact: {

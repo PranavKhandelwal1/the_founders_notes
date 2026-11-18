@@ -500,7 +500,7 @@ const STORIES = [
   business: "Onda Yoga Studio",
   owner: "Francesca Carossino",
   location: "Berlin, Germany",
-  founded: "Onda Yoga Studio",
+  founded: "2017",
   offers: "Yoga classes, hot yoga, experienced yoga teachers, community practice and yoga philosophy",
   instagram: "https://www.instagram.com/francesca_carossino/",
   website: "https://ondayogastudio.de/",
