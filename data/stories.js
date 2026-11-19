@@ -524,7 +524,7 @@ const STORIES = [
   pullQuote: "I didn't want to see that community come to an end. I wanted to keep it together, give it a home, and create a space where people could continue practising, connecting and growing together.",
   pullAfter: 3
 },
-   {
+{
   id: "16",
   published: "2026-11-17",
   image: "images/helene-retsinias-anido.jpg",
@@ -559,6 +559,42 @@ const STORIES = [
     "Her journey is a reminder that meaningful businesses don't always begin with ambitious expansion plans. Sometimes, they grow through small classes, thoughtful conversations, consistent effort and the relationships built along the way. In Barnet, Helene has created a welcoming community where people can come as they are and remain curious."
   ],
   pullQuote: "Yoga is not about getting somewhere or achieving a perfect posture. It's about paying attention to where you are right now.",
+  pullAfter: 6
+},
+{
+  id: "17",
+  published: "2026-11-18,
+  image: "images/nina-tievoli.jpg",
+  imageAlt: "Nina Tievoli, founder of Chandra Consciousness",
+  tags: ["Holistic Wellness", "Yoga", "Mindfulness"],
+  sample: false,
+  headline: "Building a Business Around Inner Well-Being: Nina Tievoli’s Journey with Chandra Consciousness",
+  summary: "Nina Tievoli founded Chandra Consciousness to bring yoga, meditation, sound healing, cacao ceremonies and holistic practices together in a space for self-discovery. Starting from scratch, she is building a business rooted in personal growth, connection and the belief that meaningful change takes time.",
+  business: "Chandra Consciousness",
+  owner: "Nina Tievoli",
+  location: "Chamonix, France",
+  founded: "2026",
+  offers: "Yoga, meditation, breathwork, cacao ceremonies, sound healing, Tibetan singing bowls and holistic wellness experiences",
+  instagram: "@chandra_consciousness",
+  readTime: "5 min read",
+  initials: "NT",
+  body: [
+    "For Nina Tievoli, wellness has never been limited to the physical body. Her interest in health and healing began long before she started building her own business. At 18, she imagined studying medicine, but over time, she realised that her path was leading somewhere different—towards a more holistic understanding of health, personal growth and the connection between body, mind and spirit.",
+    "Having already taught yoga and offered cacao ceremonies, Nina wanted to bring her interests together in something of her own. She envisioned a business that went beyond physical exercise, creating opportunities for people to slow down, reconnect with themselves and explore their well-being in a deeper way. That vision became Chandra Consciousness, her holistic wellness venture.",
+    "The idea was born through an unexpected connection. A friend she hadn't seen in a long time presented her with an opportunity, and with encouragement and support, Nina decided to take the leap. Sometimes, the beginning of a business doesn't come from a carefully mapped-out plan. It comes from an idea, a conversation and the willingness to see where it might lead.",
+    "Starting from scratch, however, has brought its own challenges. In the early months, Nina found herself navigating the realities of building a business: investing time, energy and effort while waiting for the results to catch up. Like many independent founders, she has experienced moments when progress feels slower than expected and the amount of work seems greater than the return.",
+    "Yet little by little, she has started noticing growing interest in what she offers. More people are becoming curious about holistic wellness, and every new connection gives her another reason to keep building. For Nina, this stage is as much about learning and evolving as it is about establishing the business itself.",
+    "Her clients are everyday people, many balancing conventional jobs, busy schedules and the demands of modern life. Some arrive with no yoga experience at all, while others are already familiar with the practice and want to explore it more deeply. Nina particularly enjoys welcoming beginners, believing that yoga should be accessible regardless of age, experience or physical ability.",
+    "At Chandra Consciousness, yoga is not simply a sequence of postures. Nina brings together traditional yoga philosophy, breathing techniques, meditation and other holistic practices. Sound healing, including the use of Tibetan singing bowls, also forms part of the experiences she offers, inviting people to step away from their everyday routines and become more aware of their inner world.",
+    "Her intention is to create experiences that offer more than an hour of physical activity. She wants people to have the opportunity to pause, develop self-awareness and cultivate a more balanced relationship with themselves. Whether through a yoga class, a sound healing session or a cacao ceremony, she values creating space for people to feel present and connected.",
+    "When asked about the moments that make her proud, Nina doesn't point to a particular award, milestone or achievement. Instead, she remembers what happens at the end of a session. She notices the difference between how people arrive and how they leave—the shift in their expressions, their body language or the calmness they carry with them.",
+    "Those small moments matter more to her than any formal achievement. Seeing someone leave feeling lighter, more relaxed or more connected to themselves reminds her why she chose this path. It is these experiences that continue to give meaning to the work, especially during the more difficult days of building a business.",
+    "One of the biggest challenges so far has been the effort required compared with the financial return. Building a business takes dedication, and there are moments when the uncertainty can lead to self-doubt. But Nina has learned that a single class, session or meaningful conversation can completely change her perspective. It reminds her that she is still in the early stages of creating something and that growth rarely happens overnight.",
+    "Her advice to anyone starting a business of their own is simple: keep pursuing your dreams, even when things become difficult. Fear, self-doubt and the opinions of others can make it tempting to stop before giving an idea a real chance. Building something meaningful requires patience, consistency and the willingness to accept that things may not unfold according to your original timeline.",
+    "She also believes in the importance of asking for help. Starting something new doesn't mean having every answer or figuring everything out alone. Support, encouragement and the willingness to learn can make a difference along the way.",
+    "Through Chandra Consciousness, Nina Tievoli is building more than a holistic wellness business. She is creating a platform for sharing the practices and ideas that have shaped her own path, while inviting others to explore their well-being in their own way. Her journey is still unfolding, but it is guided by a clear intention: to keep growing, keep learning and create something meaningful through the work she loves."
+  ],
+  pullQuote: "Keep going, trust the process and remember that the best may still be ahead of you.",
   pullAfter: 6
 }
 
