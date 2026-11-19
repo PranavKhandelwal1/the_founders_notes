@@ -563,7 +563,7 @@ const STORIES = [
 },
 {
   id: "17",
-  published: "2026-11-18,
+  published: "2026-11-18",
   image: "images/nina-tievoli.jpg",
   imageAlt: "Nina Tievoli, founder of Chandra Consciousness",
   tags: ["Holistic Wellness", "Yoga", "Mindfulness"],
