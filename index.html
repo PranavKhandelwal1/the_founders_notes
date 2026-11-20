@@ -54,9 +54,9 @@
           <a class="mono" href="/about/">About</a>
           <a class="mono" href="/services/">Services</a>
           <a class="mono" href="/contact/">Contact</a>
-          <a class="btn btn-cta nav-cta-m" href="/submit-story/">Apply to be featured</a>
+          <a class="btn btn-cta nav-cta-m" href="/submit-story/">Tell your story</a>
         </div>
-        <a class="btn btn-cta nav-cta" href="/submit-story/">Apply to be featured</a>
+        <a class="btn btn-cta nav-cta" href="/submit-story/">Tell your story</a>
         <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="navLinks"
           aria-label="Open menu"><svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4 7h16M4 12h16M4 17h16" />
@@ -76,7 +76,7 @@
               <h1 class="hero-title"><span id="heroTitle"></span> <em id="heroTitleEm"></em></h1>
               <p class="hero-intro" id="heroIntro"></p>
               <div class="hero-actions">
-                <a class="btn btn-cta" href="/submit-story/">Apply to be featured</a>
+                <a class="btn btn-cta" href="/submit-story/">Tell your story</a>
                 <a class="btn btn-line" href="/stories/">Explore the stories</a>
               </div>
               <ul class="hero-checks" id="heroChecks"></ul>
@@ -114,7 +114,7 @@
         <div style="height:clamp(48px,8vw,96px)"></div>
       </section>
 
-      <section class="sec" id="about" data-pages="about" style="border-top:1px solid var(--line)">
+      <section class="sec" id="about" data-pages="about">
         <div class="wrap">
           <div class="about">
             <figure class="portrait" id="aboutPortrait" style="margin:0">
@@ -137,13 +137,68 @@
                 <li><span class="mono">Your yes</span>Nothing is published without it</li>
                 <li><span class="mono">Remote</span>Founders from anywhere</li>
               </ul>
-              <p class="about-note">I also build websites, and there is a short section on that further down for anyone
-                who ever wants one. It is separate from the stories, and being featured never depends on it.</p>
               <p class="sign">&mdash; <span data-owner></span></p>
-              <p class="about-actions"><a class="btn btn-cta" href="/submit-story/">Apply to be featured</a>
+              <p class="about-actions"><a class="btn btn-cta" href="/submit-story/">Tell your story</a>
                 <a class="btn btn-line" href="" data-linkedin-link rel="me">Connect on LinkedIn</a></p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section class="sec" id="about-mission" data-pages="about" style="border-top:1px solid var(--line)">
+        <div class="wrap">
+          <div class="svc-who-grid">
+            <div>
+              <span class="kicker mono">Our mission</span>
+              <h2>To celebrate the people behind independent businesses.</h2>
+              <p class="am-text">Behind every studio, shop and small business is a person who took a risk. The first
+                steps, the hard weeks and the proud moments rarely get told. I share those journeys honestly, using only
+                what founders tell me, so the real people are seen.</p>
+            </div>
+            <div>
+              <span class="kicker mono">Our philosophy</span>
+              <p class="svc-who-lead">Independent businesses shape the places we live in, and the people running them deserve to be known.</p>
+              <p>A story told well helps people feel they know you before they ever meet you. It builds trust, and we
+                believe it can lead to connections and opportunities that a list of services never could. That is why
+                every story here is written with care, and why nothing is published without the founder's written yes.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="about-do" data-pages="about" style="border-top:1px solid var(--line)">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="kicker mono">What we do</span>
+            <h2>Every great business story deserves a strong digital presence.</h2>
+            <p>So <span data-brand></span> does two things, side by side.</p>
+          </div>
+          <div class="about-do">
+            <div class="ad-col">
+              <span class="mono">A &middot; Editorial</span>
+              <h3>Stories about the people behind the business</h3>
+              <ul><li>Founder stories</li><li>Interviews</li><li>Independent business features</li></ul>
+              <a class="svc-link" href="/stories/">Read the stories <span aria-hidden="true">&rarr;</span></a>
+            </div>
+            <div class="ad-col">
+              <span class="mono">B &middot; Digital services</span>
+              <h3>Websites that help those businesses be found and booked</h3>
+              <ul><li>Website design and development</li><li>Website redesign</li><li>Booking systems</li><li>E-commerce</li><li>SEO</li><li>Website maintenance</li></ul>
+              <a class="svc-link" href="/services/">Explore our services <span aria-hidden="true">&rarr;</span></a>
+            </div>
+          </div>
+          <p class="about-do-note">Being featured is always free and never depends on any service.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="about-stories" data-pages="about" style="border-top:1px solid var(--line)">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="kicker mono">From the publication</span>
+            <h2>Recent stories</h2>
+          </div>
+          <div class="grid" id="aboutStories"></div>
+          <p class="about-more"><a class="btn btn-line" href="/stories/">Read all stories</a></p>
         </div>
       </section>
 
@@ -218,7 +273,7 @@
               </div>
             </div>
             <div class="actions">
-              <a class="btn btn-cta" href="/submit-story/">Apply to be featured</a>
+              <a class="btn btn-cta" href="/submit-story/">Tell your story</a>
               <a class="btn btn-line" href="" data-cal-link>Book a call</a>
               <a class="btn btn-line" href="" data-mail-link data-subject="I'd like to be featured">Email us</a>
               <button class="btn btn-line" type="button" id="copyBtn">Copy email</button>
@@ -346,9 +401,28 @@
         <div class="wrap">
           <div class="sec-head">
             <span class="kicker mono">Editorial principles</span>
-            <h2>How this publication works</h2>
+            <h2>What makes it different</h2>
           </div>
           <div class="trust" id="principlesGrid"></div>
+        </div>
+      </section>
+
+      <section class="sec" id="about-cta" data-pages="about" style="border-top:1px solid var(--line)">
+        <div class="wrap">
+          <div class="about-paths">
+            <div>
+              <span class="kicker mono">For founders</span>
+              <h2>Share your story.</h2>
+              <p>Tell us about your business and journey. Features are free, and every story is approved by the founder before publication.</p>
+              <a class="btn btn-cta" href="/submit-story/">Share your story</a>
+            </div>
+            <div>
+              <span class="kicker mono">For businesses</span>
+              <h2>Build your digital presence.</h2>
+              <p>Websites, booking systems and more, made simply and in plain language, for independent businesses.</p>
+              <a class="btn btn-line" href="/services/">Explore our services</a>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -529,7 +603,7 @@
               <h2>Want to share your founder story?</h2>
               <p>Tell us about your business and journey. Features are free, and every story is approved by the founder before publication.</p>
             </div>
-            <a class="btn btn-line" href="/submit-story/">Apply to be featured</a>
+            <a class="btn btn-line" href="/submit-story/">Tell your story</a>
           </div>
         </div>
       </section>
@@ -564,7 +638,7 @@
         <h2>Ready to tell your <em>founder story</em>?</h2>
         <div class="f-cta-actions">
           <a class="btn btn-cta" href="" data-cal-link>Book a call</a>
-          <a class="btn btn-ghost" href="/submit-story/">Apply to be featured</a>
+          <a class="btn btn-ghost" href="/submit-story/">Tell your story</a>
         </div>
       </div>
       <div class="f-grid">
@@ -603,14 +677,14 @@
         <nav class="f-col" aria-label="For founders">
           <h3>For founders</h3>
           <ul>
-            <li><a href="/submit-story/">Apply to be featured</a></li>
+            <li><a href="/submit-story/">Tell your story</a></li>
             <li><a href="/get-featured/">How it works</a></li>
             <li><a href="/get-featured/#faq">FAQ</a></li>
           </ul>
         </nav>
       </div>
       <div class="f-bottom">
-        <p>&copy; <span id="year"></span> <span data-brand></span>. Every story is published only with the founder's written approval.</p>
+        <p>&copy; <span id="year"></span> <span data-brand></span>. All rights reserved.</p>
         <div class="f-meta">
           <a href="/privacy.html">Privacy</a>
           <a href="#" data-cookie-settings>Cookie settings</a>

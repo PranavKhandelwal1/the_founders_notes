@@ -137,8 +137,8 @@ const SEO = {
     description: "Read how independent yoga teachers, studio owners and wellness founders started, what was hard, and what a normal week looks like. Founder-approved."
   },
   about: {
-    title: "About Pranav Khandelwal | The Founders Notes",
-    description: "Meet Pranav Khandelwal, the software developer behind The Founders Notes, a free publication of warm, founder-approved stories. See how a story is made."
+    title: "About The Founders Notes | Stories of independent founders",
+    description: "The Founders Notes is a free publication of real, founder-approved stories about independent businesses. Meet Pranav Khandelwal, the person behind it."
   },
   mission: {
     title: "Our mission: free founder stories | The Founders Notes",

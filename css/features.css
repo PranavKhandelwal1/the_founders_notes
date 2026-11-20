@@ -306,9 +306,13 @@ footer, .site-footer { border-top-left-radius: 32px; border-top-right-radius: 32
 
 /* ---------- Services page (all rules scoped to the Services sections) ---------- */
 #services .svc-hero { max-width: 62rem; padding-bottom: clamp(28px, 5vw, 56px) }
+#about-hero .svc-hero { max-width: 62rem; padding-bottom: clamp(28px, 5vw, 56px) }
 #services .svc-hero h2 { font-size: clamp(2.3rem, 5.4vw, 4.2rem); line-height: 1.08; margin: 0 0 1.4rem; max-width: 20ch }
+#about-hero .svc-hero h2 { font-size: clamp(2.3rem, 5.4vw, 4.2rem); line-height: 1.08; margin: 0 0 1.4rem; max-width: 20ch }
 #services .svc-hero p { color: var(--muted); font-size: clamp(1.05rem, 1.5vw, 1.25rem); max-width: 56ch; margin: 0 }
+#about-hero .svc-hero p { color: var(--muted); font-size: clamp(1.05rem, 1.5vw, 1.25rem); max-width: 56ch; margin: 0 }
 #services .svc-hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.8rem }
+#about-hero .svc-hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.8rem }
 #services .services { display: block; border-top: 1px solid var(--head) }
 .svc { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 5vw, 80px); padding: clamp(28px, 4vw, 52px) 0; border-bottom: 1px solid var(--line) }
 .svc .mono { color: var(--accent); font-size: .74rem; letter-spacing: .14em }
@@ -337,3 +341,29 @@ footer, .site-footer { border-top-left-radius: 32px; border-top-right-radius: 32
 @media (max-width: 560px) {
   #services .svc-hero-actions .btn, #svc-cta .svc-cta-actions .btn, .svc .btn { width: 100%; justify-content: center; text-align: center }
 }
+
+/* ---------- About page (rules scoped to the About sections) ---------- */
+#about-hero .svc-hero { padding-bottom: clamp(8px, 2vw, 24px) }
+#about-mission .am-text { margin: 1.2rem 0 0; color: var(--muted); max-width: 52ch }
+.about-do { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(28px, 6vw, 96px); margin-top: clamp(24px, 4vw, 44px) }
+.ad-col { border-top: 1px solid var(--head); padding-top: 1.2rem; display: flex; flex-direction: column; align-items: flex-start }
+.ad-col .mono { color: var(--accent); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase }
+.ad-col h3 { font-size: clamp(1.4rem, 2.2vw, 1.8rem); margin: .6rem 0 1rem }
+.ad-col ul { list-style: none; margin: 0 0 1.2rem; padding: 0; width: 100% }
+.ad-col li { padding: .55rem 0; border-bottom: 1px solid var(--line); color: var(--ink) }
+.about-do-note { margin: clamp(20px, 3vw, 32px) 0 0; color: var(--muted); font-size: .98rem }
+#about-stories .grid { margin-top: clamp(24px, 4vw, 40px) }
+.about-more { margin: clamp(24px, 4vw, 40px) 0 0; text-align: center }
+.about-paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(28px, 6vw, 96px) }
+.about-paths h2 { font-size: clamp(1.9rem, 3.4vw, 2.7rem); margin: 0 0 .8rem }
+.about-paths p { color: var(--muted); margin: 0 0 1.4rem; max-width: 46ch }
+@media (max-width: 900px) { .about-do, .about-paths { grid-template-columns: 1fr } }
+@media (max-width: 560px) { #about-hero .svc-hero-actions .btn, .about-paths .btn { width: 100%; justify-content: center; text-align: center } }
+
+/* Stories page: a few topics, then a "More tags" button that opens the rest */
+.more-tags { position: relative; display: inline-flex }
+.chip.more-btn { cursor: pointer; background: var(--head); color: var(--bg); border-color: var(--head); gap: .4rem; display: inline-flex; align-items: center }
+.chip.more-btn:hover { opacity: .88 }
+.more-panel { position: absolute; z-index: 30; top: calc(100% + .6rem); right: 0; width: min(440px, 86vw); display: flex; flex-wrap: wrap; gap: .5rem; padding: 1rem; background: var(--alt); border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 14px 40px rgba(0, 0, 0, .14) }
+.more-panel[hidden] { display: none }
+@media (max-width: 560px) { .more-tags { position: static } .more-panel { left: 0; right: 0; width: auto } #filters { position: relative } }

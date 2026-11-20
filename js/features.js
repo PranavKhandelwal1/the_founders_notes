@@ -24,16 +24,26 @@ function siteStats() {
 function renderFilters() {
   const box = $('#filters');
   if (!box) return;
-  const topics = topicNames().slice(0, 8), pages = placeNames();
+  const topics = topicNames(), pages = placeNames();
   // every country is listed; a country with 2+ stories opens its own page, a country with one story opens that story
   const places = [...tally(countryOf)].sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0])).map(([k]) => k);
   const target = c => pages.includes(c) ? countryPath(c) : storyPath(STORIES.find(s => countryOf(s) === c));
   if (!topics.length && !places.length) { box.hidden = true; return; }
   box.hidden = false;
-  box.innerHTML = `<nav class="chips" aria-label="Browse stories by topic"><a class="chip${!fTag && !fCountry ? ' on' : ''}" href="/stories/">All</a>${topics.map(t =>
-    `<a class="chip${fTag === t ? ' on' : ''}" href="${tagPath(t)}"${fTag === t ? ' aria-current="page"' : ''}>${esc(t)}</a>`).join('')}</nav>` +
+    const chip = t => `<a class="chip${fTag === t ? ' on' : ''}" href="${tagPath(t)}"${fTag === t ? ' aria-current="page"' : ''}>${esc(t)}</a>`;
+  const SHOW = 6, extra = topics.slice(SHOW), inExtra = extra.includes(fTag);
+  box.innerHTML = `<nav class="chips" aria-label="Browse stories by topic"><a class="chip${!fTag && !fCountry ? ' on' : ''}" href="/stories/">All</a>${topics.slice(0, SHOW).map(chip).join('')}${extra.length ? `<span class="more-tags"><button type="button" class="chip more-btn${inExtra ? ' on' : ''}" id="moreBtn" aria-expanded="false" aria-controls="morePanel">More tags <span aria-hidden="true">&#9662;</span></button><span class="more-panel" id="morePanel" hidden>${extra.map(chip).join('')}</span></span>` : ''}</nav>` +
     (places.length ? `<label class="sr-only" for="fCountry">Country</label><select id="fCountry" class="select"><option value="/stories/">All countries</option>${places.map(c =>
       `<option value="${target(c)}"${c === fCountry ? ' selected' : ''}>${esc(c)}</option>`).join('')}</select>` : '');
+  const mb = $('#moreBtn'), mp = $('#morePanel');
+  if (mb && mp) {
+    const close = () => { mp.hidden = true; mb.setAttribute('aria-expanded', 'false'); };
+    mb.onclick = e => { e.stopPropagation(); const open = mp.hidden; mp.hidden = !open; mb.setAttribute('aria-expanded', String(open)); };
+    mp.onclick = e => e.stopPropagation();
+    if (!window._moreTagsWired) { window._moreTagsWired = true;
+      document.addEventListener('click', () => { const p = $('#morePanel'), b = $('#moreBtn'); if (p && !p.hidden) { p.hidden = true; b.setAttribute('aria-expanded', 'false'); } });
+      document.addEventListener('keydown', e => { const p = $('#morePanel'), b = $('#moreBtn'); if (e.key === 'Escape' && p && !p.hidden) { p.hidden = true; b.setAttribute('aria-expanded', 'false'); b.focus(); } }); }
+  }
 }
 
 /* ---------- Search tags, link previews and structured data (one set per page) ---------- */
@@ -76,7 +86,7 @@ const orgLd = () => ({
   ...(isSet(CONFIG.instagram) ? { sameAs: [instaUrl()] } : {})
 });
 const itemListLd = list => ({ '@type': 'ItemList', itemListElement: list.map((s, i) => ({ '@type': 'ListItem', position: i + 1, url: storyUrl(s), name: s.headline })) });
-const PAGE_NAMES = { stories: 'Stories', about: 'About', mission: 'Our mission', 'get-featured': 'Get featured', 'submit-story': 'Apply to be featured', services: 'Services', contact: 'Contact' };
+const PAGE_NAMES = { stories: 'Stories', about: 'About', mission: 'Our mission', 'get-featured': 'Get featured', 'submit-story': 'Tell your story', services: 'Services', contact: 'Contact' };
 
 /* Home, list and information pages */
 function setPageMeta(r) {

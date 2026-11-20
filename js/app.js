@@ -21,7 +21,7 @@ const asset = p => /^(https?:|\/|data:)/.test(p) ? p : '/' + String(p).replace(/
 const PAGES = { home: '/', stories: '/stories/', about: '/about/', mission: '/mission/', 'get-featured': '/get-featured/', 'submit-story': '/submit-story/', services: '/services/', contact: '/contact/' };
 const tally = pick => { const m = new Map(); STORIES.forEach(s => [].concat(pick(s)).filter(Boolean).forEach(k => m.set(k, (m.get(k) || 0) + 1))); return m; };
 /* A topic or country gets its own page once at least two stories share it */
-const topicNames = () => [...tally(s => Array.isArray(s.tags) ? s.tags : [])].filter(([, n]) => n >= 2).sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0])).map(([k]) => k);
+const topicNames = () => [...tally(s => Array.isArray(s.tags) ? s.tags : [])].sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0])).map(([k]) => k);
 const placeNames = () => [...tally(s => String(s.location || '').split(',').pop().trim())].filter(([, n]) => n >= 2).sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0])).map(([k]) => k);
 const tagPath = t => '/tag/' + slugify(t) + '/';
 const countryPath = c => '/country/' + slugify(c) + '/';
@@ -123,7 +123,7 @@ const igHref = v => /^https?:/.test(v) ? v : 'https://instagram.com/' + String(v
 /* ---------- Shared pieces ---------- */
 const catVars = s => { const c = coverOf(s); return `--cat:${c.accent};--cat-ink:light-dark(${c.inkLight},${c.inkDark})`; };
 const tagsOf = s => Array.isArray(s.tags) ? s.tags : [];
-const labelHtml = s => `<p class="label">${tagsOf(s).length ? `<span class="cat-name">${esc(tagsOf(s).slice(0, 2).join(' \u00b7 '))}</span>` : ''}${s.sample ? '<span class="sample">Sample</span>' : ''}</p>`;
+const labelHtml = s => `<p class="label">${tagsOf(s).length ? `<span class="cat-name">${esc(tagsOf(s).join(' \u00b7 '))}</span>` : ''}${s.sample ? '<span class="sample">Sample</span>' : ''}</p>`;
 const tagsHtml = s => tagsOf(s).length ? `<ul class="tags" aria-label="Tags">${tagsOf(s).map(t => topicNames().includes(t) ? `<li><a href="${tagPath(t)}">${esc(t)}</a></li>` : `<li>${esc(t)}</li>`).join('')}</ul>` : '';
 
 const numHtml = s => `<span class="num mono">#${STORIES.length - STORIES.indexOf(s._orig || s)}</span>`;
@@ -144,7 +144,7 @@ const inviteHtml = () => `<article class="card invite">
 <span class="mono">For business owners</span>
 <h3>Teach or run a studio? Get featured for free.</h3>
 <p>A short chat, a draft you approve, and a story that's yours to share.</p>
-<a class="btn btn-cta" href="/submit-story/">Apply to be featured</a>
+<a class="btn btn-cta" href="/submit-story/">Tell your story</a>
   </div>
 </article>`;
 
@@ -394,6 +394,7 @@ function renderStatic() {
   ($('#keyfacts') || N()).innerHTML = HERO.facts.map(f => `<div><strong>${esc(f.big.replace('{count}', STORIES.length).replace('{countries}', siteStats().countries).replace('{disciplines}', siteStats().disciplines))}</strong><span class="mono">${esc(f.label)}</span></div>`).join('');
   ($('#trust') || N()).innerHTML = TRUST.map((t, i) => `<div><span class="mono">0${i + 1}</span><h3>${esc(t.title)}</h3><p>${esc(t.text)}</p></div>`).join('');
   ($('#steps') || N()).innerHTML = STEPS.map(t => `<li><h3>${esc(t.title)}</h3><p>${esc(t.text)}</p></li>`).join('');
+  ($('#aboutStories') || N()).innerHTML = STORIES.slice(0, 3).map(cardHtml).join('');
   ($('#serviceGrid') || N()).innerHTML = SERVICES.map((t, i) => `<article class="svc${t.main ? ' main' : ''}"><div class="svc-lead"><span class="mono">0${i + 1}</span><h3>${esc(t.title)}</h3><p>${esc(t.what)}</p><a class="${t.main ? 'btn btn-cta' : 'svc-link'}" href="/contact/" data-type="${esc(t.type)}" data-prefill="${esc("Hi, I'd like to talk about: " + t.title + ". My business and what I need: ")}">${t.main ? (i === 0 ? 'Discuss your website' : 'Ask about booking') : 'Ask about this'}${t.main ? '' : ' <span aria-hidden="true">&rarr;</span>'}</a></div><dl class="svc-body"><div><dt class="mono">Who needs it</dt><dd>${esc(t.who)}</dd></div><div><dt class="mono">The problem it solves</dt><dd>${esc(t.problem)}</dd></div><div><dt class="mono">What you receive</dt><dd><ul>${t.gets.map(g => `<li>${esc(g)}</li>`).join('')}</ul></dd></div></dl></article>`).join('');
 }
 function renderProof() {
