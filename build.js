@@ -130,7 +130,14 @@ const outFile = routePath => path.join(OUT, routePath === '/' ? 'index.html' : r
   /* ---------- 5. Copy the files the site needs ---------- */
   for (const d of ['css', 'js', 'data', 'images', 'assets']) fs.cpSync(path.join(ROOT, d), path.join(OUT, d), { recursive: true });
   for (const f of ['privacy.html', '404.html', '.nojekyll', 'CNAME', 'favicon.ico']) if (fs.existsSync(path.join(ROOT, f))) fs.copyFileSync(path.join(ROOT, f), path.join(OUT, f));
-  for (const [r, html] of Object.entries(pages)) { const f = outFile(r); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, html); }
+  // Cache-busting: add ?v=<fingerprint of the file> to every css/js/data link, so browsers and the CDN fetch a changed file straight away
+  const crypto = require('crypto');
+  const stamp = html => html.replace(/(["'(])(\/(?:css|js|data)\/[\w.-]+\.(?:css|js))(?=["')])/g, (m, q, u) => {
+    const f = path.join(ROOT, u); if (!fs.existsSync(f)) return m;
+    return q + u + '?v=' + crypto.createHash('md5').update(fs.readFileSync(f)).digest('hex').slice(0, 8);
+  });
+  for (const [r, html] of Object.entries(pages)) { const f = outFile(r); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, stamp(html)); }
+  for (const f of ['privacy.html', '404.html']) { const o = path.join(OUT, f); if (fs.existsSync(o)) fs.writeFileSync(o, stamp(fs.readFileSync(o, 'utf8'))); }
 
   /* ---------- 6. Sitemap and robots.txt ---------- */
   const urls = [...routes, '/privacy.html'];
