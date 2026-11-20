@@ -354,25 +354,80 @@
 
       <section class="sec" id="services" data-pages="services">
         <div class="wrap">
-          <div class="sec-head">
+          <div class="svc-hero">
             <span class="kicker mono">Services</span>
-            <h2>Services for founders</h2>
-            <p>If you ever want help online, this is what I offer. Being featured never depends on any of it, and
-              everything is done remotely, so we can work together from anywhere.</p>
+            <h2>A website that helps people find you, trust you and book with you.</h2>
+            <p>I design and build clear, fast websites and simple booking systems for independent and service-based
+              businesses, so you can look professional online, attract the right customers and spend less time on
+              messages and admin. Everything is done remotely, so we can work together from anywhere.</p>
+            <div class="svc-hero-actions">
+              <a class="btn btn-cta" href="#svcList">Explore services</a>
+              <a class="btn btn-line" href="/contact/">Get in touch</a>
+            </div>
+          </div>
+
+          <div class="svc-list-wrap" id="svcList">
+            <div class="services" id="serviceGrid"></div>
           </div>
           <div id="audit"></div>
-          <div class="services" id="serviceGrid"></div>
-          <h3 class="pk-title">Website packages</h3>
-          <p class="who-for" id="servicesFor"></p>
-          <div class="packages" id="packages"></div>
+        </div>
+      </section>
+
+      <section class="sec svc-who" id="svc-who" data-pages="services" style="border-top:1px solid var(--line)">
+        <div class="wrap">
+          <div class="svc-who-grid">
+            <div>
+              <span class="kicker mono">Who I work with</span>
+              <h2>Built for people who run their business on their own energy.</h2>
+            </div>
+            <div>
+              <p class="svc-who-lead">Yoga teachers and studio owners, Pilates studios, wellness practitioners, retreat organisers, coaches and independent entrepreneurs.</p>
+              <p>You are brilliant at what you do. A website, an online calendar or a search ranking is not the part you
+                want to spend your evenings on, and that's fine. I spend my time listening to independent founders tell
+                their stories, so I know how a small business really runs: classes to teach, people to look after, and
+                very little spare time.</p>
+              <p>That's why I keep things simple. Plain language, one clear next step, and a website that feels like you
+                and works for you.</p>
+              <p class="svc-who-note mono">The Founders Notes is my own project. It is a website I designed and built myself, and you are looking at it now.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="svc-process" data-pages="services" style="border-top:1px solid var(--line)">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="kicker mono">How it works</span>
+            <h2>Four clear steps, with you involved throughout.</h2>
+            <p>You'll always know what is happening and what comes next.</p>
+          </div>
+          <ol class="how-steps" id="svcSteps"></ol>
           <div id="svcWork" hidden></div>
-          <h3 class="pk-title">How it works</h3>
-          <ol class="svc-steps" id="svcSteps"></ol>
-          <h3 class="pk-title">Questions before you write</h3>
+        </div>
+      </section>
+
+      <section class="sec" id="svc-faq" data-pages="services" style="border-top:1px solid var(--line)">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="kicker mono">Questions</span>
+            <h2>Questions before you write</h2>
+          </div>
           <div class="faq svc-faq" id="svcFaq"></div>
-          <div class="services-cta">
-            <a class="btn btn-cta" href="/contact/">Get in touch</a>
-            <p>Tell me a little about your business and what you need. I'll reply personally.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="svc-cta" data-pages="services" style="border-top:1px solid var(--line)">
+        <div class="wrap">
+          <div class="ct-band">
+            <div>
+              <span class="kicker mono">Next step</span>
+              <h2>Let's build your website.</h2>
+              <p>Tell me a little about your business and what you need. I'll reply personally <span data-reply-time></span>, with no obligation.</p>
+            </div>
+            <div class="svc-cta-actions">
+              <a class="btn btn-cta" href="/contact/" data-prefill="Hi, I'd like to start a project. My business and what I need: " data-type="Website design &amp; development">Start your project</a>
+              <a class="btn btn-line" id="svcCall" href="#">Book a free 20-minute call</a>
+            </div>
           </div>
         </div>
       </section>
@@ -380,74 +435,104 @@
       <section class="sec" id="get-in-touch" data-pages="contact">
         <div class="wrap">
           <div class="contact-grid">
-            <div>
+            <div class="contact-intro">
               <div class="sec-head">
                 <span class="kicker mono">Get in touch</span>
-                <h2>Let's talk about your story.</h2>
-                <p>Questions about being featured, or just want to say hello? Reach us whichever way suits you. We
-                  usually reply by email, WhatsApp or Instagram message.</p>
+                <h2>Let's talk about your business.</h2>
+                <p>Whether you're interested in sharing your story, working together, or building a stronger digital
+                  presence for your business, let's start a conversation.</p>
               </div>
+              <p class="alt-label mono">Prefer to write directly?</p>
               <ul class="chat-list" id="chatList"></ul>
               <p class="remote-note"><span data-brand></span> is a remote, digital publication working with founders
-                worldwide. There is no office to visit: every conversation happens online, in your time zone.</p>
+                and businesses worldwide. There is no office to visit: every conversation happens online, in your time
+                zone. I reply <span data-reply-time></span>.</p>
             </div>
 
             <form class="msg" id="msgForm" novalidate>
-              <div class="msg-brand"><svg class="logo-svg" viewBox="0 0 740 992" aria-hidden="true" focusable="false">
-                  <use href="#fn-logo" />
-                </svg><span class="mono" data-brand></span></div>
               <h3>Send a message</h3>
-              <label>Your name<input id="mName" type="text" autocomplete="name" required></label>
+              <p class="msg-sub">Tell me a little about you and what you have in mind. Fields marked * are required.</p>
               <input type="text" id="mHoney" tabindex="-1" autocomplete="off" aria-hidden="true"
                 style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-              <label>Your email<input id="mEmail" type="email" autocomplete="email" required></label>
-              <label>Business name or link (optional)<input id="mBiz" type="text"></label>
-              <label>How can we help?<textarea id="mMsg" required></textarea></label>
+              <div class="msg-row">
+                <label>Name *<input id="mName" type="text" autocomplete="name" required aria-describedby="msgNote"></label>
+                <label>Email *<input id="mEmail" type="email" autocomplete="email" required aria-describedby="msgNote"></label>
+              </div>
+              <div class="msg-row">
+                <label>Business name <span class="opt">(optional)</span><input id="mBiz" type="text" autocomplete="organization"></label>
+                <label>Website or Instagram <span class="opt">(optional)</span><input id="mLink" type="text" autocomplete="url" inputmode="url" placeholder="Link or @handle"></label>
+              </div>
+              <label>What is this about?
+                <select id="mType">
+                  <option>Website design &amp; development</option>
+                  <option>Website redesign</option>
+                  <option>Booking system</option>
+                  <option>SEO</option>
+                  <option>Website maintenance</option>
+                  <option>Founder story / interview</option>
+                  <option>Collaboration</option>
+                  <option selected>General enquiry</option>
+                  <option>Other</option>
+                </select>
+              </label>
+              <label>Message *<textarea id="mMsg" required aria-describedby="msgNote"></textarea></label>
               <button class="btn btn-cta" type="submit">Send message</button>
-              <p class="note" id="msgNote" role="status" aria-live="polite">Your message goes straight to our inbox, and
-                we reply by email.</p>
+              <p class="note" id="msgNote" role="status" aria-live="polite">Your message goes straight to my inbox, and
+                I reply by email.</p>
             </form>
           </div>
         </div>
       </section>
 
-      <section class="sec" id="contact-us" data-pages="contact" style="border-top:1px solid var(--line)">
+      <section class="sec" id="project-enquiry" data-pages="contact" style="border-top:1px solid var(--line)">
         <div class="wrap">
-          <div class="sec-head">
-            <span class="kicker mono">Contact us</span>
-            <h2>Who to write to</h2>
-            <p>Every address below reaches the same inbox, so you cannot pick the wrong one. Choosing the closest fit just helps me answer faster. I reply <span data-reply-time></span>.</p>
+          <div class="split-ct">
+            <div class="sec-head">
+              <span class="kicker mono">Website services</span>
+              <h2>Have a website project in mind?</h2>
+              <p>Whether you're starting from scratch, redesigning your existing website, or looking to add online
+                bookings, let's discuss what your business needs.</p>
+              <div class="ct-actions">
+                <a class="btn btn-cta" href="/contact/" data-prefill="Hi, I have a website project in mind. My business and what I need: " data-type="Website design &amp; development">Discuss your website</a>
+                <a class="btn btn-line" href="/services/">See website services</a>
+              </div>
+            </div>
+            <ul class="svc-list">
+              <li><strong>Website design &amp; development</strong><span>A clear, mobile-friendly website for your business.</span></li>
+              <li><strong>Website redesign</strong><span>Give an existing website a fresh, simpler look.</span></li>
+              <li><strong>Booking and appointment systems</strong><span>Let people book online instead of by message.</span></li>
+              <li><strong>E-commerce</strong><span>Sell your products or services online.</span></li>
+              <li><strong>Website maintenance</strong><span>Keep your website updated and running smoothly.</span></li>
+            </ul>
           </div>
-          <ul class="email-grid">
-            <li class="email-card">
-              <span class="mono">General</span>
-              <a class="email-link" href="mailto:hello@thefoundersnotes.com">hello@thefoundersnotes.com</a>
-              <p>Say hello, or ask anything about <span data-brand></span>.</p>
-            </li>
-            <li class="email-card">
-              <span class="mono">Stories &amp; features</span>
-              <a class="email-link" href="mailto:editor@thefoundersnotes.com">editor@thefoundersnotes.com</a>
-              <p>Questions about being featured, your story draft, or a correction to a story.</p>
-            </li>
-            <li class="email-card">
-              <span class="mono">Collaborations</span>
-              <a class="email-link" href="mailto:collaborations@thefoundersnotes.com">collaborations@thefoundersnotes.com</a>
-              <p>Partnerships, guest features and ideas for working together.</p>
-            </li>
-            <li class="email-card">
-              <span class="mono">Enquiries</span>
-              <a class="email-link" href="mailto:contact@thefoundersnotes.com">contact@thefoundersnotes.com</a>
-              <p>Website projects, press and anything that does not fit elsewhere.</p>
-            </li>
-            <li class="email-card">
-              <span class="mono">Admin &amp; privacy</span>
-              <a class="email-link" href="mailto:admin@thefoundersnotes.com">admin@thefoundersnotes.com</a>
-              <p>Privacy requests, removing your story or data, and other admin matters.</p>
-            </li>
-          </ul>
         </div>
       </section>
 
+      <section class="sec" id="discovery-call" data-pages="contact" style="border-top:1px solid var(--line)">
+        <div class="wrap">
+          <div class="ct-band">
+            <div>
+              <span class="kicker mono">Discovery call</span>
+              <h2>Let's have a quick conversation.</h2>
+              <p>Have a website idea, need a redesign, or want to discuss how we can help your business online? Let's have a quick conversation.</p>
+            </div>
+            <a class="btn btn-cta" id="callLink" href="#">Book a Free 20-Minute Discovery Call</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="founder-story" data-pages="contact" style="border-top:1px solid var(--line)">
+        <div class="wrap">
+          <div class="ct-band">
+            <div>
+              <span class="kicker mono">For founders</span>
+              <h2>Want to share your founder story?</h2>
+              <p>Tell us about your business and journey. Features are free, and every story is approved by the founder before publication.</p>
+            </div>
+            <a class="btn btn-line" href="/submit-story/">Apply to be featured</a>
+          </div>
+        </div>
+      </section>
 
       <section class="sec newsletter" id="newsletter" data-pages="home contact">
         <div class="wrap">

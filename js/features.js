@@ -332,8 +332,9 @@ document.addEventListener('click', async e => {
   if (pre) {
     e.preventDefault();
     const m = $('#mMsg');
+    const ts = $('#mType'); if (ts && pre.dataset.type) ts.value = pre.dataset.type;
     if (m) { m.value = pre.dataset.prefill; m.focus(); const g = $('#get-in-touch'); if (g) g.scrollIntoView({ behavior: 'smooth' }); }
-    else location.href = '/contact/?prefill=' + encodeURIComponent(pre.dataset.prefill);
+    else location.href = '/contact/?prefill=' + encodeURIComponent(pre.dataset.prefill) + (pre.dataset.type ? '&type=' + encodeURIComponent(pre.dataset.type) : '');
     return;
   }
   const b = e.target.closest('[data-act]');
@@ -512,7 +513,7 @@ function renderExtras() {
   if (pk) pk.innerHTML = PACKAGES.map(p => `<article class="pack${p.popular ? ' popular' : ''}">${p.popular ? '<span class="pop-tag mono">Most popular</span>' : ''}<h3>${esc(p.title)}</h3><p class="price mono">${esc(p.price || 'Ask for a quote')}</p><p>${esc(p.text)}</p><ul>${p.items.map(i => `<li>${esc(i)}</li>`).join('')}</ul><a class="btn ${p.popular ? 'btn-cta' : 'btn-line'}" href="/contact/" data-prefill="${esc("Hi, I'd like to ask about the " + p.title + ". My business and what I need: ")}">Ask about this</a></article>`).join('');
   const sf = $('#servicesFor'); if (sf) sf.textContent = SERVICES_FOR;
   const st = $('#svcSteps');
-  if (st) st.innerHTML = SERVICE_STEPS.map((x, i) => `<li><span class="mono">0${i + 1}</span><h4>${esc(x.title)}</h4><p>${esc(x.text)}</p></li>`).join('');
+  if (st) st.innerHTML = SERVICE_STEPS.map((x, i) => `<li><span class="mono">0${i + 1}</span><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p></li>`).join('');
   const sq = $('#svcFaq');
   if (sq) sq.innerHTML = SERVICE_FAQ.map(f => `<details class="faq-item"><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('');
   const sw = $('#svcWork');

@@ -3,13 +3,39 @@
    Plain sentences in quotes. Keep the quotes and the commas.
    ============================================================================ */
 
+/* Services page. Each service says what it is, who needs it, the problem it solves and what you receive.
+   "type" must match an option in the Contact form's dropdown. Keep the quotes and the commas. */
 const SERVICES = [
-  { title: "Website building", text: "A clear, fast, mobile-friendly site built around the questions your customers actually ask you." },
-  { title: "Website redesign", text: "A tidy-up for a site that has fallen out of date, keeping what works and fixing what doesn't." },
-  { title: "SEO", text: "Sensible page titles, structure and local-search basics, so people nearby can find you." },
-  { title: "Booking and enquiry setup", text: "Simple ways for customers to book a class, a private session or a retreat place, or send an enquiry, without long message chains." },
-  { title: "Instagram-to-website link pages", text: "One tidy page for your Instagram bio that points to your timetable, menu or booking." },
-  { title: "Hosting and maintenance", text: "Your site kept online, updated and backed up, so you can get on with running your business." }
+  { title: "Website design & development", type: "Website design & development", main: true,
+    what: "A custom website designed around your business and built to load quickly on any phone.",
+    who: "Teachers, studios and independent businesses that are starting out online, or that rely on an Instagram page alone.",
+    problem: "People can't easily see what you offer, who you are or how to reach you, so interested visitors drift away.",
+    gets: ["A clear, mobile-friendly website with the pages you need, such as your offers, about and contact", "A design that suits your style and brand", "Basic search setup, so people nearby can find you", "Help getting it live"] },
+  { title: "Booking & appointment systems", type: "Booking system", main: true,
+    what: "A simple way for customers to book a class, session, appointment or retreat place on your website.",
+    who: "Anyone who takes bookings through messages, DMs and emails today.",
+    problem: "Booking by message is slow, easy to lose track of, and takes time away from your work.",
+    gets: ["Online booking set up around how you actually work", "Booking and enquiry forms that email you", "Booking linked from your website and Instagram", "A short walkthrough of how to use it"] },
+  { title: "Website redesign", type: "Website redesign",
+    what: "A clearer, more modern look and structure for an existing website, keeping what already works.",
+    who: "Businesses whose site looks dated, is awkward on a phone, or no longer feels like them.",
+    problem: "Visitors get confused, or leave before they trust you enough to get in touch.",
+    gets: ["A fresh design that keeps your best content", "Simpler navigation and wording", "A layout that works well on phones"] },
+  { title: "SEO", type: "SEO",
+    what: "Practical changes that help search engines understand your website and show it to people looking for what you offer.",
+    who: "Local and independent businesses that want to be found when people search nearby.",
+    problem: "You have a good website, but few people find it.",
+    gets: ["Clear page titles and descriptions", "A sensible page structure", "Local-search basics, such as your business details and location"] },
+  { title: "Website maintenance", type: "Website maintenance",
+    what: "Your website kept online, up to date and working, so you don't have to think about it.",
+    who: "Owners who have no time, or no wish, to look after the technical side.",
+    problem: "Small things break or go out of date, and nobody has time to fix them.",
+    gets: ["Hosting and updates looked after", "Small edits, such as a new timetable", "Help when something goes wrong"] },
+  { title: "Custom digital solutions", type: "Other",
+    what: "Something made for the way your business works, when an off-the-shelf tool doesn't quite fit.",
+    who: "Businesses with a specific need, such as a tidy link page for an Instagram bio or a class timetable.",
+    problem: "Standard tools are either too much or not enough, and you end up working around them.",
+    gets: ["A conversation about what you need", "A simple solution built for it", "Everything explained in plain language"] }
 ];
 const STEPS = [
   { title: "A 20-minute chat", text: "Book a time that suits your time zone. We talk by video about how you started, who you serve and what a normal week looks like." },
@@ -57,9 +83,9 @@ const PRINCIPLES = [
 
 /* Website packages. Add a price (for example "From \u20B912,000") and it shows on the card. Leave price empty to show "Ask for a quote". */
 const PACKAGES = [
-  { title: "Link-in-bio page", price: "Free quote in 3 working days", text: "One tidy page for your Instagram bio.", items: ["Timetable, menu or booking links", "Fast on a phone", "Your colours and logo"] },
-  { title: "Studio starter site", price: "Free quote in 3 working days", popular: true, text: "A small, clear website for a studio or teacher.", items: ["Home, classes, about and contact", "Booking or enquiry setup", "Local search basics"] },
-  { title: "Care plan", price: "Free quote in 3 working days", text: "Your site kept online and up to date.", items: ["Hosting and backups", "Small edits each month", "Quick help when something breaks"] }
+  { title: "Link-in-bio page", text: "One tidy page for your Instagram bio.", items: ["Timetable, menu or booking links", "Fast on a phone", "Your colours and logo"] },
+  { title: "Studio starter site", popular: true, text: "A small, clear website for a studio or teacher.", items: ["Home, classes, about and contact", "Booking or enquiry setup", "Local search basics"] },
+  { title: "Care plan", text: "Your site kept online and up to date.", items: ["Hosting and backups", "Small edits each month", "Quick help when something breaks"] }
 ];
 
 /* Who the packages are for (one line above the packages). */
@@ -67,18 +93,21 @@ const SERVICES_FOR = "Made for yoga and Pilates studios, martial arts schools, f
 
 /* How working together goes. */
 const SERVICE_STEPS = [
-  { title: "You message me", text: "Tell me about your business and what you need." },
-  { title: "We talk for 20 minutes", text: "A short call to understand your classes and your people." },
-  { title: "I send a first version", text: "A draft within a few days, for you to react to." },
-  { title: "You approve, it goes live", text: "Nothing is published until you are happy." }
+  { title: "Discovery", text: "We start with a friendly conversation about your business, your customers and what you want your website to do. No jargon, no pressure." },
+  { title: "Design", text: "I design how your website will look and feel, then share it with you. You tell me what to change." },
+  { title: "Development", text: "Once you are happy with the design, I build it, and check that it works well on phones, tablets and computers." },
+  { title: "Launch", text: "We go live together. Nothing is published until you are happy, and I'm there to help afterwards." }
 ];
 
-/* Questions people ask before they write. */
+/* Questions people ask before they write. Prices and timelines are agreed with you in conversation, so none are promised here. */
 const SERVICE_FAQ = [
-  { q: "How long does it take?", a: "A link-in-bio page can take a few days. A small studio site usually takes two to three weeks, depending on how quickly we agree the words and photos." },
-  { q: "Who owns the website and the domain?", a: "You do. The domain is registered in your name, and you keep the site's files if you ever want to move." },
-  { q: "What does the care plan cover?", a: "Hosting, backups, small monthly edits such as a new timetable, and quick help when something breaks." },
-  { q: "I don't have a website yet. Can you still help?", a: "Yes. Most people start from nothing, with just an Instagram page and a booking link." },
+  { q: "How much does a website cost?", a: "It depends on what you need, so there is no one price. Tell me about your business and I'll give you a clear quote, and we agree the cost before any work begins." },
+  { q: "How long does a website take?", a: "It depends on the size of the project and how quickly we agree the words and photos. After our first conversation, I'll give you a timeline that suits you." },
+  { q: "Do you work internationally?", a: "Yes. Everything is done online, so we can work together wherever you are. We talk by video, in a time that suits your time zone." },
+  { q: "Can you redesign my existing website?", a: "Yes. We keep what works, and improve the look, the wording and how easy it is to use, especially on a phone." },
+  { q: "Do you offer booking systems?", a: "Yes. I can set up a simple way for customers to book classes, sessions, appointments or retreat places online, and to send you an enquiry." },
+  { q: "Will my website be mobile-friendly?", a: "Yes. Every website is designed to work well on phones, tablets and computers, because most visitors will find you on their phone." },
+  { q: "Do you provide ongoing maintenance?", a: "Yes. I can keep your website online and up to date, make small edits for you, and help if something goes wrong. It's optional." },
   { q: "Do I have to buy anything to be featured?", a: "No. Being featured is always free and never depends on any service." }
 ];
 
@@ -124,11 +153,11 @@ const SEO = {
     description: "Apply to be featured on The Founders Notes for free: answer a few questions, add a photo if you like, and approve the final story before it goes live."
   },
   services: {
-    title: "Website design for yoga studios | The Founders Notes",
-    description: "Simple, clear websites for studios, teachers and independent class businesses: link-in-bio pages, starter sites and care plans. Ask for a quote or a free mini audit."
+    title: "Website design & booking systems | The Founders Notes",
+    description: "Clear, mobile-friendly websites and simple online booking for yoga teachers, studios, wellness businesses and coaches. Start your project or book a free call."
   },
   contact: {
     title: "Contact The Founders Notes | Book a call or send a message",
-    description: "Book a 20-minute call, send a message, or write by email or WhatsApp to share your story, nominate a founder or ask about a website."
+    description: "Share your founder story, ask about a website, booking system or redesign, or book a free 20-minute call. Send a message, or write by email, WhatsApp or Instagram."
   }
 };

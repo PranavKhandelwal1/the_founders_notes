@@ -260,12 +260,12 @@ const ICONS = {
 };
 function renderContact() {
   const rows = [
-    ['mail', 'Email us', mailto('Hello from the website')],
-    ['chat', 'Message on WhatsApp', waUrl()],
-    ['insta', 'Follow on Instagram', igUrl()],
-    ['cal', 'Book a 20-minute call', calUrl()],
-    ['globe', 'Read the stories', '/stories/']
+    ['mail', CONFIG.email, mailto('Hello from the website')],
+    ['chat', 'WhatsApp', waUrl()],
+    ['insta', 'Instagram ' + CONFIG.instagram, igUrl()]
   ];
+  const sc = $('#svcCall'); if (sc) { sc.href = calUrl(); if (external(sc.href)) { sc.target = '_blank'; sc.rel = 'noopener'; } }
+  const cl = $('#callLink'); if (cl) { cl.href = calUrl(); if (external(cl.href)) { cl.target = '_blank'; cl.rel = 'noopener'; } }
   ($('#chatList') || N()).innerHTML = rows.map(([ic, name, url]) =>
     `<li><a class="crow" href="${esc(url)}"${external(url) ? ' target="_blank" rel="noopener"' : ''}><span class="ci" aria-hidden="true">${ICONS[ic]}</span><span class="ct"><strong>${esc(name)}</strong></span><span class="go" aria-hidden="true">&rarr;</span></a></li>`
   ).join('');
@@ -328,11 +328,14 @@ const fallbackLinks = (subject, body) => '<a href="' + esc(gmailUrl(subject, bod
 const openMail = (subject, body) => { const a = document.createElement('a'); a.href = mailto(subject) + (isSet(CONFIG.emailCopy) ? '&cc=' + encodeURIComponent(CONFIG.emailCopy) : '') + '&body=' + encodeURIComponent(body); a.className = 'sr-only'; document.body.appendChild(a); a.click(); a.remove(); };
 msgForm.addEventListener('submit', async e => {
   e.preventDefault();
-  if (!msgForm.checkValidity()) { msgForm.reportValidity(); return; }
-  const n = $('#mName').value.trim(), em = $('#mEmail').value.trim(), biz = $('#mBiz').value.trim(), msg = $('#mMsg').value.trim();
+  const checks = [['#mName', 'Please add your name.'], ['#mEmail', 'Please enter a valid email address so I can reply.'], ['#mMsg', 'Please write a short message.']];
+  let bad = null;
+  checks.forEach(([sel, text]) => { const f = $(sel), v = !f.value.trim() || !f.checkValidity(); f.setAttribute('aria-invalid', String(v)); if (v && !bad) bad = [f, text]; });
+  if (bad) { setNote('err', esc(bad[1])); bad[0].focus(); return; }
+  const n = $('#mName').value.trim(), em = $('#mEmail').value.trim(), biz = $('#mBiz').value.trim(), link = $('#mLink').value.trim(), type = $('#mType').value, msg = $('#mMsg').value.trim();
   if ($('#mHoney').value) { msgForm.reset(); return; }   // spam trap: real people leave this empty
-  const subject = 'Message from ' + n + ' via ' + CONFIG.brand;
-  const body = 'Name: ' + n + '\nEmail: ' + em + (biz ? '\nBusiness: ' + biz : '') + '\n\n' + msg;
+  const subject = type + ' enquiry from ' + n + ' via ' + CONFIG.brand;
+  const body = 'Name: ' + n + '\nEmail: ' + em + (biz ? '\nBusiness: ' + biz : '') + (link ? '\nWebsite or Instagram: ' + link : '') + '\nEnquiry type: ' + type + '\n\n' + msg;
   if (location.protocol === 'file:') {   // opened straight from a file: browsers block the form service, so open email directly
     openMail(subject, body);
     setNote('', 'Your email app should open with the message ready. If it did not: ' + fallbackLinks(subject, body));
@@ -341,10 +344,10 @@ msgForm.addEventListener('submit', async e => {
   const label = msgBtn.textContent;
   msgBtn.disabled = true; msgBtn.textContent = 'Sending\u2026'; setNote('', 'Sending your message\u2026');
   try {
-    await postForm({ name: n, email: em, business: biz, message: msg }, subject, em);
-    track('contact_submit');
-    setNote('ok', 'Thank you. Your message has been sent, and we will reply to ' + esc(em) + '.');
-    msgForm.reset();
+    await postForm({ name: n, email: em, business: biz, website_or_instagram: link, enquiry_type: type, message: msg }, subject, em);
+    track('contact_submit', { enquiry_type: type });
+    setNote('ok', 'Thank you. Your message has been sent, and I will reply to ' + esc(em) + '.');
+    msgForm.reset(); $$('#msgForm [aria-invalid]').forEach(f => f.removeAttribute('aria-invalid'));
   } catch (err) {
     console.warn('Contact form was not delivered:', err && err.message);
     openMail(subject, body);
@@ -391,7 +394,7 @@ function renderStatic() {
   ($('#keyfacts') || N()).innerHTML = HERO.facts.map(f => `<div><strong>${esc(f.big.replace('{count}', STORIES.length).replace('{countries}', siteStats().countries).replace('{disciplines}', siteStats().disciplines))}</strong><span class="mono">${esc(f.label)}</span></div>`).join('');
   ($('#trust') || N()).innerHTML = TRUST.map((t, i) => `<div><span class="mono">0${i + 1}</span><h3>${esc(t.title)}</h3><p>${esc(t.text)}</p></div>`).join('');
   ($('#steps') || N()).innerHTML = STEPS.map(t => `<li><h3>${esc(t.title)}</h3><p>${esc(t.text)}</p></li>`).join('');
-  ($('#serviceGrid') || N()).innerHTML = SERVICES.map((t, i) => `<div class="service"><span class="mono">0${i + 1}</span><h3>${esc(t.title)}</h3><p>${esc(t.text)}</p></div>`).join('');
+  ($('#serviceGrid') || N()).innerHTML = SERVICES.map((t, i) => `<article class="svc${t.main ? ' main' : ''}"><div class="svc-lead"><span class="mono">0${i + 1}</span><h3>${esc(t.title)}</h3><p>${esc(t.what)}</p><a class="${t.main ? 'btn btn-cta' : 'svc-link'}" href="/contact/" data-type="${esc(t.type)}" data-prefill="${esc("Hi, I'd like to talk about: " + t.title + ". My business and what I need: ")}">${t.main ? (i === 0 ? 'Discuss your website' : 'Ask about booking') : 'Ask about this'}${t.main ? '' : ' <span aria-hidden="true">&rarr;</span>'}</a></div><dl class="svc-body"><div><dt class="mono">Who needs it</dt><dd>${esc(t.who)}</dd></div><div><dt class="mono">The problem it solves</dt><dd>${esc(t.problem)}</dd></div><div><dt class="mono">What you receive</dt><dd><ul>${t.gets.map(g => `<li>${esc(g)}</li>`).join('')}</ul></dd></div></dl></article>`).join('');
 }
 function renderProof() {
   const el = $('#proof'); if (!el) return;
@@ -472,7 +475,7 @@ document.addEventListener('click', e => {
 
 /* ---------- Pages: every page is a real address (/about/, /stories/name/ ...) ---------- */
 let curPage = 'home';
-const PAGE_H1 = { stories: 'All founder stories', about: 'About The Founders Notes', mission: 'Our mission: why The Founders Notes exists', 'get-featured': 'Get featured on The Founders Notes for free', 'submit-story': 'Apply to be featured on The Founders Notes', services: 'Website design for yoga and wellness studios', contact: 'Contact The Founders Notes' };
+const PAGE_H1 = { stories: 'All founder stories', about: 'About The Founders Notes', mission: 'Our mission: why The Founders Notes exists', 'get-featured': 'Get featured on The Founders Notes for free', 'submit-story': 'Apply to be featured on The Founders Notes', services: 'Website design and booking systems for independent businesses', contact: 'Contact The Founders Notes' };
 function showPage(r) {
   const p = r.page; curPage = p;
   $$('[data-pages]').forEach(el => el.classList.toggle('pg-off', !el.dataset.pages.split(' ').includes(p)));
@@ -509,6 +512,8 @@ function route() {
   $$('main img').filter(i => !i.closest('.pg-off')).slice(0, 3).forEach((i, n) => { i.setAttribute('loading', 'eager'); if (n === 0) i.setAttribute('fetchpriority', 'high'); });
   const pf = new URLSearchParams(location.search).get('prefill'), m = $('#mMsg');
   if (pf && m) m.value = pf;
+  const pt = new URLSearchParams(location.search).get('type'), ts = $('#mType');
+  if (pt && ts && [...ts.options].some(o => o.value === pt)) ts.value = pt;
 }
 
 legacyRedirect();
