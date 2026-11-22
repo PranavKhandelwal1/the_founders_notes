@@ -428,79 +428,167 @@
 
       <section class="sec" id="services" data-pages="services">
         <div class="wrap">
-          <div class="svc-hero">
-            <span class="kicker mono">Services</span>
-            <h2>A website that helps people find you, trust you and book with you.</h2>
-            <p>I design and build clear, fast websites and simple booking systems for independent and service-based
-              businesses, so you can look professional online, attract the right customers and spend less time on
-              messages and admin. Everything is done remotely, so we can work together from anywhere.</p>
-            <div class="svc-hero-actions">
-              <a class="btn btn-cta" href="#svcList">Explore services</a>
-              <a class="btn btn-line" href="/contact/">Get in touch</a>
+          <div class="sv-hero">
+            <div class="sv-hero-text">
+              <span class="kicker mono">Services</span>
+              <h2>Your business deserves a website that works as beautifully as you do.</h2>
+              <p>Thoughtful websites, booking systems and digital solutions for independent businesses, designed to help you build trust, attract clients and make your business easier to run.</p>
+              <div class="sv-actions">
+                <a class="btn btn-cta" href="/contact/" data-prefill="Hi, I'd like to build a website. My business and what I need: " data-type="Website design &amp; development">Let's build your website</a>
+                <a class="btn btn-line" href="#sv-work">Explore my work</a>
+              </div>
             </div>
+            <figure class="sv-devices">
+              <div class="sv-laptop"><div class="sv-laptop-screen"><img src="/images/site-desktop.webp" alt="The Founders Notes website shown on a laptop" width="1200" height="750"></div><div class="sv-laptop-base"></div></div>
+              <div class="sv-phone"><img src="/images/site-mobile.webp" alt="The Founders Notes website shown on a phone" width="480" height="1040"></div>
+              <figcaption class="mono">My own site, thefoundersnotes.com</figcaption>
+            </figure>
           </div>
-
-          <div class="svc-list-wrap" id="svcList">
-            <div class="services" id="serviceGrid"></div>
-          </div>
-          <div id="audit"></div>
         </div>
       </section>
 
-      <section class="sec svc-who" id="svc-who" data-pages="services" style="border-top:1px solid var(--line)">
+      <section class="sec sv-trust-sec" id="sv-trust" data-pages="services">
         <div class="wrap">
-          <div class="svc-who-grid">
-            <div>
-              <span class="kicker mono">Who I work with</span>
-              <h2>Built for people who run their business on their own energy.</h2>
+          <ul class="sv-trust">
+            <li><strong>Custom-designed websites</strong><span>Designed around your business, not a template.</span></li>
+            <li><strong>Mobile-first experiences</strong><span>Built to work beautifully on phones first.</span></li>
+            <li><strong>International clients</strong><span>Working online with people around the world.</span></li>
+            <li><strong>Personal support</strong><span>You talk to me, from first call to after launch.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="sec" id="sv-services" data-pages="services">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="kicker mono">What I do</span>
+            <h2>Six ways I can help your business online.</h2>
+            <p>Start with what you need most. Every project begins with a conversation, and I'll help you choose.</p>
+          </div>
+          <div class="sv-grid" id="serviceGrid"></div>
+        </div>
+      </section>
+
+      <section class="sec" id="sv-work" data-pages="services" style="border-top:1px solid var(--line)">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="kicker mono">Selected work</span>
+            <h2>A look at what I build.</h2>
+            <p>Real projects only, shown as they are. New work will be added here as it is completed.</p>
+          </div>
+          <div id="svcWork"></div>
+        </div>
+      </section>
+
+      <section class="sec" id="sv-audit" data-pages="services">
+        <div class="wrap">
+          <div class="sv-audit">
+            <div class="sv-audit-text">
+              <span class="kicker mono">Free website audit</span>
+              <h2>Is your website helping you get clients, or losing them?</h2>
+              <p>Send me your website and I'll review it honestly, with practical suggestions you can act on. It's free, and there's no obligation.</p>
+              <a class="btn sv-audit-btn" href="/contact/" data-prefill="I'd like a free website audit. My website or Instagram link: " data-type="Free website audit">Get my free website audit <span aria-hidden="true">&rarr;</span></a>
             </div>
-            <div>
-              <p class="svc-who-lead">Yoga teachers and studio owners, Pilates studios, wellness practitioners, retreat organisers, coaches and independent entrepreneurs.</p>
-              <p>You are brilliant at what you do. A website, an online calendar or a search ranking is not the part you
-                want to spend your evenings on, and that's fine. I spend my time listening to independent founders tell
-                their stories, so I know how a small business really runs: classes to teach, people to look after, and
-                very little spare time.</p>
-              <p>That's why I keep things simple. Plain language, one clear next step, and a website that feels like you
-                and works for you.</p>
-              <p class="svc-who-note mono">The Founders Notes is my own project. It is a website I designed and built myself, and you are looking at it now.</p>
+            <div class="sv-audit-list">
+              <p class="mono">What I review</p>
+              <ul>
+                <li>Mobile experience</li><li>Website clarity</li><li>Design and user experience</li><li>Contact and enquiry flow</li><li>Booking experience</li><li>Basic SEO</li><li>Website structure</li>
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="sec" id="svc-process" data-pages="services" style="border-top:1px solid var(--line)">
+      <section class="sec" id="sv-who" data-pages="services">
+        <div class="wrap">
+          <div class="sec-head">
+            <span class="kicker mono">Who I work with</span>
+            <h2>For people who run their business on their own energy.</h2>
+            <p>I work with service-based and independent businesses. Projects outside these areas are welcome too.</p>
+          </div>
+          <div class="sv-who">
+            <div><span class="mono">01</span><h3>Yoga &amp; Pilates</h3><p>Studios and teachers who need clear class information and easy booking.</p></div>
+            <div><span class="mono">02</span><h3>Wellness</h3><p>Practitioners whose website should feel as calm and trustworthy as their sessions.</p></div>
+            <div><span class="mono">03</span><h3>Retreats</h3><p>Organisers who want to share the experience and take enquiries from anywhere.</p></div>
+            <div><span class="mono">04</span><h3>Coaching</h3><p>Coaches who want to explain their work clearly and make the next step easy.</p></div>
+            <div><span class="mono">05</span><h3>Independent businesses</h3><p>Makers, creatives and small businesses of every kind.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="sv-why" data-pages="services" style="border-top:1px solid var(--line)">
+        <div class="wrap">
+          <div class="sv-why">
+            <div class="sv-why-intro">
+              <span class="kicker mono">Why work with me</span>
+              <h2>An independent developer, working directly with you.</h2>
+              <p>When you work with me, you talk to the person who designs and builds your website. There are no account managers and no hand-offs.</p>
+              <p>Through <span data-brand></span> I spend my time talking with independent business owners and sharing their stories. It has shown me what small businesses need from a website: clarity, trust, and as little complication as possible.</p>
+            </div>
+            <ul class="sv-why-list">
+              <li><strong>Personal communication</strong><span>You deal with me directly, from the first conversation to after launch.</span></li>
+              <li><strong>Custom design</strong><span>Designed around your business and your brand.</span></li>
+              <li><strong>No unnecessary complexity</strong><span>Only the features you need, explained in plain language.</span></li>
+              <li><strong>Mobile-first development</strong><span>Built to work beautifully on phones first, then larger screens.</span></li>
+              <li><strong>Practical solutions</strong><span>Every decision serves your visitors and your business.</span></li>
+              <li><strong>Transparent process</strong><span>You always know what is happening and what comes next.</span></li>
+              <li><strong>Support after launch</strong><span>Help with updates and questions once your website is live.</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="sv-process" data-pages="services" style="border-top:1px solid var(--line)">
         <div class="wrap">
           <div class="sec-head">
             <span class="kicker mono">How it works</span>
             <h2>Four clear steps, with you involved throughout.</h2>
-            <p>You'll always know what is happening and what comes next.</p>
           </div>
-          <ol class="how-steps" id="svcSteps"></ol>
-          <div id="svcWork" hidden></div>
+          <ol class="sv-steps" id="svcSteps"></ol>
         </div>
       </section>
 
-      <section class="sec" id="svc-faq" data-pages="services" style="border-top:1px solid var(--line)">
+      <section class="sec" id="sv-pricing" data-pages="services" style="border-top:1px solid var(--line)">
         <div class="wrap">
-          <div class="sec-head">
-            <span class="kicker mono">Questions</span>
-            <h2>Questions before you write</h2>
-          </div>
-          <div class="faq svc-faq" id="svcFaq"></div>
-        </div>
-      </section>
-
-      <section class="sec" id="svc-cta" data-pages="services" style="border-top:1px solid var(--line)">
-        <div class="wrap">
-          <div class="ct-band">
+          <div class="sv-pricing">
             <div>
-              <span class="kicker mono">Next step</span>
-              <h2>Let's build your website.</h2>
-              <p>Tell me a little about your business and what you need. I'll reply personally <span data-reply-time></span>, with no obligation.</p>
+              <span class="kicker mono">Pricing</span>
+              <h2>Clear proposals, not fixed packages.</h2>
+              <p>Every project is different, so pricing depends on what your business needs. Every client receives a clear proposal before any work begins.</p>
+              <a class="btn btn-cta" href="/contact/" data-prefill="Hi, I'd like a proposal for my project. My business and what I need: " data-type="Website design &amp; development">Ask for a proposal</a>
             </div>
-            <div class="svc-cta-actions">
-              <a class="btn btn-cta" href="/contact/" data-prefill="Hi, I'd like to start a project. My business and what I need: " data-type="Website design &amp; development">Start your project</a>
-              <a class="btn btn-line" id="svcCall" href="#">Book a free 20-minute call</a>
+            <ul class="sv-prop">
+              <li><strong>Scope</strong><span>What we are building, and what we are not.</span></li>
+              <li><strong>Features</strong><span>The pages, tools and integrations included.</span></li>
+              <li><strong>Timeline</strong><span>How the project unfolds, and when to expect each stage.</span></li>
+              <li><strong>Cost</strong><span>A clear price for the whole project.</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="sv-faq" data-pages="services" style="border-top:1px solid var(--line)">
+        <div class="wrap">
+          <div class="sv-faq-grid">
+            <div class="sec-head">
+              <span class="kicker mono">Questions</span>
+              <h2>Questions before you write</h2>
+              <p>If yours isn't here, just ask. I'm happy to help.</p>
+            </div>
+            <div class="faq svc-faq" id="svcFaq"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="sv-cta" data-pages="services" style="border-top:1px solid var(--line)">
+        <div class="wrap">
+          <div class="sv-final">
+            <span class="kicker mono">Let's talk</span>
+            <h2>Let's create a website that feels like your business.</h2>
+            <p>Tell me about your idea, your business or the website you've been thinking about. We'll start with a conversation, with no pressure and no complicated jargon.</p>
+            <div class="sv-actions">
+              <a class="btn sv-audit-btn" href="/contact/" data-prefill="Hi, I'd like to start a project. My business and what I need: " data-type="Website design &amp; development">Start your project</a>
+              <a class="btn sv-ghost" id="svcCall" href="#">Book a free introductory call</a>
             </div>
           </div>
         </div>

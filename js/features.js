@@ -526,10 +526,11 @@ function renderExtras() {
   if (st) st.innerHTML = SERVICE_STEPS.map((x, i) => `<li><span class="mono">0${i + 1}</span><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p></li>`).join('');
   const sq = $('#svcFaq');
   if (sq) sq.innerHTML = SERVICE_FAQ.map(f => `<details class="faq-item"><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('');
-  const sw = $('#svcWork');
+  const sw = $('#svcWork'), swSec = $('#sv-work');
   if (sw) {
-    sw.hidden = !WORK.length;
-    sw.innerHTML = WORK.length ? `<h3 class="pk-title">Recent work</h3><div class="work-grid">${WORK.map(w => `<a class="work" href="${esc(w.url || '#')}" target="_blank" rel="noopener">${w.image ? `<img src="/${esc(String(w.image).replace(/^\.?\//, ''))}" alt="${esc(w.name)}" loading="lazy">` : ''}<h4>${esc(w.name)}</h4><p>${esc(w.text)}</p></a>`).join('')}</div>` : '';
+    const img = f => '/' + String(f).replace(/^\.?\//, '');
+    sw.innerHTML = WORK.map(w => { const ext = /^https?:/i.test(w.url || ''); return `<article class="sv-project"><a class="sv-shot" href="${esc(w.url || '#')}"${ext ? ' target="_blank" rel="noopener"' : ''} aria-label="View ${esc(w.name)}">${w.image ? `<img class="sv-shot-d" src="${img(w.image)}" alt="${esc(w.name)} website on a laptop" width="1200" height="750" loading="lazy">` : ''}${w.mobile ? `<img class="sv-shot-m" src="${img(w.mobile)}" alt="${esc(w.name)} website on a phone" loading="lazy">` : ''}</a><div class="sv-project-body">${w.tag ? `<span class="sv-tag mono">${esc(w.tag)}</span>` : ''}<h3>${esc(w.name)}</h3><p>${esc(w.text)}</p><ul class="sv-chips">${(w.services || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul><a class="svc-link" href="${esc(w.url || '#')}"${ext ? ' target="_blank" rel="noopener"' : ''}>View project <span aria-hidden="true">&rarr;</span></a></div></article>`; }).join('');
+    if (swSec) swSec.hidden = !WORK.length;
   }
   const auditHtml = `<div class="audit"><span class="audit-tag mono">Free</span><div><h3>${esc(AUDIT.title)}</h3><p>${esc(AUDIT.text)}</p></div><a class="btn btn-cta" href="/contact/" data-prefill="I'd like the free mini website audit. My website or Instagram link: ">Ask for my audit</a></div>`;
   ['#audit'].forEach(sel => { const el = $(sel); if (el) el.innerHTML = auditHtml; });
