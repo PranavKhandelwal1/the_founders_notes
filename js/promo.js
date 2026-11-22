@@ -29,7 +29,8 @@
 
   function makeTab() {
     var t = document.createElement('button');
-    t.type = 'button'; t.className = 'promo-tab'; t.textContent = 'Free Audit';
+    t.type = 'button'; t.className = 'promo-tab';
+    t.innerHTML = '<span class="pt-tx">Free Audit</span>';
     t.setAttribute('aria-label', 'Free website audit: open the offer'); t.setAttribute('aria-expanded', 'false');
     t.addEventListener('click', function () { track2('promo_tab_open'); openCard(true); });
     return t;

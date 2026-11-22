@@ -388,8 +388,8 @@ footer, .site-footer { border-top-left-radius: 32px; border-top-right-radius: 32
 .promo-cta { width: 100%; justify-content: center; text-align: center }
 .promo-note { margin: .6rem 0 0; text-align: center; color: var(--muted); font-size: .85rem }
 /* the closed state: a small tab on the left edge */
-.promo-tab { position: fixed; z-index: 54; left: 0; bottom: 20px; display: inline-flex; align-items: center; justify-content: center; min-width: 42px; padding: 1.1rem 0; writing-mode: vertical-rl; transform: rotate(180deg);
-  font: 500 .7rem/1 var(--f-mono); letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; color: var(--cta-ink); background: var(--cta); border: 0; border-radius: 14px 0 0 14px; cursor: pointer;
+.promo-tab { position: fixed; z-index: 54; left: 0; bottom: 20px; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 1.2rem 0 1rem;
+  font: 500 .7rem/1 var(--f-mono); letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; color: var(--cta-ink); background: var(--cta); border: 0; border-radius: 0 999px 999px 0; cursor: pointer;
   box-shadow: 0 10px 24px -10px rgba(12, 15, 20, .5); opacity: 0; transition: opacity .35s ease, background .2s ease }
 .promo-tab.on { opacity: 1 }
 .promo-tab:hover { background: var(--cta-hover) }
@@ -398,9 +398,9 @@ footer, .site-footer { border-top-left-radius: 32px; border-top-right-radius: 32
   .promo-title { font-size: 1.3rem }
   .promo-text { font-size: .92rem; margin-bottom: .7rem }
   .promo-body { padding: .9rem 1rem 1rem }
-  .promo-tab { bottom: 16px; min-width: 44px }
+  .promo-tab { bottom: 16px }
 }
-@media (prefers-reduced-motion: reduce) { .promo, .promo-tab { transition: none; transform: none } .promo-tab { transform: rotate(180deg) } }
+@media (prefers-reduced-motion: reduce) { .promo, .promo-tab { transition: none; transform: none } }
 
 /* ===== Services v2 (sv-) ===== */
 #services { padding-top: clamp(28px, 5vw, 64px) }
@@ -539,3 +539,34 @@ footer, .site-footer { border-top-left-radius: 32px; border-top-right-radius: 32
   .sv-steps { grid-template-columns: minmax(0, 1fr) }
   .sv-final h2 { max-width: none }
 }
+.sv-art { padding: 14px 14px 0; background: var(--alt) }
+.sv-art img { display: block; width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; object-position: top; border: 1px solid var(--line); border-bottom: 0; border-radius: 10px 10px 0 0; box-shadow: 0 10px 26px -16px rgba(12, 15, 20, .4) }
+.sv-art { padding: 0; background: var(--alt) }
+.sv-art img { border: 0; border-radius: 0; box-shadow: none; object-position: center }
+
+/* Nested radius: inner radius = outer radius - padding (- 1px border) */
+:root { --card-pad: 10px; --lead-pad: 12px }
+.card .cover { margin: var(--card-pad) var(--card-pad) 0 !important; border-radius: max(0px, calc(var(--r-lg) - var(--card-pad) - 1px)) !important }
+.lead { padding: var(--lead-pad) !important }
+.lead .cover { border-radius: max(0px, calc(var(--r-lg) - var(--lead-pad) - 1px)) !important }
+.card .cover img, .lead .cover img { border-radius: 0 }
+
+/* Free Audit tab v2: horizontal pill, flush left */
+.promo-tab { gap: .7rem; min-height: 52px; padding: 6px 1.1rem 6px 8px; text-align: left; box-shadow: 0 14px 30px -12px rgba(12, 15, 20, .55), 0 0 0 1px rgba(255, 255, 255, .08) inset }
+.promo-tab .pt-ic { flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--cta-ink); color: var(--cta) }
+.promo-tab .pt-tx { display: grid; gap: 3px; line-height: 1 }
+.promo-tab .pt-tx b { font-weight: 600; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase }
+.promo-tab .pt-tx i { font-style: normal; font-size: .66rem; letter-spacing: .04em; text-transform: none; opacity: .72 }
+.promo-tab .pt-ar { font-size: 1rem; margin-left: .1rem; transition: transform .2s }
+.promo-tab:hover .pt-ar { transform: translateX(3px) }
+@media (max-width: 560px) { .promo-tab { min-height: 48px; padding-right: .95rem } .promo-tab .pt-ic { width: 32px; height: 32px } }
+
+/* Free Audit tab v3: simple and visible */
+.promo-tab { min-height: 48px; padding: 6px 1.2rem 6px 7px; gap: .6rem; box-shadow: 0 0 0 3px var(--bg), 0 10px 24px -8px rgba(12, 15, 20, .6) }
+.promo-tab .pt-ic { width: 34px; height: 34px }
+.promo-tab .pt-tx { font: 600 .82rem/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase }
+
+/* Free Audit tab v4: outlined, follows light/dark theme */
+.promo-tab { min-height: 46px; padding: 0 1.3rem 0 1.1rem; background: var(--bg); color: var(--head); border: 2px solid var(--head); border-left: 0; box-shadow: 0 10px 24px -12px rgba(12, 15, 20, .45) }
+.promo-tab:hover { background: var(--head); color: var(--bg) }
+.promo-tab .pt-tx { font-size: .8rem }
