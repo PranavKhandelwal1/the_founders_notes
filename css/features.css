@@ -570,3 +570,8 @@ footer, .site-footer { border-top-left-radius: 32px; border-top-right-radius: 32
 .promo-tab { min-height: 46px; padding: 0 1.3rem 0 1.1rem; background: var(--bg); color: var(--head); border: 2px solid var(--head); border-left: 0; box-shadow: 0 10px 24px -12px rgba(12, 15, 20, .45) }
 .promo-tab:hover { background: var(--head); color: var(--bg) }
 .promo-tab .pt-tx { font-size: .8rem }
+
+/* Services: keep the trust strip tight under the hero, no full-width rules around it */
+#services { padding-bottom: clamp(36px, 5vw, 64px) }
+#sv-trust { border-top: 0; padding-block: 0 clamp(36px, 5vw, 64px) }
+#sv-services { border-top: 0; padding-top: clamp(24px, 4vw, 48px) }
