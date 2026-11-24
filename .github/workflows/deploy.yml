@@ -27,6 +27,14 @@ jobs:
           cache: npm
       - run: npm ci
       - run: node build.js
+
+      # Copy AI-readable website information into the published folder
+      - name: Copy llms.txt
+        run: |
+          test -f llms.txt
+          mkdir -p dist
+          cp llms.txt dist/llms.txt
+
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
