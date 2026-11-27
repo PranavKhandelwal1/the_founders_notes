@@ -28,12 +28,18 @@ const fail = msg => problems.push(msg);
 
 /* ---------- 1. Read the data files ---------- */
 const ctx = vm.createContext({});
-for (const f of ['data/config.js', 'data/content.js', 'data/stories.js']) {
+for (const f of ['data/config.js', 'data/content.js', 'data/categories.js', 'data/policies.js', 'data/stories.js']) {
   try { vm.runInContext(fs.readFileSync(path.join(ROOT, f), 'utf8'), ctx, { filename: f }); }
   catch (e) { console.error(`\nCannot read ${f}: ${e.message}\nThis is usually a missing comma, quote or bracket near the place named above.`); process.exit(1); }
 }
 const CONFIG = vm.runInContext('CONFIG', ctx);
 const STORIES = vm.runInContext('STORIES', ctx);
+const CATEGORIES = vm.runInContext('CATEGORIES', ctx);
+/* Every story needs one of the category names in data/categories.js. A typo here would silently drop the story from its category page. */
+for (const s of STORIES) {
+  if (!s.category) warnings.push(`Story "${s.owner}" has no category in data/stories.js, so it will not appear on any category page.`);
+  else if (!CATEGORIES.some(c => c.name === s.category)) problems.push(`Story "${s.owner}" has category "${s.category}", which is not one of the names in data/categories.js.`);
+}
 
 let SITE = String(CONFIG.siteUrl || '').trim().replace(/\/+$/, '');
 if (!SITE || /^\[/.test(SITE)) { warnings.push('siteUrl is empty in data/config.js, so addresses in the sitemap use https://example.com. Set it to your real address.'); SITE = 'https://example.com'; }
@@ -140,7 +146,9 @@ const outFile = routePath => path.join(OUT, routePath === '/' ? 'index.html' : r
   for (const f of ['privacy.html', '404.html']) { const o = path.join(OUT, f); if (fs.existsSync(o)) fs.writeFileSync(o, stamp(fs.readFileSync(o, 'utf8'))); }
 
   /* ---------- 6. Sitemap and robots.txt ---------- */
-  const urls = [...routes, '/privacy.html'];
+  /* Pages that ask search engines not to index them (thin tag and category pages) stay out of the sitemap. */
+  const isNoindex = r => /<meta name="robots" content="noindex/i.test(pages[r] || '');
+  const urls = [...routes.filter(r => !isNoindex(r)), '/privacy.html'];
   /* lastmod: a story page uses its own published date; the home page and the stories list use the newest story date.
      Pages with no honest date carry none, because Google ignores dates that are always "today". */
   const lastmod = {}; let newest = '';
@@ -149,6 +157,19 @@ const outFile = routePath => path.join(OUT, routePath === '/' ? 'index.html' : r
     if (m && /^\/stories\/.+/.test(r)) { lastmod[r] = m[1]; if (m[1] > newest) newest = m[1]; }
   }
   if (newest) { lastmod['/'] = newest; lastmod['/stories/'] = newest; }
+  for (const c of CATEGORIES) {   // a category page was last changed when its newest story was published
+    const d = STORIES.filter(s => s.category === c.name && s.published).map(s => s.published).sort().pop();
+    if (d) lastmod['/category/' + c.slug + '/'] = d;
+  }
+  for (const [r, html] of Object.entries(pages)) { const m = html.match(/data-lastmod="(\d{4}-\d{2}-\d{2})"/); if (m) lastmod[r] = m[1]; }   // policy pages carry their own "last updated" date
+
+  /* RSS feed: the 20 newest stories, so readers and other tools can follow the publication */
+  const xe = t => String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const recent = [...STORIES].sort((a, b) => String(b.published || '').localeCompare(String(a.published || '')) || Number(b.id) - Number(a.id)).slice(0, 20);
+  const storyRoutes = routes.filter(r => r.startsWith('/stories/') && r !== '/stories/');   // same order as STORIES (see allRoutes in app.js)
+  const feedItems = recent.map(s => { const r = storyRoutes[STORIES.indexOf(s)]; if (!r) return '';
+    return `  <item>\n    <title>${xe(s.headline || s.business)}</title>\n    <link>${SITE}${r}</link>\n    <guid isPermaLink="true">${SITE}${r}</guid>\n${s.published ? `    <pubDate>${new Date(s.published + 'T00:00:00Z').toUTCString()}</pubDate>\n` : ''}${s.category ? `    <category>${xe(s.category)}</category>\n` : ''}    <description>${xe(s.summary)}</description>\n  </item>`; }).filter(Boolean);
+  fs.writeFileSync(path.join(OUT, 'feed.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n<channel>\n  <title>${xe(CONFIG.brand)}</title>\n  <link>${SITE}/</link>\n  <description>${xe(CONFIG.tagline)}</description>\n  <language>en</language>\n  <atom:link href="${SITE}/feed.xml" rel="self" type="application/rss+xml"/>\n${feedItems.join('\n')}\n</channel>\n</rss>\n`);
   const sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     urls.map(u => `  <url><loc>${SITE}${u}</loc>${lastmod[u] ? `<lastmod>${lastmod[u]}</lastmod>` : ''}</url>`).join('\n') + '\n</urlset>\n';
   fs.writeFileSync(path.join(OUT, 'sitemap.xml'), sitemap);

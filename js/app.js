@@ -18,11 +18,18 @@ const slugify = t => String(t).toLowerCase().normalize('NFKD').replace(/[\u0300-
 const storySlug = s => (s.slug && slugify(s.slug)) || slugify(s.owner) || ('story-' + s.id);
 const storyPath = s => '/stories/' + storySlug(s) + '/';
 const asset = p => /^(https?:|\/|data:)/.test(p) ? p : '/' + String(p).replace(/^\.\//, '');
-const PAGES = { home: '/', stories: '/stories/', about: '/about/', mission: '/mission/', 'get-featured': '/get-featured/', 'submit-story': '/submit-story/', services: '/services/', contact: '/contact/' };
+const PAGES = { home: '/', stories: '/stories/', about: '/about/', mission: '/mission/', 'get-featured': '/get-featured/', 'submit-story': '/submit-story/', services: '/services/', contact: '/contact/', 'editorial-policy': '/editorial-policy/', 'submission-guidelines': '/submission-guidelines/', terms: '/terms/', 'sponsored-content': '/sponsored-content/' };
 const tally = pick => { const m = new Map(); STORIES.forEach(s => [].concat(pick(s)).filter(Boolean).forEach(k => m.set(k, (m.get(k) || 0) + 1))); return m; };
 /* A topic or country gets its own page once at least two stories share it */
 const topicNames = () => [...tally(s => Array.isArray(s.tags) ? s.tags : [])].sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0])).map(([k]) => k);
 const placeNames = () => [...tally(s => String(s.location || '').split(',').pop().trim())].filter(([, n]) => n >= 2).sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0])).map(([k]) => k);
+/* Tag pages exist for every tag (old links keep working), but only tags shared by 2+ stories are linked to and indexed */
+const topicLinked = () => { const m = tally(s => Array.isArray(s.tags) ? s.tags : []); return topicNames().filter(t => m.get(t) >= 2); };
+/* Categories: the five sections of the publication (data/categories.js). One primary category per story. */
+const CATS = (typeof CATEGORIES !== 'undefined' && Array.isArray(CATEGORIES)) ? CATEGORIES : [];
+const catOf = s => CATS.find(c => c.name === s.category) || null;
+const categoryPath = c => '/category/' + c.slug + '/';
+const catCount = c => STORIES.filter(s => s.category === c.name).length;
 const tagPath = t => '/tag/' + slugify(t) + '/';
 const countryPath = c => '/country/' + slugify(c) + '/';
 function parseRoute(path) {
@@ -31,12 +38,13 @@ function parseRoute(path) {
   for (const [page, url] of Object.entries(PAGES)) if (url === p) return { page, path: p };
   let m;
   if ((m = p.match(/^\/stories\/([^/]+)\/$/))) { const s = STORIES.find(x => storySlug(x) === decodeURIComponent(m[1])); if (s) return { page: 'story', story: s, path: p }; }
+  if ((m = p.match(/^\/category\/([^/]+)\/$/))) { const c = CATS.find(x => x.slug === m[1]); if (c) return { page: 'stories', category: c, path: p }; }
   if ((m = p.match(/^\/tag\/([^/]+)\/$/))) { const t = topicNames().find(x => slugify(x) === m[1]); if (t) return { page: 'stories', tag: t, path: p }; }
   if ((m = p.match(/^\/country\/([^/]+)\/$/))) { const c = placeNames().find(x => slugify(x) === m[1]); if (c) return { page: 'stories', country: c, path: p }; }
   return { page: 'home', path: '/', unknown: true };
 }
 /* Every address the build has to create a page for */
-function allRoutes() { return [...Object.values(PAGES), ...STORIES.map(storyPath), ...topicNames().map(tagPath), ...placeNames().map(countryPath)]; }
+function allRoutes() { return [...Object.values(PAGES), ...CATS.map(categoryPath), ...STORIES.map(storyPath), ...topicNames().map(tagPath), ...placeNames().map(countryPath)]; }
 /* Old links such as /#story-2 or /#about still work: they are sent to the new address */
 function legacyRedirect() {
   if (!/^\/(index\.html)?$/.test(location.pathname)) return;
@@ -123,8 +131,8 @@ const igHref = v => /^https?:/.test(v) ? v : 'https://instagram.com/' + String(v
 /* ---------- Shared pieces ---------- */
 const catVars = s => { const c = coverOf(s); return `--cat:${c.accent};--cat-ink:light-dark(${c.inkLight},${c.inkDark})`; };
 const tagsOf = s => Array.isArray(s.tags) ? s.tags : [];
-const labelHtml = s => `<p class="label">${tagsOf(s).length ? `<span class="cat-name">${esc(tagsOf(s).join(' \u00b7 '))}</span>` : ''}${s.sample ? '<span class="sample">Sample</span>' : ''}</p>`;
-const tagsHtml = s => tagsOf(s).length ? `<ul class="tags" aria-label="Tags">${tagsOf(s).map(t => topicNames().includes(t) ? `<li><a href="${tagPath(t)}">${esc(t)}</a></li>` : `<li>${esc(t)}</li>`).join('')}</ul>` : '';
+const labelHtml = s => `<p class="label">${catOf(s) ? `<span class="cat-name">${esc(catOf(s).name)}</span>` : tagsOf(s).length ? `<span class="cat-name">${esc(tagsOf(s).slice(0, 2).join(' \u00b7 '))}</span>` : ''}${s.sample ? '<span class="sample">Sample</span>' : ''}</p>`;
+const tagsHtml = s => tagsOf(s).length ? `<ul class="tags" aria-label="Tags">${tagsOf(s).map(t => topicLinked().includes(t) ? `<li><a href="${tagPath(t)}">${esc(t)}</a></li>` : `<li>${esc(t)}</li>`).join('')}</ul>` : '';
 
 const numHtml = s => `<span class="num mono">#${STORIES.length - STORIES.indexOf(s._orig || s)}</span>`;
 
@@ -149,7 +157,7 @@ const inviteHtml = () => `<article class="card invite">
 </article>`;
 
 /* ---------- Home: search, lead, grid ---------- */
-let query = '', fTag = '', fCountry = '', pageNo = 1;
+let query = '', fTag = '', fCountry = '', fCat = null, pageNo = 1;
 const PER_PAGE = 9;   // three rows of three
 function initSearch() {
   ($('#q') || N()).addEventListener('input', e => { query = e.target.value; pageNo = 1; renderStories(true); });
@@ -165,7 +173,7 @@ window.addEventListener('popstate', () => { pageNo = parseInt(new URLSearchParam
 function renderStories(announce) {
   const q = query.trim().toLowerCase();
   const list = STORIES.filter(s =>
-    (!fTag || tagsOf(s).includes(fTag)) && (!fCountry || countryOf(s) === fCountry) &&
+    (!fTag || tagsOf(s).includes(fTag)) && (!fCountry || countryOf(s) === fCountry) && (!fCat || s.category === fCat.name) &&
     (!q || [s.headline, s.summary, s.business, s.owner, s.location, s.offers, tagsOf(s).join(' ')].join(' ').toLowerCase().includes(q)));
   const home = curPage === 'home';
   let lead = null, rest, pages = 1;
@@ -181,7 +189,7 @@ function renderStories(announce) {
     <p class="byline mono"><span>${esc(lead.owner)}</span><span>${esc(lead.location)}</span><span>${esc(lead.readTime)}</span></p>
     <a class="btn btn-dark" href="${storyPath(lead)}">Read the story</a>
   </div>
-</article>` : (list.length ? '' : `<p class="empty">No stories match${query ? ' &ldquo;' + esc(query) + '&rdquo;' : ' those filters'}. Try another word, or choose &ldquo;All&rdquo;.</p>`);
+</article>` : (list.length ? '' : (fCat && !q && !fTag && !fCountry) ? `<p class="empty">${esc(fCat.empty)} <a href="/get-featured/">Get featured</a> or <a href="/stories/">read all stories</a>.</p>` : `<p class="empty">No stories match${query ? ' &ldquo;' + esc(query) + '&rdquo;' : ' those filters'}. Try another word, or choose &ldquo;All&rdquo;.</p>`);
   ($('#grid') || N()).innerHTML = rest.map(cardHtml).join('') + (home || pageNo === pages ? inviteHtml() : '');
   const url = n => (location.pathname + (n > 1 ? '?page=' + n : ''));
   ($('#seeAll') || N()).innerHTML = home ? (list.length > 4 ? `<a class="btn btn-line" href="/stories/">See all ${list.length} stories</a>` : '')
@@ -193,10 +201,10 @@ function renderStories(announce) {
 function showStory(s, opts = {}) {
   const orig = s._orig || s;
   const others = STORIES.filter(x => x !== orig);
-  const shared = x => tagsOf(x).filter(t => tagsOf(orig).includes(t)).length * 2 + (countryOf(x) && countryOf(x) === countryOf(orig) ? 1 : 0);
+  const shared = x => (x.category && x.category === orig.category ? 3 : 0) + tagsOf(x).filter(t => tagsOf(orig).includes(t)).length * 2 + (countryOf(x) && countryOf(x) === countryOf(orig) ? 1 : 0);
   const more = others.map(x => [x, shared(x)]).sort((a, b) => b[1] - a[1]).map(p => p[0]).slice(0, 3);
   const paras = s.body.map(p => typeof p === 'string' ? `<p>${esc(p)}</p>`
-    : p.q ? `<div class="qa"><h3>${esc(p.q)}</h3><p>${esc(p.a)}</p></div>`
+    : p.q ? `<div class="qa"><h2>${esc(p.q)}</h2><p>${esc(p.a)}</p></div>`
     : `<figure><img src="${esc(asset(p.img))}" alt="${esc(p.alt || '')}" loading="lazy" onerror="this.closest('figure').hidden=true">${p.caption ? `<figcaption>${esc(p.caption)}</figcaption>` : ''}</figure>`);
   const pq = `<blockquote class="pull"><p>${esc('\u201C' + s.pullQuote + '\u201D')}</p><cite class="mono">${esc(s.owner)}, ${esc(s.business)}</cite></blockquote>`;
   const at = Math.min(Math.max(s.pullAfter || 2, 1), paras.length);
@@ -205,12 +213,12 @@ function showStory(s, opts = {}) {
   const fact = (k, v) => (v == null || NA_VALUE.test(String(v))) ? '' : `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`;
   ($('#storyView') || N()).innerHTML = `
   <div class="wrap story" style="${catVars(s)}">
-<nav class="crumbs mono" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/stories/">Stories</a><span aria-hidden="true">/</span><span aria-current="page">${esc(s.owner)}</span></nav>
+<nav class="crumbs mono" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/stories/">Stories</a><span aria-hidden="true">/</span>${catOf(s) ? `<a href="${categoryPath(catOf(s))}">${esc(catOf(s).name)}</a><span aria-hidden="true">/</span>` : ''}<span aria-current="page">${esc(s.owner)}</span></nav>
 <header class="story-head">
-  ${s.sample || s.series ? `<p class="label">${s.series ? `<span class="cat-name">${esc(s.series)}</span>` : ''}${s.sample ? '<span class="sample">Sample</span>' : ''}</p>` : ''}
+  ${catOf(s) || s.sample || s.series ? `<p class="label">${catOf(s) ? `<a class="cat-name" href="${categoryPath(catOf(s))}">${esc(catOf(s).name)}</a>` : ''}${s.series ? `<span class="cat-name">${esc(s.series)}</span>` : ''}${s.sample ? '<span class="sample">Sample</span>' : ''}</p>` : ''}
   <h1 tabindex="-1" id="storyTitle">${esc(s.headline)}</h1>
   <p class="dek">${esc(s.summary)}</p>
-  <p class="mono" style="color:var(--muted);margin-top:1.2rem">${[s.author ? 'By ' + esc(s.author) : '', esc(s.readTime), s.published ? esc(new Date(s.published + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })) : ''].filter(Boolean).join(' &middot; ')}</p>
+  <p class="story-meta"><span>By ${(s.author || CONFIG.owner) === CONFIG.owner ? `<a href="/about/" rel="author">${esc(CONFIG.owner)}</a>` : esc(s.author)}</span>${s.readTime ? `<span>${esc(s.readTime)}</span>` : ''}${s.published ? `<time datetime="${esc(s.published)}">${esc(new Date(s.published + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }))}</time>` : ''}</p>
   ${tagsHtml(s)}
 </header>
 <div class="story-grid">
@@ -226,13 +234,17 @@ function showStory(s, opts = {}) {
     <div class="box">
       <h2>Business facts</h2>
       <dl class="facts">
-        ${fact('Business', s.business)}${fact('Owner', s.owner)}${fact('Location', s.location)}${fact('Founded', /\b(1[89]|20)\d{2}\b/.test(String(s.founded || '')) ? s.founded : '')}${fact('Offers', s.offers)}${s.instagram ? `<div><dt>Instagram</dt><dd><a class="ig-link" href="${esc(igHref(s.instagram))}" target="_blank" rel="noopener" aria-label="${esc(s.business)} on Instagram" title="Instagram">${ICONS.insta}</a></dd></div>` : ''}
+        ${fact('Business', s.business)}${fact('Owner', s.owner)}${fact('Location', s.location)}${fact('Founded', /\b(1[89]|20)\d{2}\b/.test(String(s.founded || '')) ? s.founded : '')}${fact('Offers', s.offers)}${s.instagram ? `<div><dt>Instagram</dt><dd><a class="ig-link" data-track="instagram_click" data-loc="story_facts" data-story="${esc(storySlug(s))}" href="${esc(igHref(s.instagram))}" target="_blank" rel="noopener" aria-label="${esc(s.business)} on Instagram" title="Instagram">${ICONS.insta}</a></dd></div>` : ''}
       </dl>
     </div>
   </aside>
 </div>
+<aside class="story-cta" aria-labelledby="storyCtaTitle">
+  <div><h2 id="storyCtaTitle">Run an independent business? Tell your story.</h2><p>Features are free, and nothing is published until you have approved it in writing.</p></div>
+  <a class="btn btn-cta" href="/get-featured/" data-loc="story_end">Get featured</a>
+</aside>
 <section class="more" aria-labelledby="moreTitle">
-  <h2 id="moreTitle">More stories</h2>
+  <h2 id="moreTitle">Related stories</h2>
   <div class="grid">${more.map(cardHtml).join('')}</div>
 </section>
   </div>`;
@@ -248,7 +260,7 @@ function renderHero() {
   if (!$('#heroVisual')) return;
   const picks = STORIES.slice(0, 3);
   ($('#heroVisual') || N()).innerHTML = picks.map((s, i) =>
-    `<a class="hv" href="${storyPath(s)}" style="background:${coverOf(s).color}">${media(s, 'xMinYMid', i === 0 ? 375 : 282)}${numHtml(s)}<span class="hv-cap"><span class="mono">${esc(tagsOf(s)[0] || 'Story')}${s.sample ? ' &middot; Sample' : ''}</span><strong>${esc(s.business)}</strong></span></a>`
+    `<a class="hv" href="${storyPath(s)}" style="background:${coverOf(s).color}">${media(s, 'xMinYMid', i === 0 ? 375 : 282)}${numHtml(s)}<span class="hv-cap"><span class="mono">${esc((catOf(s) || {}).name || tagsOf(s)[0] || 'Story')}${s.sample ? ' &middot; Sample' : ''}</span><strong>${esc(s.business)}</strong></span></a>`
   ).join('');
 }
 const ICONS = {
@@ -269,7 +281,7 @@ function renderContact() {
   ($('#chatList') || N()).innerHTML = rows.map(([ic, name, url]) =>
     `<li><a class="crow" href="${esc(url)}"${external(url) ? ' target="_blank" rel="noopener"' : ''}><span class="ci" aria-hidden="true">${ICONS[ic]}</span><span class="ct"><strong>${esc(name)}</strong></span><span class="go" aria-hidden="true">&rarr;</span></a></li>`
   ).join('');
-  ($('#footCats') || N()).innerHTML = STORIES.slice(0, 3).map(s => `<li><a href="${storyPath(s)}">${esc(s.business)}</a></li>`).join('');
+  ($('#footCats') || N()).innerHTML = '<li><a href="/stories/">All stories</a></li>' + CATS.map(c => `<li><a href="${categoryPath(c)}">${esc(c.name)}</a></li>`).join('');
 }
 const header = $('#siteHeader'), menuBtn = $('#menuBtn');
 function setMenu(open) {
@@ -296,6 +308,14 @@ document.addEventListener('click', e => {
   else if (/wa\.me|whatsapp/i.test(h)) track('whatsapp_click');
   else if (/^mailto:/i.test(h)) track('email_click');
   else if (/\/submit-story\/?$/.test(h)) track('apply_click');
+});
+/* Publication events (see docs/ANALYTICS.md). Parameters are page positions and story addresses only: never names, emails or message text. */
+const placeOf = a => a.dataset.loc || (a.closest('header') ? 'header' : a.closest('footer') ? 'footer' : a.closest('.story') ? 'story' : (a.closest('section[id]') || {}).id || 'page');
+document.addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('a, button'); if (!a) return;
+  const h = a.getAttribute('href') || '';
+  if (/^\/(get-featured|submit-story)\/?(#.*)?$/.test(h)) track('get_featured_click', { placement: placeOf(a), destination: h.replace(/#.*/, '') });
+  if (a.dataset.track) { const p = { placement: placeOf(a) }; ['story', 'method'].forEach(k => { if (a.dataset[k]) p[k] = a.dataset[k]; }); track(a.dataset.track, p); }
 });
 
 /* Delivers one submission to every inbox. Web3Forms ties each free key to one email, so a second key (CONFIG.formAccessKeyExtra) reaches the second inbox.
@@ -382,7 +402,30 @@ document.addEventListener('click', e => {
   windowBlurred = false;
   setTimeout(() => { if (!windowBlurred && document.visibilityState === 'visible') showMailToast(a.href); }, 1400);
 });
+/* ---------- Home: category navigation; policy pages; Get featured sections ---------- */
+const fill = t => esc(String(t)).replace(/\{owner\}/g, esc(CONFIG.owner)).replace(/\{brand\}/g, esc(CONFIG.brand)).replace(/\{email\}/g, `<a href="${esc(mailto(''))}">${esc(CONFIG.email)}</a>`).replace(/\{reply\}/g, esc(CONFIG.replyTime || 'within a few days')).replace(/\[([^\]]+)\]\((\/[^)\s]*)\)/g, '<a href="$2">$1</a>');
+function renderCategoryTiles() {
+  const el = $('#catTiles'); if (!el) return;
+  el.innerHTML = CATS.map(c => { const n = catCount(c); return `<li><a class="cat-tile" href="${categoryPath(c)}"><strong>${esc(c.name)}</strong><span>${esc(c.blurb)}</span><small>${n ? n + (n === 1 ? ' story' : ' stories') : 'No stories yet'}</small></a></li>`; }).join('');
+}
+function renderPolicy() {
+  const el = $('#policyBody'), P = typeof POLICIES !== 'undefined' && POLICIES[curPage]; if (!el || !P) return;
+  const list = (tag, a) => a ? `<${tag}>${a.map(t => `<li>${fill(t)}</li>`).join('')}</${tag}>` : '';
+  const sec = x => `<section class="policy-sec"><h2>${esc(x.h)}</h2>${(x.p || []).map(t => `<p>${fill(t)}</p>`).join('')}${list('ul', x.ul)}${list('ol', x.ol)}</section>`;
+  const date = new Date(P.updated + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  el.dataset.lastmod = P.updated;
+  el.innerHTML = `<header class="policy-head"><h1>${esc(P.title)}</h1><p class="policy-dek">${fill(P.intro)}</p><p class="policy-updated">Last updated <time datetime="${esc(P.updated)}">${esc(date)}</time></p></header>${P.sections.map(sec).join('')}${P.cta ? `<div class="policy-cta"><p>${esc(P.cta.text)}</p><a class="btn btn-cta" href="${esc(P.cta.href)}">${esc(P.cta.label)}</a></div>` : ''}<nav class="policy-related" aria-label="Related pages"><h2>Related pages</h2><ul>${P.related.map(k => `<li><a href="${PAGES[k]}">${esc(PAGE_H1[k])}</a></li>`).join('')}<li><a href="/privacy.html">Privacy policy</a></li></ul></nav>`;
+}
+function renderGetFeatured() {
+  if (typeof GF === 'undefined') return;
+  const ul = a => a.map(t => `<li>${fill(t)}</li>`).join(''), cards = a => a.map(k => `<li><h3>${esc(k.title)}</h3><p>${esc(k.text)}</p></li>`).join('');
+  const set = (id, html) => { const e = $(id); if (e) e.innerHTML = html; };
+  set('#gfWho', ul(GF.who)); set('#gfNotFit', esc(GF.notFit)); set('#gfKinds', cards(GF.kinds)); set('#gfWhy', cards(GF.why));
+  set('#gfReceive', ul(GF.receive)); set('#gfProcess', cards(GF.process)); set('#gfApplyTitle', esc(GF.apply.title));
+  set('#gfApplyText', fill(GF.apply.text)); set('#gfReady', ul(GF.apply.ready));
+}
 function renderStatic() {
+  renderCategoryTiles(); renderPolicy(); renderGetFeatured();
   renderContact();
   renderHero();
   ($('#heroEyebrow') || N()).textContent = HERO.eyebrow;
@@ -391,11 +434,11 @@ function renderStatic() {
   ($('#heroChecks') || N()).innerHTML = HERO.checks.map(c => `<li>${esc(c)}</li>`).join('');
   ($('#heroIntro') || N()).textContent = HERO.intro;
   renderProof();
-  ($('#keyfacts') || N()).innerHTML = HERO.facts.map(f => `<div><strong>${esc(f.big.replace('{count}', STORIES.length).replace('{countries}', siteStats().countries).replace('{disciplines}', siteStats().disciplines))}</strong><span class="mono">${esc(f.label)}</span></div>`).join('');
+  ($('#keyfacts') || N()).innerHTML = HERO.facts.map(f => `<div><strong>${esc(f.big.replace('{count}', STORIES.length).replace('{countries}', siteStats().countries).replace('{disciplines}', siteStats().disciplines).replace('{categories}', CATS.filter(c => catCount(c)).length))}</strong><span class="mono">${esc(f.label)}</span></div>`).join('');
   ($('#trust') || N()).innerHTML = TRUST.map((t, i) => `<div><span class="mono">0${i + 1}</span><h3>${esc(t.title)}</h3><p>${esc(t.text)}</p></div>`).join('');
   ($('#steps') || N()).innerHTML = STEPS.map(t => `<li><h3>${esc(t.title)}</h3><p>${esc(t.text)}</p></li>`).join('');
   ($('#aboutStories') || N()).innerHTML = STORIES.slice(0, 3).map(cardHtml).join('');
-  ($('#serviceGrid') || N()).innerHTML = SERVICES.map((t, i) => `<article class="sv-card${t.main ? ' main' : ''}"><div class="sv-art"><img src="/images/svc-${esc(t.art === 'site' ? 'site' : t.art)}.webp" alt="${esc(t.title)}: illustrative website mockup" width="1200" height="675" loading="lazy"></div><div class="sv-card-body"><span class="mono sv-num">0${i + 1}</span><h3>${esc(t.title)}</h3><p class="sv-text">${esc(t.text)}</p><p class="sv-for"><span class="mono">Best for</span>${esc(t.who)}</p><a class="${t.main ? 'btn btn-cta' : 'svc-link'}" href="/contact/" data-type="${esc(t.type)}" data-prefill="${esc("Hi, I'd like to talk about: " + t.title + ". My business and what I need: ")}">${esc(t.cta)}${t.main ? ' <span aria-hidden="true">&rarr;</span>' : ' <span aria-hidden="true">&rarr;</span>'}</a></div></article>`).join('');
+  ($('#serviceGrid') || N()).innerHTML = SERVICES.map((t, i) => `<article class="sv-card${t.main ? ' main' : ''}"><div class="sv-art"><img src="/images/svc-${esc(t.art === 'site' ? 'site' : t.art)}.webp" alt="${esc(t.title)}: illustrative website mockup" width="1200" height="675" loading="lazy"></div><div class="sv-card-body"><div class="sv-meta"><span class="sv-num" aria-hidden="true">0${i + 1}</span>${t.main ? '<span class="sv-tag-main">Core service</span>' : ''}</div><h3>${esc(t.title)}</h3><p class="sv-text">${esc(t.text)}</p><p class="sv-for"><span class="mono">Best for</span>${esc(t.who)}</p><div class="sv-foot"><a class="sv-cta" href="/contact/" data-type="${esc(t.type)}" data-prefill="${esc("Hi, I'd like to talk about: " + t.title + ". My business and what I need: ")}"><span>${esc(t.cta)}</span><span class="sv-arrow" aria-hidden="true">&rarr;</span></a></div></div></article>`).join('');
 }
 function renderProof() {
   const el = $('#proof'); if (!el) return;
@@ -416,6 +459,7 @@ function applyConfig() {
   const setLink = (sel, url) => $$(sel).forEach(e => { e.href = url; if (external(url)) { e.target = '_blank'; e.rel = 'noopener'; } });
   setLink('[data-wa-link]', waUrl());
   setLink('[data-insta-link]', igUrl());
+  $$('[data-fb-link]').forEach(e => { if (isSet(CONFIG.facebook)) { e.href = CONFIG.facebook; e.target = '_blank'; e.rel = 'noopener'; } else e.hidden = true; });
   setLink('[data-cal-link]', calUrl());
   $$('[data-linkedin-link]').forEach(e => { if (isSet(CONFIG.linkedin)) { e.href = CONFIG.linkedin; e.target = '_blank'; e.rel = 'me noopener'; } else if (e.matches('.f-owner')) e.removeAttribute('href'); else e.hidden = true; });
   ($('#footTag') || N()).textContent = CONFIG.tagline;
@@ -476,9 +520,10 @@ document.addEventListener('click', e => {
 
 /* ---------- Pages: every page is a real address (/about/, /stories/name/ ...) ---------- */
 let curPage = 'home';
-const PAGE_H1 = { stories: 'All founder stories', about: 'About The Founders Notes', mission: 'Our mission: why The Founders Notes exists', 'get-featured': 'Get featured on The Founders Notes for free', 'submit-story': 'Apply to be featured on The Founders Notes', services: 'Website design and booking systems for independent businesses', contact: 'Contact The Founders Notes' };
+const PAGE_H1 = { stories: 'All founder stories', about: 'About The Founders Notes', mission: 'Our mission: why The Founders Notes exists', 'get-featured': 'Get featured on The Founders Notes for free', 'submit-story': 'Apply to be featured on The Founders Notes', services: 'Website design and booking systems for independent businesses', contact: 'Contact The Founders Notes', 'editorial-policy': 'Editorial policy', 'submission-guidelines': 'Submission guidelines', terms: 'Terms and conditions', 'sponsored-content': 'Sponsored content and commercial relationships' };
+const POLICY_PAGES = ['editorial-policy', 'submission-guidelines', 'terms', 'sponsored-content'];
 function showPage(r) {
-  const p = r.page; curPage = p;
+  const p = r.page; curPage = p; document.body.dataset.page = p;
   $$('[data-pages]').forEach(el => el.classList.toggle('pg-off', !el.dataset.pages.split(' ').includes(p)));
   $$('.first-vis').forEach(el => el.classList.remove('first-vis'));
   const fv = $$('#homeView > section[data-pages]').find(el => !el.classList.contains('pg-off')); if (fv) fv.classList.add('first-vis');   // first visible section: trimmed top spacing (works when hidden sections stay in the page)
@@ -488,21 +533,21 @@ function showPage(r) {
     try { on = p !== 'home' && new URL(l.getAttribute('href'), location.href).pathname === PAGES[p]; } catch (_) { }
     if (on) l.setAttribute('aria-current', 'page'); else l.removeAttribute('aria-current');
   });
-  const title = r.tag ? r.tag + ' founders' : r.country ? 'Founders in ' + r.country : p === 'stories' ? 'All stories' : 'Latest stories';
+  const title = r.category ? r.category.name : r.tag ? r.tag + ' founders' : r.country ? 'Founders in ' + r.country : p === 'stories' ? 'All stories' : 'Latest stories';
   ($('#storiesTitle') || N()).textContent = title;
-  const n = STORIES.filter(s => (!r.tag || tagsOf(s).includes(r.tag)) && (!r.country || countryOf(s) === r.country)).length;
-  ($('#storiesIntro') || N()).textContent = r.tag ? `${n} ${n === 1 ? 'story' : 'stories'} about ${r.tag.toLowerCase()} founders and teachers.` : r.country ? `${n} ${n === 1 ? 'story' : 'stories'} from independent founders in ${r.country}.` : '';
+  const n = STORIES.filter(s => (!r.tag || tagsOf(s).includes(r.tag)) && (!r.country || countryOf(s) === r.country) && (!r.category || s.category === r.category.name)).length;
+  ($('#storiesIntro') || N()).textContent = r.category ? r.category.intro : r.tag ? `${n} ${n === 1 ? 'story' : 'stories'} about ${r.tag.toLowerCase()} founders and teachers.` : r.country ? `${n} ${n === 1 ? 'story' : 'stories'} from independent founders in ${r.country}.` : '';
   let h1 = $('#pageH1');
-  if (p === 'home') { if (h1) h1.remove(); }
+  if (p === 'home' || POLICY_PAGES.includes(p)) { if (h1) h1.remove(); }   // home and policy pages show their own visible h1
   else {
     if (!h1) { h1 = document.createElement('h1'); h1.id = 'pageH1'; h1.className = 'sr-only'; const hv = $('#homeView'); hv.insertBefore(h1, hv.firstChild); }
-    h1.textContent = r.tag ? r.tag + ' founders: stories and journeys' : r.country ? 'Independent founders in ' + r.country : PAGE_H1[p];
+    h1.textContent = r.category ? r.category.title : r.tag ? r.tag + ' founders: stories and journeys' : r.country ? 'Independent founders in ' + r.country : PAGE_H1[p];
   }
 }
 function route() {
   const r = parseRoute(location.pathname);
   if (r.story) { showStory(r.story, { initial: true }); setStoryMeta(r.story); return; }
-  fTag = r.tag || ''; fCountry = r.country || '';
+  fTag = r.tag || ''; fCountry = r.country || ''; fCat = r.category || null;
   $('#homeView').hidden = false;
   $('#storyView').hidden = true;
   showPage(r);
@@ -518,7 +563,7 @@ function route() {
 }
 
 legacyRedirect();
-{ const r0 = parseRoute(location.pathname); curPage = r0.story ? 'home' : r0.page; fTag = r0.tag || ''; fCountry = r0.country || ''; }
+{ const r0 = parseRoute(location.pathname); curPage = r0.story ? 'home' : r0.page; fTag = r0.tag || ''; fCountry = r0.country || ''; fCat = r0.category || null; }
 applyConfig();
 initSearch();
 renderStories();

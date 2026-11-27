@@ -49,21 +49,22 @@ const TRUST = [
 
 /* Hero intro and the four facts under it. Use {count} for the number of stories. */
 const HERO = {
-  eyebrow: "Free stories for independent founders",
-  title: "Every founder has a story.",
-  titleEm: "We tell it properly.",
-  intro: "I write warm, plain-spoken stories about the people behind yoga and Pilates studios, martial arts and fitness classes, retreats and online practices, wherever in the world they are. It costs nothing to be featured, and nothing goes live without your written approval.",
-  checks: ["Free to be featured", "You approve every word", "Founders welcome worldwide"],
+  eyebrow: "An independent digital publication",
+  title: "Real stories from the people behind",
+  titleEm: "independent businesses.",
+  intro: "The Founders Notes shares the journeys of founders, yoga teachers, wellness professionals, creatives and small-business owners: how they started, what was hard, and what they have learned. It is free to be featured, and nothing goes live without the founder's written approval.",
+  checks: ["Free to be featured", "Founders welcome worldwide"],
   facts: [
     { big: "{count}", label: "Stories" },
     { big: "{countries}", label: "Countries" },
-    { big: "{disciplines}", label: "Disciplines" }
+    { big: "{categories}", label: "Categories" }
   ]
 };
 
 /* "Is this for me?" questions, shown as open-and-close answers in the Get featured area. */
 const FAQ = [
-  { q: "Who do you feature?", a: "Independent founders who run movement and wellness businesses: yoga and Pilates teachers, martial arts and fitness instructors, studio owners, retreat hosts and online practices. Anywhere in the world, from a one-person home studio to a school with several locations." },
+  { q: "Who do you feature?", a: "Independent founders and business owners from anywhere in the world: yoga and wellness teachers and studio owners, small-business owners, creatives who work for themselves, and people whose work grew out of a personal turning point. From a one-person home studio to a school with several locations." },
+  { q: "My business is not in yoga or wellness. Can I still apply?", a: "Yes. The publication covers entrepreneurship, small businesses and creative work as well as yoga and wellness. If you run a real, independent business and have an honest story about how it began, apply." },
   { q: "What do I need to do?", a: "Take a 20-minute video chat (or send written answers or voice notes on WhatsApp if that suits you better), share a few photos you are happy to have published, and read the draft. That is all." },
   { q: "Does it really cost nothing?", a: "Yes. Being featured is free, and it never depends on buying anything. I also build websites, but that is a separate offer, and you can say no to it and still be featured." },
   { q: "Can I change the story or have it removed?", a: "Yes, any time. You read the full draft first, and nothing is published until you say yes in writing. After it is live, email me and I will correct or remove it promptly." },
@@ -136,24 +137,24 @@ const TESTIMONIALS = [];
    Story pages build their own from the story (name, business, place and summary). */
 const SEO = {
   home: {
-    title: "The Founders Notes | Free stories of independent founders",
-    description: "Free, founder-approved stories about independent yoga, Pilates, martial arts and wellness business owners around the world. Read their journeys or get featured."
+    title: "The Founders Notes | Stories of independent founders",
+    description: "An independent publication sharing the journeys of founders, yoga teachers, wellness professionals, creatives and small-business owners. Free to be featured."
   },
   stories: {
-    title: "Founder stories: yoga, Pilates, wellness | Founders Notes",
-    description: "Read how independent yoga teachers, studio owners and wellness founders started, what was hard, and what a normal week looks like. Founder-approved."
+    title: "Founder stories and interviews | The Founders Notes",
+    description: "Read how independent founders, yoga teachers, creatives and small-business owners started, what was hard and what they learned. Every story is founder-approved."
   },
   about: {
     title: "About The Founders Notes | Stories of independent founders",
-    description: "The Founders Notes is a free publication of real, founder-approved stories about independent businesses. Meet Pranav Khandelwal, the person behind it."
+    description: "The Founders Notes is an independent publication of real, founder-approved stories about independent businesses. Meet Pranav Khandelwal, the person behind it."
   },
   mission: {
-    title: "Our mission: free founder stories | The Founders Notes",
-    description: "Why The Founders Notes exists: free, founder-approved stories for independent yoga, Pilates and fitness founders, who they are for and where it is heading."
+    title: "Our mission: real founder stories | The Founders Notes",
+    description: "Why The Founders Notes exists: free, founder-approved stories about the people behind independent businesses, who it is for and where it is heading."
   },
   "get-featured": {
     title: "Get featured for free | The Founders Notes",
-    description: "How to share your story with The Founders Notes: a 20-minute chat, a draft you approve, and a free story page with a badge and quote cards. Your questions answered."
+    description: "Who can be featured, how the interview works and what you receive: a free story page, a badge and quote cards. You approve every word before it goes live."
   },
   "submit-story": {
     title: "Apply to be featured | The Founders Notes",
@@ -165,6 +166,66 @@ const SEO = {
   },
   contact: {
     title: "Contact The Founders Notes | Book a call or send a message",
-    description: "Share your founder story, ask about a website, booking system or redesign, or book a free 20-minute call. Send a message, or write by email, WhatsApp or Instagram."
+    description: "Share your founder story, ask about a website or booking system, or book a free 20-minute call. Send a message or write by email, WhatsApp or Instagram."
+  },
+  "editorial-policy": {
+    title: "Editorial policy | The Founders Notes",
+    description: "How The Founders Notes chooses, writes and corrects founder stories: independence, founder approval, accuracy, corrections and how money is kept separate."
+  },
+  "submission-guidelines": {
+    title: "Submission guidelines | The Founders Notes",
+    description: "What to prepare before applying to be featured on The Founders Notes: who can apply, what we ask, photo requirements, and how approval and removal work."
+  },
+  terms: {
+    title: "Terms and conditions | The Founders Notes",
+    description: "The terms for using The Founders Notes website and for being featured: what you agree to, how content may be shared and how to ask for changes or removal."
+  },
+  "sponsored-content": {
+    title: "Sponsored content and disclosure | The Founders Notes",
+    description: "How The Founders Notes is funded, why stories cannot be bought, and how any sponsored or commercial relationship would be clearly labelled."
+  }
+};
+
+/* The Get featured page (/get-featured/): who, what, why, how, what you receive. Real, current practice only: no numbers, no promises of results. */
+const GF = {
+  who: [
+    "Founders and owners of real, active, independent businesses, anywhere in the world",
+    "Yoga and wellness teachers, studio owners and practitioners",
+    "Small-business owners, from a home studio to a school with several locations",
+    "Independent creatives: photographers, makers, designers, writers",
+    "People whose work grew out of a turning point, such as a career change, a recovery or becoming a parent"
+  ],
+  notFit: "Not a fit: businesses that are not yet operating, accounts that cannot be verified as real, or anything that reads as an advertisement rather than a story. Payment cannot change that.",
+  kinds: [
+    { title: "Studios, classes and retreats", text: "Yoga, Pilates, movement and wellness, in person or online." },
+    { title: "Independent shops and services", text: "The local businesses people rely on and the people who run them." },
+    { title: "Creative practices", text: "Photography, design, making and other work done for yourself." },
+    { title: "New directions", text: "Founders who changed course and built something of their own." }
+  ],
+  why: [
+    { title: "Your story, told properly", text: "Written in plain, warm language from what you tell me, not a press release." },
+    { title: "A page of your own", text: "A story page with your photo and links that you can share anywhere." },
+    { title: "You stay in control", text: "You read the full draft first. Nothing is published until you say yes in writing." },
+    { title: "Free, with no catch", text: "Being featured costs nothing and never depends on buying anything." }
+  ],
+  receive: [
+    "A written founder story on its own page",
+    "Your photo, and links to your website, Instagram and booking page",
+    "A \u201CFeatured in\u201D badge for your website or Instagram bio",
+    "Ready-made quote cards for Instagram, in square and story sizes",
+    "A translated version of your story on request",
+    "A tag on Instagram when your story goes live",
+    "The right to ask for changes or removal, at any time"
+  ],
+  process: [
+    { title: "We talk", text: "A relaxed video chat of about 20 minutes, or written answers or voice notes if you prefer." },
+    { title: "I write it up", text: "In plain, warm language. I only use what you have told me." },
+    { title: "You read it first", text: "Change anything you like. Photos included, nothing goes live without your written yes." },
+    { title: "It goes live", text: "Free to read and to share. You can ask me to change it or take it down at any time." }
+  ],
+  apply: {
+    title: "Apply in about 10 to 15 minutes",
+    text: "The application is 15 short questions: about you, your journey, and your photo and permissions. Your answers are saved on your device while you write, so you can leave and come back. I read every application myself and reply {reply}.",
+    ready: ["Your website and Instagram, if you have them", "A clear photo of you or your work (JPG, PNG or WebP, up to 5 MB)", "A few honest sentences about how you started"]
   }
 };

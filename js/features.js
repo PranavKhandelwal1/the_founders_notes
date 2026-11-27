@@ -24,20 +24,20 @@ function siteStats() {
 function renderFilters() {
   const box = $('#filters');
   if (!box) return;
-  const topics = topicNames(), pages = placeNames();
+  const topics = topicLinked(), pages = placeNames();
   // every country is listed; a country with 2+ stories opens its own page, a country with one story opens that story
   const places = [...tally(countryOf)].sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0])).map(([k]) => k);
   const target = c => pages.includes(c) ? countryPath(c) : storyPath(STORIES.find(s => countryOf(s) === c));
-  if (!topics.length && !places.length) { box.hidden = true; return; }
+  if (curPage === 'home' || (!CATS.length && !topics.length && !places.length)) { box.hidden = true; return; }   // the home page has its own category tiles
   box.hidden = false;
-    const chip = t => `<a class="chip${fTag === t ? ' on' : ''}" href="${tagPath(t)}"${fTag === t ? ' aria-current="page"' : ''}>${esc(t)}</a>`;
-  const SHOW = 6, extra = topics.slice(SHOW), inExtra = extra.includes(fTag);
-  box.innerHTML = `<nav class="chips" aria-label="Browse stories by topic"><a class="chip${!fTag && !fCountry ? ' on' : ''}" href="/stories/">All</a>${topics.slice(0, SHOW).map(chip).join('')}${extra.length ? `<span class="more-tags"><button type="button" class="chip more-btn${inExtra ? ' on' : ''}" id="moreBtn" aria-expanded="false" aria-controls="morePanel">More tags <span aria-hidden="true">&#9662;</span></button><span class="more-panel" id="morePanel" hidden>${extra.map(chip).join('')}</span></span>` : ''}</nav>` +
+  const on = fCat || fTag || fCountry;
+  const catChip = c => `<a class="chip${fCat && fCat.slug === c.slug ? ' on' : ''}" href="${categoryPath(c)}"${fCat && fCat.slug === c.slug ? ' aria-current="page"' : ''}>${esc(c.name)}</a>`;
+  const chip = t => `<a class="chip${fTag === t ? ' on' : ''}" href="${tagPath(t)}"${fTag === t ? ' aria-current="page"' : ''}>${esc(t)}</a>`;
+  box.innerHTML = `<nav class="chips" aria-label="Browse stories by category"><a class="chip${!on ? ' on' : ''}" href="/stories/">All</a>${CATS.map(catChip).join('')}${topics.length ? `<span class="more-tags"><button type="button" class="chip more-btn${fTag ? ' on' : ''}" id="moreBtn" aria-expanded="false" aria-controls="morePanel">Topics <span aria-hidden="true">&#9662;</span></button><span class="more-panel" id="morePanel" hidden>${topics.map(chip).join('')}</span></span>` : ''}</nav>` +
     (places.length ? `<label class="sr-only" for="fCountry">Country</label><select id="fCountry" class="select"><option value="/stories/">All countries</option>${places.map(c =>
       `<option value="${target(c)}"${c === fCountry ? ' selected' : ''}>${esc(c)}</option>`).join('')}</select>` : '');
   const mb = $('#moreBtn'), mp = $('#morePanel');
   if (mb && mp) {
-    const close = () => { mp.hidden = true; mb.setAttribute('aria-expanded', 'false'); };
     mb.onclick = e => { e.stopPropagation(); const open = mp.hidden; mp.hidden = !open; mb.setAttribute('aria-expanded', String(open)); };
     mp.onclick = e => e.stopPropagation();
     if (!window._moreTagsWired) { window._moreTagsWired = true;
@@ -74,27 +74,42 @@ function applyMeta(m) {
   setTag('property', 'og:title', m.title);
   setTag('property', 'og:description', m.description);
   setTag('property', 'og:url', siteBase() + m.path);
-  setTag('property', 'og:image', absUrl(m.image || 'assets/og-image.jpg'));
+  const img = absUrl(m.image || 'assets/og-image.jpg'), alt = m.imageAlt || CONFIG.brand;
+  setTag('property', 'og:image', img);
+  setTag('property', 'og:image:alt', alt);
   setTag('name', 'twitter:card', 'summary_large_image');
+  setTag('name', 'twitter:title', m.title);
+  setTag('name', 'twitter:description', m.description);
+  setTag('name', 'twitter:image', img);
+  setTag('name', 'twitter:image:alt', alt);
+  setTag('property', 'article:published_time', m.published || '');
+  setTag('property', 'article:modified_time', m.published || '');
+  setTag('property', 'article:section', m.section || '');
+  setTag('name', 'robots', m.noindex ? 'noindex,follow' : 'index,follow,max-image-preview:large');   // thin pages stay out of search results until they have 2+ stories
   setCanonical(siteBase() + m.path);
 }
 const crumbLd = items => ({ '@type': 'BreadcrumbList', itemListElement: items.map((it, i) => ({ '@type': 'ListItem', position: i + 1, name: it[0], item: siteBase() + it[1] })) });
 const orgLd = () => ({
   '@type': 'Organization', '@id': siteBase() + '/#organization', name: CONFIG.brand, url: siteBase() + '/',
-  logo: absUrl('assets/brand/monogram.png'), description: CONFIG.tagline,
+  logo: absUrl('assets/brand/monogram.png'), description: CONFIG.tagline, publishingPrinciples: siteBase() + '/editorial-policy/',
+  contactPoint: { '@type': 'ContactPoint', contactType: 'editorial', email: CONFIG.email, url: siteBase() + '/contact/' },
   founder: { '@type': 'Person', name: CONFIG.owner, ...(isSet(CONFIG.linkedin) ? { sameAs: [CONFIG.linkedin] } : {}) },
-  ...(isSet(CONFIG.instagram) ? { sameAs: [instaUrl()] } : {})
+  sameAs: [...(isSet(CONFIG.instagram) ? [instaUrl()] : []), ...(isSet(CONFIG.facebook) ? [CONFIG.facebook] : [])]
 });
 const itemListLd = list => ({ '@type': 'ItemList', itemListElement: list.map((s, i) => ({ '@type': 'ListItem', position: i + 1, url: storyUrl(s), name: s.headline })) });
-const PAGE_NAMES = { stories: 'Stories', about: 'About', mission: 'Our mission', 'get-featured': 'Get featured', 'submit-story': 'Tell your story', services: 'Services', contact: 'Contact' };
+const PAGE_NAMES = { stories: 'Stories', about: 'About', mission: 'Our mission', 'get-featured': 'Get featured', 'submit-story': 'Tell your story', services: 'Build With Us', contact: 'Contact', 'editorial-policy': 'Editorial policy', 'submission-guidelines': 'Submission guidelines', terms: 'Terms and conditions', 'sponsored-content': 'Sponsored content' };
 
 /* Home, list and information pages */
 function setPageMeta(r) {
   stopListen();
   const brand = CONFIG.brand, seo = (typeof SEO !== 'undefined' && SEO[r.page]) || {};
-  const subset = STORIES.filter(s => (!r.tag || tagsOf(s).includes(r.tag)) && (!r.country || countryOf(s) === r.country));
+  const subset = STORIES.filter(s => (!r.tag || tagsOf(s).includes(r.tag)) && (!r.country || countryOf(s) === r.country) && (!r.category || s.category === r.category.name));
   let title = seo.title || BASE_TITLE, description = seo.description || '', crumbs = [['Home', '/']];
-  if (r.tag) {
+  if (r.category) {
+    title = `${r.category.title} | ${brand}`;
+    description = clip(r.category.description, 160);
+    crumbs.push(['Stories', '/stories/'], [r.category.name, r.path]);
+  } else if (r.tag) {
     const places = [...new Set(subset.map(countryOf).filter(Boolean))];
     title = `${r.tag} founders: ${subset.length} stories | ${brand}`;
     description = clip(`Read ${subset.length} stories about ${r.tag.toLowerCase()} founders and teachers${places.length ? ' from ' + places.slice(0, 3).join(', ') : ''}: how they started, what was hard and what a normal week looks like.`, 160);
@@ -105,12 +120,13 @@ function setPageMeta(r) {
     description = clip(`Read ${subset.length} stories from independent founders in ${r.country}${topics.length ? ', including ' + topics.join(', ').toLowerCase() : ''}: how they started and what a normal week looks like.`, 160);
     crumbs.push(['Stories', '/stories/'], ['Founders in ' + r.country, r.path]);
   } else if (r.page !== 'home') crumbs.push([PAGE_NAMES[r.page], r.path]);
-  applyMeta({ title, description, path: r.path });
+  applyMeta({ title, description, path: r.path, noindex: !!((r.tag || r.category) && subset.length < 2) });
   const graph = [];
   if (r.page === 'home') graph.push(orgLd(), { '@type': 'WebSite', '@id': siteBase() + '/#website', name: brand, url: siteBase() + '/', publisher: { '@id': siteBase() + '/#organization' } });
   else graph.push(crumbLd(crumbs));
   if (r.page === 'stories') graph.push({ '@type': 'CollectionPage', name: title, description, url: siteBase() + r.path, mainEntity: itemListLd(subset) });
   if (r.page === 'about' || r.page === 'mission') graph.push({ '@type': 'AboutPage', name: title, description, url: siteBase() + r.path });
+  if (typeof POLICIES !== 'undefined' && POLICIES[r.page]) graph.push({ '@type': 'WebPage', name: title, description, url: siteBase() + r.path, isPartOf: { '@id': siteBase() + '/#website' }, dateModified: POLICIES[r.page].updated });
   if (r.page === 'contact') graph.push({ '@type': 'ContactPage', name: title, description, url: siteBase() + r.path });
   if (r.page === 'services') graph.push({ '@type': 'Service', name: 'Website design for yoga and wellness studios', provider: { '@id': siteBase() + '/#organization' }, areaServed: 'Worldwide', description });
   if (r.page === 'get-featured') graph.push({ '@type': 'FAQPage', mainEntity: FAQ.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) });
@@ -124,17 +140,19 @@ function setStoryMeta(sh) {
   const options = [overlap ? `${s.business}: founder story` : `${s.owner}, founder of ${s.business}`, `${s.owner}: founder story`].map(t => `${t} | ${CONFIG.brand}`);
   const title = options.find(t => t.length <= 62) || options[options.length - 1];
   const description = clip(sh.summary, 160), path = storyPath(s), img = s.image ? absUrl(asset(s.image)) : '';
-  applyMeta({ title, description, path, type: 'article', image: s.image ? asset(s.image) : '' });
+  applyMeta({ title, description, path, type: 'article', image: s.image ? asset(s.image) : '', imageAlt: s.imageAlt || '', published: s.published || '', section: s.category || '' });
+  const words = s.body.reduce((n, p) => n + String(typeof p === 'string' ? p : (p && (p.a || p.caption)) || '').split(/\s+/).filter(Boolean).length, 0);
   const article = {
     '@type': 'Article', headline: clip(sh.headline, 110), description: sh.summary, url: siteBase() + path,
     mainEntityOfPage: siteBase() + path, inLanguage: sh._lang || 'en',
-    author: { '@type': 'Person', name: s.author || CONFIG.owner },
-    publisher: { '@id': siteBase() + '/#organization' },
+    author: { '@type': 'Person', name: s.author || CONFIG.owner, url: siteBase() + '/about/' },
+    publisher: { '@id': siteBase() + '/#organization' }, isAccessibleForFree: true, wordCount: words,
+    ...(s.category ? { articleSection: s.category } : {}), ...(tagsOf(s).length ? { keywords: tagsOf(s).join(', ') } : {}),
     about: { '@type': 'Person', name: s.owner, ...(s.instagram ? { sameAs: [igHref(s.instagram)] } : {}) }
   };
   if (img) article.image = img;
   if (s.published) { article.datePublished = s.published; article.dateModified = s.published; }
-  ldSet('ld-page', { '@context': 'https://schema.org', '@graph': [orgLd(), article, crumbLd([['Home', '/'], ['Stories', '/stories/'], [s.owner, path]])] });
+  ldSet('ld-page', { '@context': 'https://schema.org', '@graph': [orgLd(), article, crumbLd([['Home', '/'], ['Stories', '/stories/'], ...(catOf(s) ? [[catOf(s).name, categoryPath(catOf(s))]] : []), [s.owner, path]])] });
 }
 
 /* ---------- Listen to a story (the browser's own text-to-speech) ---------- */
@@ -145,6 +163,10 @@ const IC = {
   whatsapp: '<svg class="fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>',
   link: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg>',
   share: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.6l6.8-4M8.6 13.4l6.8 4"/></svg>',
+  x: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 4.5l15 15M19.5 4.5l-15 15"/></svg>',
+  linkedin: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10.5V17M8 7.2v.01M12 17v-3.5a2.2 2.2 0 0 1 4.4 0V17M12 10.5V17"/></svg>',
+  facebook: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8.5h2.2V4.6H13.6A3.6 3.6 0 0 0 10 8.2V10.6H7.8v3.9H10V21h4v-6.5h2.4l.5-3.9H14V8.9c0-.3.1-.4.4-.4z"/></svg>',
+  mail: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
   check: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
 };
 const iconBtn = (act, icon, label, extra = '') => `<button type="button" class="icon-btn" data-act="${act}" aria-label="${esc(label)}" title="${esc(label)}"${extra}>${IC[icon]}</button>`;
@@ -285,12 +307,19 @@ function enhanceStory(sh) {
     <button type="button" class="chip${sh._lang ? '' : ' on'}" data-act="lang" data-lang="">English</button>
     ${langs.map(([code, t]) => `<button type="button" class="chip${sh._lang === code ? ' on' : ''}" data-act="lang" data-lang="${esc(code)}" lang="${esc(code)}">${esc(t.label || code)}</button>`).join('')}</div>` : '';
   const shareText = encodeURIComponent((sh.headline || s.business) + ' ' + storyUrl(s));
+  const U = encodeURIComponent(storyUrl(s)), T = encodeURIComponent(sh.headline || s.business), SLUG = storySlug(s);
+  const tr = m => ` data-track="article_share" data-method="${m}" data-story="${SLUG}"`;
+  const shareA = (m, href, icon, label, blank = true) => `<a class="icon-btn" href="${href}"${blank ? ' target="_blank" rel="noopener"' : ''} aria-label="${label}" title="${label}"${tr(m)}>${IC[icon]}</a>`;
   head.insertAdjacentHTML('beforeend', `${langBar}<div class="tools" aria-label="Story tools">
     ${window.speechSynthesis ? iconBtn('listen', 'listen', LISTEN_LABEL, ' aria-pressed="false"') : ''}
     ${window.speechSynthesis ? '<span class="tools-sep" aria-hidden="true"></span>' : ''}
-    <a class="icon-btn" href="https://wa.me/?text=${shareText}" target="_blank" rel="noopener" aria-label="Share on WhatsApp" title="Share on WhatsApp">${IC.whatsapp}</a>
-    ${iconBtn('copylink', 'link', 'Copy link')}
-    ${navigator.share ? iconBtn('share', 'share', 'Share') : ''}
+    ${shareA('whatsapp', 'https://wa.me/?text=' + shareText, 'whatsapp', 'Share on WhatsApp')}
+    ${shareA('x', 'https://twitter.com/intent/tweet?text=' + T + '&url=' + U, 'x', 'Share on X')}
+    ${shareA('linkedin', 'https://www.linkedin.com/sharing/share-offsite/?url=' + U, 'linkedin', 'Share on LinkedIn')}
+    ${shareA('facebook', 'https://www.facebook.com/sharer/sharer.php?u=' + U, 'facebook', 'Share on Facebook')}
+    ${shareA('email', 'mailto:?subject=' + T + '&body=' + U, 'mail', 'Share by email', false)}
+    ${iconBtn('copylink', 'link', 'Copy link', tr('copy_link'))}
+    ${navigator.share ? iconBtn('share', 'share', 'Share', tr('native')) : ''}
     <span class="sr-only" id="toolNote" role="status" aria-live="polite"></span></div>`);
 
   /* founder's own audio / video */
@@ -299,8 +328,8 @@ function enhanceStory(sh) {
 
   /* visit / follow / book */
   const btns = [];
-  if (s.instagram) btns.push(`<a class="btn btn-cta" href="${esc(igHref(s.instagram))}" target="_blank" rel="noopener">Follow on Instagram</a>`);
-  if (s.website) btns.push(`<a class="btn btn-line" href="${esc(s.website)}" target="_blank" rel="noopener">Visit website</a>`);
+  if (s.instagram) btns.push(`<a class="btn btn-cta" data-track="instagram_click" data-loc="story_visit" data-story="${SLUG}" href="${esc(igHref(s.instagram))}" target="_blank" rel="noopener">Follow on Instagram</a>`);
+  if (s.website) btns.push(`<a class="btn btn-line" data-track="founder_website_click" data-loc="story_visit" data-story="${SLUG}" href="${esc(s.website)}" target="_blank" rel="noopener">Visit website</a>`);
   if (s.booking) btns.push(`<a class="btn btn-line" href="${esc(s.booking)}" target="_blank" rel="noopener">Book with ${esc(s.owner.split(' ')[0])}</a>`);
   btns.push(`<a class="btn btn-line" href="/stories/">Read more stories</a>`);
   const visitHtml = `<aside class="visit" aria-label="Visit ${esc(s.business)}"><h2>Visit ${esc(s.business)}</h2><p>${esc(s.location || '')}${s.offers ? ' &middot; ' + esc(offers.slice(0, 3).join(', ')) : ''}</p><div class="visit-btns">${btns.join('')}</div></aside>`;

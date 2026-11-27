@@ -48,11 +48,11 @@
   --soft: #EEF0F3;
   --dark: #0C0F14;
   --f-head: "Newsreader", Georgia, "Times New Roman", serif;
-  --f-body: "Newsreader", Georgia, "Times New Roman", serif;
-  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --f-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --f-mono: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --pad: clamp(20px, 5vw, 56px);
   --max: 1240px;
-  --r: 14px;
+  --r: 6px;
   --invite-bg: #0C0F14;
   --invite-line: #0C0F14;
 }
